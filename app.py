@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template
-from flask_login import UserMixin
+from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, IntegerField, SubmitField
@@ -8,6 +8,8 @@ from wtforms import StringField, PasswordField, IntegerField, SubmitField
 app = Flask(__name__)
 
 db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///' + os.path.join(app.root_path, 'data.db'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'Wang Yang'
@@ -47,7 +49,7 @@ def index():
     return render_template('Index.html')
 
 
-@app.route('/signup',methods=['Get', 'Post'])
+@app.route('/signup', methods=['Get', 'Post'])
 def sign_up():
     sign_up_form = SignUpForm()
     return render_template('login.html', sign_up_form=sign_up_form)

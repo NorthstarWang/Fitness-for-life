@@ -42,7 +42,7 @@
     </column>
     <column id="15" parent="7" name="username">
       <Position>2</Position>
-      <DataType>VARCHAR(15)|0s</DataType>
+      <DataType>VARCHAR(40)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="16" parent="7" name="email">

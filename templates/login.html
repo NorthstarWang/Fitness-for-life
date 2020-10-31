@@ -43,7 +43,7 @@
 									<!--begin::Form group-->
 									<div class="form-group">
 										<label class="font-size-h6 font-weight-bolder text-dark">Username</label>
-										<input class="form-control form-control-solid h-auto p-6 rounded-lg" type="text" name="username" autocomplete="off" />
+										<input class="form-control form-control-solid h-auto p-6 rounded-lg" type="text" id="username_sign_in" name="username" autocomplete="off" />
 									</div>
 									<!--end::Form group-->
 									<!--begin::Form group-->
@@ -52,7 +52,7 @@
 											<label class="font-size-h6 font-weight-bolder text-dark pt-5">Password</label>
 											<a href="javascript:;" class="text-primary font-size-h6 font-weight-bolder text-hover-primary pt-5" id="kt_login_forgot">Forgot Password ?</a>
 										</div>
-										<input class="form-control form-control-solid h-auto p-6 rounded-lg" type="password" name="password" autocomplete="off" />
+										<input class="form-control form-control-solid h-auto p-6 rounded-lg" type="password" id="password_sign_in" name="password" autocomplete="off" />
 									</div>
 									<!--end::Form group-->
 									<!--begin::Action-->
@@ -211,7 +211,7 @@ var KTLogin = function() {
                     trigger: new FormValidation.plugins.Trigger(),
                     submitButton: new FormValidation.plugins.SubmitButton(),
                     //defaultSubmit: new FormValidation.plugins.DefaultSubmit(), // Uncomment this line to enable normal button submit after form validation
-					bootstrap: new FormValidation.plugins.Bootstrap()
+					bootstrap: new FormValidation.plugins.Bootstrap(),
 				}
 			}
 		);
@@ -221,15 +221,40 @@ var KTLogin = function() {
 
             validation.validate().then(function(status) {
 		        if (status == 'Valid') {
-                    swal.fire({
-		                text: "All is cool! Now you submit this form",
-		                icon: "success",
-		                buttonsStyling: false,
-		                confirmButtonText: "Ok, got it!",
-                        customClass: {
-    						confirmButton: "btn font-weight-bold btn-light-primary"
-    					}
-		            }).then(function() {
+                    $.ajax({
+                        url:'/api/login/sign_in',
+                        type:'POST',
+                        data:{
+                            username:$('#username_sign_in').val(),
+                            password:$('#password_sign_in').val()
+                        },
+                        success:function (data){
+                            if(data=='0'){
+                               swal.fire({
+                                    text: 'You are now signed in!',
+                                    icon: "success",
+                                    buttonsStyling: false,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                    }
+                                }).then(function (){
+                                    window.location.href = '/'
+                               })
+                            }else if(data=='1'){
+                                swal.fire({
+                                    text: 'Wrong username/password, please try again.',
+                                    icon: "error",
+                                    buttonsStyling: false,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                    }
+                                })
+                            }
+
+                        }
+                    }).then(function() {
 						KTUtil.scrollTop();
 					});
 				} else {

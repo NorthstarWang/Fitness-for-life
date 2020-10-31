@@ -299,7 +299,18 @@ var KTLogin = function() {
 						validators: {
 							notEmpty: {
 								message: 'Username is required'
-							}
+							},
+                            callback: {
+                                callback: function() {
+                                    return $.ajax({
+                                        url: '/api/login/check_username_availability',
+                                        type: 'POST',
+                                        data: {
+                                            username: $('#username').val(),
+                                        }
+                                    })
+                                }
+                            }
 						}
 					},
 					email: {

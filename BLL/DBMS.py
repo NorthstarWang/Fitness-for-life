@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, json, jsonify
 from app import *
 
 
@@ -36,6 +36,16 @@ def login_validation():
         return '0'
     else:
         return '1'
+
+
+@app.route('/api/login/check_username_availability', methods=['POST', 'GET'])
+def check():
+    username = str(request.form['username'])
+    user = User.query.filter_by(username=username).first()
+    if user:
+        return jsonify(valid=False, message='This username already exist, please try other username.')
+    else:
+        return jsonify(valid=True)
 
 
 @app.route('/api/logout', methods=['POST', 'GET'])

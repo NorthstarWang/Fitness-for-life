@@ -407,15 +407,37 @@ var KTLogin = function() {
                             weight:$('#weight').val(),
                         },
                         success:function (data){
-                            swal.fire({
-                            text: data,
-                            icon: "success",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-    						confirmButton: "btn font-weight-bold btn-light-primary"
-    					    }
-		                })
+                            $.ajax({
+                            url:'/api/login/mail_verification',
+                            type:'POST',
+                            data:{
+                                email:$('#email').val()
+                                },
+                            success:function (data_new){
+                                if(data_new=='0'){
+                                    swal.fire({
+                                        text: data,
+                                        icon: "success",
+                                        buttonsStyling: false,
+                                        confirmButtonText: "Ok, got it!",
+                                        customClass: {
+                                        confirmButton: "btn font-weight-bold btn-light-primary"
+                                        }
+                                    })
+                                }else{
+                                    swal.fire({
+                                        text: 'The account is successfully registered, but error occurred when we attempt to send confirmation mail',
+                                        icon: "success",
+                                        buttonsStyling: false,
+                                        confirmButtonText: "Ok, got it!",
+                                        customClass: {
+                                        confirmButton: "btn font-weight-bold btn-light-primary"
+                                        }
+                                    })
+                                }
+                            }
+                            })
+
                         }
                     }).then(function() {
 						KTUtil.scrollTop();

@@ -1,5 +1,13 @@
-from flask import request, json, jsonify
+from datetime import time
+
+from flask import request, json, jsonify, url_for
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+from flask_mail import Mail, Message
 from app import *
+
+urlSerializer = URLSafeTimedSerializer('Thisisasecret!')
+app.config.from_pyfile('BLL/config.cfg')
+mailer = Mail(app)
 
 
 class User(UserMixin, db.Model):
@@ -10,6 +18,7 @@ class User(UserMixin, db.Model):
     age = db.Column(db.Integer)
     height = db.Column(db.Integer)
     weight = db.Column(db.Integer)
+    confirm = db.Column(db.Boolean, default=False)
 
 
 @app.route('/api/login/sign_up', methods=['POST'])
@@ -23,7 +32,8 @@ def login_insertion():
     user = User(username=username, email=email, password=password, age=age, height=height, weight=weight)
     db.session.add(user)
     db.session.commit()
-    return 'You have successfully created the account.'
+    return 'You have successfully created the account. A confirmation mail will be sent to your registration email. ' \
+           'Please verify within 24 hours '
 
 
 @app.route('/api/login/sign_in', methods=['POST', 'GET'])
@@ -46,6 +56,27 @@ def check():
         return jsonify(valid=False, message='This username already exist, please try other username.')
     else:
         return jsonify(valid=True)
+
+
+@app.route('/api/login/mail_verification', methods=['POST', 'GET'])
+def mail():
+        email = str(request.form['email'])
+        token = urlSerializer.dumps(email, salt='email-confirm')
+        msg = Message('Confirmation Mail', sender='Juncus@qq.com', recipients=[email])
+        link = url_for('confirm_mail', token=token, external=True)
+        msg.body = 'Click this link to confirm your email:{}'.format(link)
+        mailer.connect()
+        mailer.send(msg)
+        return '0'
+
+
+@app.route('/api/login/confirm_mail/<token>')
+def confirm_mail(token):
+    try:
+        email = urlSerializer.loads(token, salt='email-confirm', max_age=20)
+        return 'Success'
+    except SignatureExpired:
+        return 'Failure, expired'
 
 
 @app.route('/api/logout', methods=['POST', 'GET'])

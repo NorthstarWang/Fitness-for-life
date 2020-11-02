@@ -88,6 +88,11 @@ def confirm_mail(token):
     return render_template('Index.html')
 
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(id=user_id)
+
+
 @app.route('/api/logout', methods=['POST', 'GET'])
 @login_required
 def logout():

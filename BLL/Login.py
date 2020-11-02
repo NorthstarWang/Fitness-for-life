@@ -1,6 +1,6 @@
 from datetime import time
 
-from flask import request, json, jsonify, url_for
+from flask import request, json, jsonify, url_for, flash
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask_mail import Mail, Message
 from app import *
@@ -60,23 +60,32 @@ def check():
 
 @app.route('/api/login/mail_verification', methods=['POST', 'GET'])
 def mail():
-        email = str(request.form['email'])
-        token = urlSerializer.dumps(email, salt='email-confirm')
-        msg = Message('Confirmation Mail', sender='Juncus@qq.com', recipients=[email])
-        link = url_for('confirm_mail', token=token, external=True)
-        msg.body = 'Click this link to confirm your email:{}'.format(link)
-        mailer.connect()
-        mailer.send(msg)
-        return '0'
+    email = str(request.form['email'])
+    username = str(request.form['username'])
+    user = User.query.filter_by(email=email, username=username).first()
+    PK = user.id
+    token = urlSerializer.dumps(PK, salt='email-confirm')
+    msg = Message('Confirmation Mail', sender='Juncus@qq.com', recipients=[email])
+    link = url_for('confirm_mail', token=token, external=True)
+    msg.body = 'Click this link to confirm your email:{}'.format(link)
+    mailer.connect()
+    mailer.send(msg)
+    return '0'
 
 
 @app.route('/api/login/confirm_mail/<token>')
 def confirm_mail(token):
     try:
-        email = urlSerializer.loads(token, salt='email-confirm', max_age=20)
-        return 'Success'
+        array = urlSerializer.loads(token, salt='email-confirm', max_age=86400)
+        user = User.query.filter_by(id=array).first()
+        user.confirm = True
+        db.session.commit()
+        flash('You have successfully confirmed your email address!')
     except SignatureExpired:
-        return 'Failure, expired'
+        flash('The link is expired!')
+    except Exception:
+        flash('Invalid Link!')
+    return render_template('Index.html')
 
 
 @app.route('/api/logout', methods=['POST', 'GET'])

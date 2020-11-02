@@ -411,7 +411,8 @@ var KTLogin = function() {
                             url:'/api/login/mail_verification',
                             type:'POST',
                             data:{
-                                email:$('#email').val()
+                                email:$('#email').val(),
+                                username:$('#username').val()
                                 },
                             success:function (data_new){
                                 if(data_new=='0'){

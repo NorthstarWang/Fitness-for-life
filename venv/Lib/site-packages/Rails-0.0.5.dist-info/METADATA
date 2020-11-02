@@ -1,0 +1,37 @@
+Metadata-Version: 2.0
+Name: Rails
+Version: 0.0.5
+Summary: Rails - python web framework
+Home-page: https://github.com/pythonrails/rails
+Author: Anton Danilchenko
+Author-email: anton@danilchenko.me
+License: MIT
+Keywords: rails web framework development
+Platform: any
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: webob
+
+Rails
+====================
+
+**Python on Rails** is a web framework with an idea to simplify web development.
+It's not a clone of **Ruby on Rails**. This project created for for less code,
+and this code should be good structured in small and big projects.
+
+
+Quick start
+-------------
+
+Read `Quick Start <https://github.com/pythonrails/rails>`_ on GitHub.
+
+

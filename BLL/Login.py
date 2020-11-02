@@ -42,6 +42,7 @@ def login_validation():
     password = str(request.form['password'])
     user = User.query.filter_by(username=username, password=password).first()
     if user:
+        login_user(user)
         return '0'
     else:
         return '1'
@@ -84,8 +85,7 @@ def confirm_mail(token):
         flash('The link is expired!')
     except Exception:
         flash('Invalid Link!')
-    return render_template('Index.html')\
-
+    return render_template('Index.html')
 
 
 @app.route('/api/logout', methods=['POST', 'GET'])

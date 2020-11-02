@@ -16,6 +16,11 @@ app.secret_key = 'Wang Yang'
 import BLL
 
 
+@login_manager.user_loader
+def load_user(user_id):
+    return BLL.Login.User.query.get(user_id)
+
+
 class User_Detail(db.Model):
     def __init__(self):
         pass

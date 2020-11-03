@@ -15,3 +15,8 @@ Features:
 	- Users get recommend diet and exercise plan based on their own up-to-date body data
 1. Blog System:
 	- Users share their thoughts on a blog
+
+Plugins:
+- Sweet alert 2*(https://sweetalert2.github.io/)*
+- Form Validation*(https://formvalidation.io/)*
+- Keen Theme*(https://keenthemes.com/)*

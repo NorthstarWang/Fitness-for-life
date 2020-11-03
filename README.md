@@ -1,4 +1,4 @@
-# Fitness_Flask
+# Fitness for life
 ##### "Fitness for life" is a web app designed to estimate users' health condition and give suggestion based on bmi value so as to achieve healthier lifestyle, this app is developed based on the prototype of my 2018 Fall semester project done in Nanyang Polytechnic on a topic named smart life.
 
 Fitness for life is built with Python 3.7+Flask+SQLite3+Bootstrap 4

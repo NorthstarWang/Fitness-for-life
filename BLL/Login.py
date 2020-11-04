@@ -1,5 +1,3 @@
-from datetime import time
-
 from flask import request, json, jsonify, url_for, flash
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask_mail import Mail, Message
@@ -21,7 +19,12 @@ class User(UserMixin, db.Model):
     confirm = db.Column(db.Boolean, default=False)
 
 
-@app.route('/api/login/sign_up', methods=['POST'])
+@app.route('/signup', methods=['Get', 'Post'])
+def sign_up():
+    return render_template('login.html')
+
+
+@app.route('/api/login/sign_up', methods=['GET', 'POST'])
 def login_insertion():
     username = str(request.form['username'])
     email = str(request.form['email'])
@@ -80,12 +83,12 @@ def confirm_mail(token):
         user = User.query.filter_by(id=array).first()
         user.confirm = True
         db.session.commit()
-        flash('You have successfully confirmed your email address!')
+        flash(u"You have successfully confirmed your email address!", "success")
     except SignatureExpired:
-        flash('The link is expired!')
+        flash(u"The link is expired!", "warning")
     except Exception:
-        flash('Invalid Link!')
-    return render_template('Index.html')
+        flash(u"Invalid token!", "error")
+    return render_template('login.html')
 
 
 @app.route('/api/logout', methods=['POST', 'GET'])

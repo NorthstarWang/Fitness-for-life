@@ -13,7 +13,7 @@ login_manager.init_app(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///' + os.path.join(app.root_path, 'data.db'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'Wang Yang'
-import BLL
+import BLL.Login
 
 
 @login_manager.user_loader
@@ -39,25 +39,9 @@ class User_Detail(db.Model):
     sleep = db.Column(db.Integer, nullable=False)
 
 
-class SignUpForm(FlaskForm):
-    username = StringField('username')
-    email = StringField('email')
-    password = PasswordField('password')
-    age = IntegerField('age')
-    height = IntegerField('height')
-    weight = IntegerField('weight')
-    submit = SubmitField('Sign Up')
-
-
 @app.route('/')
 def index():
     return render_template('Index.html')
-
-
-@app.route('/signup', methods=['Get', 'Post'])
-def sign_up():
-    sign_up_form = SignUpForm()
-    return render_template('login.html', sign_up_form=sign_up_form)
 
 
 if __name__ == '__main__':

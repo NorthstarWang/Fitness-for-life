@@ -76,17 +76,17 @@
 									<!--end::Title-->
 									<!--begin::Form group-->
 									<div class="form-group">
-                                        {{ sign_up_form.username(class_='form-control form-control-solid h-auto p-6 rounded-lg font-size-h6', autocomplete="off", placeholder='Username') }}
+                                        <input class="form-control form-control-solid h-auto p-6 rounded-lg font-size-h6" type="text" placeholder="Username" name="username" id="username" autocomplete="off" />
 									</div>
 									<!--end::Form group-->
 									<!--begin::Form group-->
 									<div class="form-group">
-                                        {{ sign_up_form.email(class_='form-control form-control-solid h-auto p-6 rounded-lg font-size-h6', autocomplete="off", placeholder='Email') }}
+                                        <input class="form-control form-control-solid h-auto p-6 rounded-lg font-size-h6" type="email" placeholder="Email" name="email" id="email" autocomplete="off" />
 									</div>
 									<!--end::Form group-->
 									<!--begin::Form group-->
 									<div class="form-group">
-                                        {{ sign_up_form.password(class_='form-control form-control-solid h-auto p-6 rounded-lg font-size-h6', autocomplete="off", placeholder='Password') }}
+                                        <input class="form-control form-control-solid h-auto p-6 rounded-lg font-size-h6" type="password" placeholder="Password" name="password" autocomplete="off" />
 									</div>
 									<!--end::Form group-->
 									<!--begin::Form group-->
@@ -96,17 +96,17 @@
 									<!--end::Form group-->
                                     <!--begin::Form group-->
 									<div class="form-group">
-                                        {{ sign_up_form.age(class_='form-control form-control-solid h-auto p-6 rounded-lg font-size-h6', autocomplete="off", placeholder='Age',type='number') }}
+                                        <input class="form-control form-control-solid h-auto p-6 rounded-lg font-size-h6" type="number" placeholder="Age" name="age" id="age" autocomplete="off" />
 									</div>
 									<!--end::Form group-->
                                     <!--begin::Form group-->
 									<div class="form-group">
-                                        {{ sign_up_form.height(class_='form-control form-control-solid h-auto p-6 rounded-lg font-size-h6', autocomplete="off",type='number', placeholder='Height(cm)') }}
+                                        <input class="form-control form-control-solid h-auto p-6 rounded-lg font-size-h6" type="number" placeholder="Height(cm)" name="height" autocomplete="off" />
 									</div>
 									<!--end::Form group-->
                                     <!--begin::Form group-->
 									<div class="form-group">
-                                        {{ sign_up_form.weight(class_='form-control form-control-solid h-auto p-6 rounded-lg font-size-h6', autocomplete="off",type='number', placeholder='Weight(kg)') }}
+                                        <input class="form-control form-control-solid h-auto p-6 rounded-lg font-size-h6" type="number" placeholder="Weight(kg)" name="weight" autocomplete="off" />
 									</div>
 									<!--end::Form group-->
 									<!--begin::Form group-->
@@ -121,7 +121,7 @@
 									<!--end::Form group-->
 									<!--begin::Form group-->
 									<div class="form-group d-flex flex-wrap pb-lg-0 pb-3">
-                                        {{ sign_up_form.submit(class_='btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-4', id='kt_login_signup_submit') }}
+										<button type="submit" id="kt_login_signup_submit" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-4">Sign Up</button>
 										<button type="button" id="kt_login_signup_cancel" class="btn btn-light-primary font-weight-bolder font-size-h6 px-8 py-4 my-3">Cancel</button>
 									</div>
 									<!--end::Form group-->
@@ -541,7 +541,22 @@ var KTLogin = function() {
 // Class Initialization
 jQuery(document).ready(function() {
     KTLogin.init();
-
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for icon, text in messages %}
+                swal.fire({
+                    text: "{{ text }}",
+                    icon: "{{ icon }}",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                })
+        {% endfor %}
+        {% endif %}
+    {% endwith %}
 });
+
 </script>
 </html>

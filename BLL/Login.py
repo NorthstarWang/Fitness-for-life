@@ -1,22 +1,12 @@
-from flask import request, json, jsonify, url_for, flash
+from flask import request, jsonify, url_for, flash
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask_mail import Mail, Message
 from app import *
+from models import User
 
 urlSerializer = URLSafeTimedSerializer('Thisisasecret!')
 app.config.from_pyfile('BLL/config.cfg')
 mailer = Mail(app)
-
-
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(40), unique=True, index=True, nullable=False)
-    email = db.Column(db.String(100))
-    password = db.Column(db.String(30), nullable=False)
-    age = db.Column(db.Integer)
-    height = db.Column(db.Integer)
-    weight = db.Column(db.Integer)
-    confirm = db.Column(db.Boolean, default=False)
 
 
 @app.route('/signup', methods=['Get', 'Post'])
@@ -28,10 +18,10 @@ def sign_up():
 def login_insertion():
     username = str(request.form['username'])
     email = str(request.form['email'])
-    password = str(request.form['password'])
     age = int(request.form['age'])
     weight = int(request.form['weight'])
     height = int(request.form['height'])
+    password = str(request.form['password'])
     user = User(username=username, email=email, password=password, age=age, height=height, weight=weight)
     db.session.add(user)
     db.session.commit()

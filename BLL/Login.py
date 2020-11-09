@@ -1,4 +1,5 @@
 from flask import request, jsonify, url_for, flash
+from flask_login import login_user, logout_user, login_required
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask_mail import Mail, Message
 from app import *
@@ -21,7 +22,6 @@ def login_insertion():
     age = int(request.form['age'])
     weight = int(request.form['weight'])
     height = int(request.form['height'])
-    password = str(request.form['password'])
     user = User(username=username, email=email, password=password, age=age, height=height, weight=weight)
     db.session.add(user)
     db.session.commit()

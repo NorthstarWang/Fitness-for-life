@@ -34,4 +34,4 @@ pip install -U Flask
 - Keen Theme*(https://keenthemes.com/)*
 
 ## Contact:
-If you have any trouble or question, feel free to contact me by email:1527638985@qq.com
+If you have any issue or question, feel free to contact me by email:1527638985@qq.com

@@ -87,6 +87,7 @@
 							<!--end::Header Menu Wrapper-->
 							<!--begin::Topbar-->
 							<div class="topbar">
+                                {% if current_user.is_authenticated %}
 								<!--begin::User-->
 								<div class="topbar-item">
 									<div class="btn btn-icon btn-circle btn-light-primary" id="kt_quick_user_toggle">
@@ -104,6 +105,37 @@
 									</div>
 								</div>
 								<!--end::User-->
+                                {% else %}
+                                    <div class="dropdown mr-1 mr-lg-3">
+									<!--begin::Toggle-->
+									<div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px" aria-expanded="false">
+										<div class="btn btn-icon btn-circle btn-hover-light-primary btn-dropdown">
+											<span class="svg-icon svg-icon-lg">
+												<!--begin::Svg Icon | path:assets/media/svg/icons/Media/Equalizer.svg-->
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+													<polygon points="0 0 24 0 24 24 0 24" />
+													<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+													<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero" />
+												</g>
+											</svg>
+												<!--end::Svg Icon-->
+											</span>
+										</div>
+									</div>
+									<!--end::Toggle-->
+									<!--begin::Dropdown-->
+									<div class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg" style="">
+										<!--begin:Header-->
+										<div class="d-flex flex-column flex-center py-10 rounded-to border-bottom">
+											<h4 class="text-dark font-weight-bold">Log in</h4>
+                                            <a href="/signup"><span class="btn btn-primary btn-sm font-weight-bold font-size-sm mt-2">Sign in/Sign Up</span></a>
+										</div>
+										<!--end:Header-->
+									</div>
+									<!--end::Dropdown-->
+								</div>
+                                {% endif %}
 							</div>
 							<!--end::Topbar-->
 						</div>
@@ -141,6 +173,7 @@
 			<!--end::Page-->
 		</div>
 		<!--end::Main-->
+        {% if current_user.is_authenticated %}
 		<!-- begin::User Panel-->
 		<div id="kt_quick_user" class="offcanvas offcanvas-right p-10">
 			<!--begin::Header-->
@@ -156,10 +189,10 @@
 				<!--begin::Header-->
 				<div class="d-flex align-items-center mt-5">
 					<div class="symbol symbol-100 mr-5">
-						<div class="symbol-label" style="background-image:url({{ url_for('static', filename='user/icon/150-12.jpg') }})"></div>
+						<div class="symbol-label" style="background-image:url({{ url_for('static', filename='user/icon/'+current_user.icon) }})"></div>
 					</div>
 					<div class="d-flex flex-column">
-						<a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">Ryan Smith</a>
+						<a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">{{ current_user.username }}</a>
 					</div>
 				</div>
 				<!--end::Header-->
@@ -171,7 +204,7 @@
 					<!--begin::Item-->
 					<span class="navi-item mt-2">
 						<span class="navi-link">
-							<a href="#" class="btn btn-sm btn-light-primary font-weight-bolder py-3 px-6">Sign Out</a>
+							<a href="/api/logout" class="btn btn-sm btn-light-primary font-weight-bolder py-3 px-6">Sign Out</a>
 						</span>
 					</span>
 					<!--end:Item-->
@@ -181,6 +214,7 @@
 			<!--end::Content-->
 		</div>
 		<!-- end::User Panel-->
+        {% endif %}
 		<!--begin::Scrolltop-->
 		<div id="kt_scrolltop" class="scrolltop">
 			<span class="svg-icon">

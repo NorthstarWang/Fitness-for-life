@@ -192,7 +192,7 @@
 						<div class="symbol-label" style="background-image:url({{ url_for('static', filename='user/icon/'+current_user.icon) }})"></div>
 					</div>
 					<div class="d-flex flex-column">
-						<a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">{{ current_user.username }}</a>
+						<a href="/profile?id={{ current_user.get_id() }}" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">{{ current_user.username }}</a>
 					</div>
 				</div>
 				<!--end::Header-->

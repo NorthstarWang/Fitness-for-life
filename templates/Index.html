@@ -1,4 +1,22 @@
 {% extends 'layout.html' %}
 {% block body %}
     {% include '_includes/_scripts.html' %}
+    <script>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for icon, text in messages %}
+    $(document).ready(function (){
+        swal.fire({
+		                text: "{{ text }}",
+		                icon: "{{ icon }}",
+		                confirmButtonText: "Ok, got it!",
+                        customClass: {
+    						confirmButton: "btn font-weight-bold btn-light-primary"
+    					}
+		            })
+    })
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </script>
 {% endblock %}

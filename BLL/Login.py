@@ -1,5 +1,5 @@
-from flask import request, jsonify, url_for, flash
-from flask_login import login_user, logout_user, login_required
+from flask import request, jsonify, url_for, flash, redirect
+from flask_login import login_user, logout_user, login_required, current_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask_mail import Mail, Message
 from app import *
@@ -12,7 +12,11 @@ mailer = Mail(app)
 
 @app.route('/signup', methods=['Get', 'Post'])
 def sign_up():
-    return render_template('login.html')
+    if current_user.is_authenticated:
+        flash(u"You have already logged in!", "warning")
+        return redirect(url_for('index'))
+    else:
+        return render_template('login.html')
 
 
 @app.route('/api/login/sign_up', methods=['GET', 'POST'])
@@ -22,6 +26,7 @@ def login_insertion():
     age = int(request.form['age'])
     weight = int(request.form['weight'])
     height = int(request.form['height'])
+    password = str(request.form['password'])
     user = User(username=username, email=email, password=password, age=age, height=height, weight=weight)
     db.session.add(user)
     db.session.commit()
@@ -86,5 +91,3 @@ def confirm_mail(token):
 def logout():
     logout_user()
     return 'You are now logged out!'
-
-

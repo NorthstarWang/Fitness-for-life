@@ -11,5 +11,6 @@ class User(UserMixin, db.Model):
     height = db.Column(db.Integer)
     weight = db.Column(db.Integer)
     icon = db.Column(db.String, nullable=False, default="default.png")
+    description = db.Column(db.String(200))
     confirm = db.Column(db.Boolean, default=False)
 

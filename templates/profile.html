@@ -45,7 +45,7 @@
                                                         {% endif %}
 													</div>
                                                     <!--begin::Actions-->
-                                                    <form type="POST">
+                                                    <form type="POST" enctype='multipart/form-data'>
                                                         <div class="my-lg-0 my-1">
                                                             <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder mr-2" data-toggle="modal" data-target="#info_edit"><i class="flaticon-edit-1"></i>Edit</button>
                                                             <div class="modal fade" id="info_edit" tabindex="-1" role="dialog" aria-labelledby="infoLabel" aria-hidden="true">
@@ -66,10 +66,28 @@
                                                                                  </div>
                                                                                 </div>
                                                                                </div>
+                                                                                <div class="form-group row">
+                                                                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Avatar</label>
+                                                                                    <div class="col-lg-9 col-xl-6">
+                                                                                        <div class="image-input image-input-outline" id="kt_image_1">
+                                                                                            <div class="image-input-wrapper" id="base64_img" style="background-image: url({{ url_for('static', filename='user/icon/'+user.icon) }})"></div>
+                                                                                            <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
+                                                                                                <i class="fa fa-pen icon-sm text-muted"></i>
+                                                                                                <input type="file" id="img_file" name="profile_avatar" accept=".png, .jpg, .jpeg">
+                                                                                                <input type="hidden" name="profile_avatar_remove">
+                                                                                            </label>
+                                                                                            <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="" data-original-title="Cancel avatar">
+                                                                                                <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <span class="form-text text-muted">Allowed file types: png, jpg, jpeg.</span>
+                                                                                    </div>
+                                                                                </div>
                                                                                 <div class="form-group mb-1">
                                                                                     <label for="Description">Description</label>
                                                                                     <textarea class="form-control" id="description_edit" name="description" rows="3"></textarea>
                                                                                    </div>
+
                                                                         </div>
                                                                         <div class="modal-footer">
                                                                             <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
@@ -493,15 +511,22 @@ var KTWidgets = function() {
 
 jQuery(document).ready(function() {
     KTWidgets.init();
+    new KTImageInput('kt_image_1');
+
+    var formData = new FormData();
+    formData.append('id', '{{ user.id }}')
+    formData.append("description",$('#description_edit').val())
+    formData.append('avatar', $('#img_file').prop('files')[0])
+
 
     $('#edit_submit').click(function (){
         $.ajax({
             type:'POST',
             url:'/api/profile/edit/description',
-            data:{
-                id :'{{ user.id }}',
-                description:$('#description_edit').val()
-            },
+            contentType:false,
+            processData:false,
+            cache: false,
+            data:formData,
             success:function (data){
                 if(data=='success'){
                     swal.fire({

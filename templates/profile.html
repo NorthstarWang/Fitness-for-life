@@ -10,7 +10,27 @@
 											<!--begin::Pic-->
 											<div class="flex-shrink-0 mr-7">
 												<div class="symbol symbol-50 symbol-lg-120">
+                                                    {% if current_user.get_id()|int == user.id|int %}
+                                                        <div class="image-input image-input-outline" id="kt_image" style="background-image: url({{ url_for('static', filename='user/icon/default.png')  }})">
+                                                         <div class="image-input-wrapper" style="background-image: url({{ url_for('static', filename='user/icon/'+user.icon)  }})"></div>
+
+                                                         <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
+                                                          <i class="fa fa-pen icon-sm text-muted"></i>
+                                                          <input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg"/>
+                                                          <input type="hidden" name="profile_avatar_remove"/>
+                                                         </label>
+
+                                                         <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                                          <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                         </span>
+
+                                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="remove" data-toggle="tooltip" title="Remove avatar">
+                                                          <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                         </span>
+                                                        </div>
+                                                    {% else %}
                                                     <img alt="Pic" src="{{ url_for('static', filename='user/icon/'+user.icon) }}" />
+                                                    {% endif %}
 												</div>
 											</div>
 											<!--end::Pic-->
@@ -44,8 +64,9 @@
                                                             <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">{{ user.description }}</div>
                                                         {% endif %}
 													</div>
+                                                {% if current_user.get_id()|int == user.id|int %}
                                                     <!--begin::Actions-->
-                                                    <form type="POST" enctype='multipart/form-data'>
+                                                    <form type="POST" id="edit"  enctype="multipart/form-data">
                                                         <div class="my-lg-0 my-1">
                                                             <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder mr-2" data-toggle="modal" data-target="#info_edit"><i class="flaticon-edit-1"></i>Edit</button>
                                                             <div class="modal fade" id="info_edit" tabindex="-1" role="dialog" aria-labelledby="infoLabel" aria-hidden="true">
@@ -66,23 +87,6 @@
                                                                                  </div>
                                                                                 </div>
                                                                                </div>
-                                                                                <div class="form-group row">
-                                                                                    <label class="col-xl-3 col-lg-3 col-form-label text-right">Avatar</label>
-                                                                                    <div class="col-lg-9 col-xl-6">
-                                                                                        <div class="image-input image-input-outline" id="kt_image_1">
-                                                                                            <div class="image-input-wrapper" id="base64_img" style="background-image: url({{ url_for('static', filename='user/icon/'+user.icon) }})"></div>
-                                                                                            <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
-                                                                                                <i class="fa fa-pen icon-sm text-muted"></i>
-                                                                                                <input type="file" id="img_file" name="profile_avatar" accept=".png, .jpg, .jpeg">
-                                                                                                <input type="hidden" name="profile_avatar_remove">
-                                                                                            </label>
-                                                                                            <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="" data-original-title="Cancel avatar">
-                                                                                                <i class="ki ki-bold-close icon-xs text-muted"></i>
-                                                                                            </span>
-                                                                                        </div>
-                                                                                        <span class="form-text text-muted">Allowed file types: png, jpg, jpeg.</span>
-                                                                                    </div>
-                                                                                </div>
                                                                                 <div class="form-group mb-1">
                                                                                     <label for="Description">Description</label>
                                                                                     <textarea class="form-control" id="description_edit" name="description" rows="3"></textarea>
@@ -99,6 +103,7 @@
                                                         </div>
                                                     </form>
                                                     <!--end::Actions-->
+                                                {% endif %}
 												</div>
 												<!--end::Title-->
 											</div>
@@ -511,22 +516,48 @@ var KTWidgets = function() {
 
 jQuery(document).ready(function() {
     KTWidgets.init();
-    new KTImageInput('kt_image_1');
 
-    var formData = new FormData();
-    formData.append('id', '{{ user.id }}')
-    formData.append("description",$('#description_edit').val())
-    formData.append('avatar', $('#img_file').prop('files')[0])
+    {% if current_user.get_id()|int == user.id|int %}
+    var avatar1 = new KTImageInput('kt_image');
 
+    avatar1.on('cancel', function(imageInput) {
+     swal.fire({
+      title: 'Image successfully canceled !',
+      type: 'success',
+      buttonsStyling: false,
+      confirmButtonText: 'Awesome!',
+      confirmButtonClass: 'btn btn-primary font-weight-bold'
+     });
+    });
+
+    avatar1.on('change', function(imageInput) {
+     swal.fire({
+      title: 'Image successfully changed !',
+      type: 'success',
+      buttonsStyling: false,
+      confirmButtonText: 'Awesome!',
+      confirmButtonClass: 'btn btn-primary font-weight-bold'
+     });
+    });
+
+    avatar1.on('remove', function(imageInput) {
+     swal.fire({
+      title: 'Image successfully removed !',
+      type: 'error',
+      buttonsStyling: false,
+      confirmButtonText: 'Got it!',
+      confirmButtonClass: 'btn btn-primary font-weight-bold'
+     });
+    });
 
     $('#edit_submit').click(function (){
         $.ajax({
             type:'POST',
-            url:'/api/profile/edit/description',
-            contentType:false,
-            processData:false,
-            cache: false,
-            data:formData,
+            url:'{{ url_for('edit_description') }}',
+            data: {
+                id:{{ user.id }},
+                description:$('#description_edit').val()
+            },
             success:function (data){
                 if(data=='success'){
                     swal.fire({
@@ -551,9 +582,21 @@ jQuery(document).ready(function() {
     					}
                     })
                 }
+            },
+            error:function () {
+                swal.fire({
+                        text: "Error Occurred!",
+		                icon: "error",
+		                buttonsStyling: false,
+		                confirmButtonText: "Ok, got it!",
+                        customClass: {
+    						confirmButton: "btn font-weight-bold btn-light-primary"
+    					}
+                    })
             }
         })
     })
+    {% endif %}
 });
 
         </script>

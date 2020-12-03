@@ -31,7 +31,7 @@ def index():
     return render_template('Index.html')
 
 
-@app.errorhandler(404)
+@app.errorhandler(Exception)
 def error(e):
     return render_template('error.html', e=e)
 

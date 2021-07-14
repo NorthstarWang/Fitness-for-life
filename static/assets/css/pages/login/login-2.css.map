@@ -1,1 +1,13 @@
-{"version":3,"sources":["webpack:///../demo4/src/sass/pages/login/login-2.scss"],"names":[],"mappings":"AAAA;AACA,uDAAuD;;AAEvD;AACA;AACA;AACA;AACA,gBAAgB;;AAEhB;AACA,gBAAgB;;AAEhB;AACA,iBAAiB;;AAEjB;AACA,gBAAgB;;AAEhB;AACA,iBAAiB;;AAEjB;AACA,gBAAgB;;AAEhB;AACA,gBAAgB;;AAEhB;AACA,gBAAgB;;AAEhB;AACA,gBAAgB;;AAEhB;AACA,iBAAiB","file":"css/pages/login/login-2.css","sourcesContent":[".login.login-2 .form {\n  box-shadow: 0px 0px 80px 0px rgba(77, 84, 124, 0.09); }\n\n.login.login-2 .login-signin,\n.login.login-2 .login-signup,\n.login.login-2 .login-forgot {\n  width: 100%;\n  display: none; }\n\n.login.login-2.login-signin-on .login-signup {\n  display: none; }\n\n.login.login-2.login-signin-on .login-signin {\n  display: block; }\n\n.login.login-2.login-signin-on .login-forgot {\n  display: none; }\n\n.login.login-2.login-signup-on .login-signup {\n  display: block; }\n\n.login.login-2.login-signup-on .login-signin {\n  display: none; }\n\n.login.login-2.login-signup-on .login-forgot {\n  display: none; }\n\n.login.login-2.login-forgot-on .login-signup {\n  display: none; }\n\n.login.login-2.login-forgot-on .login-signin {\n  display: none; }\n\n.login.login-2.login-forgot-on .login-forgot {\n  display: block; }\n"],"sourceRoot":""}
+{
+  "version": 3,
+  "sources": [
+    "webpack:///../demo4/src/sass/pages/login/login-2.scss"
+  ],
+  "names": [],
+  "mappings": "AAAA;AACA,uDAAuD;;AAEvD;AACA;AACA;AACA;AACA,gBAAgB;;AAEhB;AACA,gBAAgB;;AAEhB;AACA,iBAAiB;;AAEjB;AACA,gBAAgB;;AAEhB;AACA,iBAAiB;;AAEjB;AACA,gBAAgB;;AAEhB;AACA,gBAAgB;;AAEhB;AACA,gBAAgB;;AAEhB;AACA,gBAAgB;;AAEhB;AACA,iBAAiB",
+  "file": "css/pages/login/login-2.css",
+  "sourcesContent": [
+    ".login.login-2 .form {\n  box-shadow: 0px 0px 80px 0px rgba(77, 84, 124, 0.09); }\n\n.login.login-2 .login-signin,\n.login.login-2 .login-signup,\n.login.login-2 .login-forgot {\n  width: 100%;\n  display: none; }\n\n.login.login-2.login-signin-on .login-signup {\n  display: none; }\n\n.login.login-2.login-signin-on .login-signin {\n  display: block; }\n\n.login.login-2.login-signin-on .login-forgot {\n  display: none; }\n\n.login.login-2.login-signup-on .login-signup {\n  display: block; }\n\n.login.login-2.login-signup-on .login-signin {\n  display: none; }\n\n.login.login-2.login-signup-on .login-forgot {\n  display: none; }\n\n.login.login-2.login-forgot-on .login-signup {\n  display: none; }\n\n.login.login-2.login-forgot-on .login-signin {\n  display: none; }\n\n.login.login-2.login-forgot-on .login-forgot {\n  display: block; }\n"
+  ],
+  "sourceRoot": ""
+}

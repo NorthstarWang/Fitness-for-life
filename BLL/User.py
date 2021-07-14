@@ -1,10 +1,10 @@
+from flask import request, redirect, url_for, Blueprint
 from flask_wtf.file import FileRequired, FileAllowed
-from wtforms import FileField, Form, SubmitField, StringField, HiddenField
-from wtforms.validators import DataRequired
+from wtforms import FileField, Form, SubmitField, HiddenField
+from base64 import b64encode
 
-from app import *
+from app import db, render_template
 from models import User
-from flask import request, redirect, url_for
 
 
 class AvatarForm(Form):
@@ -13,15 +13,20 @@ class AvatarForm(Form):
     submit = SubmitField('Confirm')
 
 
-@app.route('/profile')
-def profile():
-    user_id = request.args.get('id')
+profile = Blueprint("profile", __name__, url_prefix="/profile")
+
+
+@profile.route('/info/<int:user_id>')
+def _profile(user_id):
     user = User.query.filter_by(id=user_id).first()
     form = AvatarForm()
-    return render_template('profile.html', user=user, form=form)
+    if user.icon_exist():
+        icon = b64encode(user.icon).decode("utf-8")
+        return render_template('profile.html', user=user, form=form, icon=icon)
+    return render_template('profile.html', user=user, form=form, icon=None)
 
 
-@app.route('/api/profile/edit/description', methods=['POST', 'GET'])
+@profile.route('/edit/description', methods=['POST', 'GET'])
 def edit_description():
     description = str(request.form['description'])
     user_id = int(request.form['id'])
@@ -34,13 +39,22 @@ def edit_description():
         return 'failure'
 
 
-@app.route('/api/profile/edit/avatar', methods=['POST', 'GET'])
+@profile.route('/edit/avatar', methods=['POST', 'GET'])
 def edit_avatar():
-    form = AvatarForm()
     avatar = request.files.get('avatar')
-    avatar.save(os.path.join(app.root_path, 'static/user/icon/' + avatar.filename))
     user_id = str(request.form['id'])
     user = User.query.filter_by(id=user_id).first()
-    user.icon = avatar.filename
+    user.icon = avatar.read()
     db.session.commit()
-    return redirect(url_for('profile', id=user_id))
+    return redirect(url_for('profile._profile', user_id=user_id))
+
+
+@profile.route('/delete/avatar/<int:user_id>', methods=['POST', 'GET'])
+def delete_avatar(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    try:
+        user.remove_icon()
+        db.session.commit()
+        return 'success'
+    except Exception:
+        return 'failure'

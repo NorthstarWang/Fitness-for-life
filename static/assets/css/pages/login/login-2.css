@@ -1,38 +1,49 @@
 .login.login-2 .form {
-  box-shadow: 0px 0px 80px 0px rgba(77, 84, 124, 0.09); }
+    box-shadow: 0px 0px 80px 0px rgba(77, 84, 124, 0.09);
+}
 
 .login.login-2 .login-signin,
 .login.login-2 .login-signup,
 .login.login-2 .login-forgot {
-  width: 100%;
-  display: none; }
+    width: 100%;
+    display: none;
+}
 
 .login.login-2.login-signin-on .login-signup {
-  display: none; }
+    display: none;
+}
 
 .login.login-2.login-signin-on .login-signin {
-  display: block; }
+    display: block;
+}
 
 .login.login-2.login-signin-on .login-forgot {
-  display: none; }
+    display: none;
+}
 
 .login.login-2.login-signup-on .login-signup {
-  display: block; }
+    display: block;
+}
 
 .login.login-2.login-signup-on .login-signin {
-  display: none; }
+    display: none;
+}
 
 .login.login-2.login-signup-on .login-forgot {
-  display: none; }
+    display: none;
+}
 
 .login.login-2.login-forgot-on .login-signup {
-  display: none; }
+    display: none;
+}
 
 .login.login-2.login-forgot-on .login-signin {
-  display: none; }
+    display: none;
+}
 
 .login.login-2.login-forgot-on .login-forgot {
-  display: block; }
+    display: block;
+}
 
 
 /*# sourceMappingURL=login-2.css.map*/

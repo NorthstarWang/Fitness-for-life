@@ -1,5 +1,7 @@
 <!--begin::Global Config(global config for global JS scripts)-->
-<script>var KTAppSettings = {"breakpoints": {"sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1200},
+<script>
+	var KTAppSettings = {
+    "breakpoints": {"sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1200},
     "colors": {
         "theme": {
             "base": {
@@ -49,7 +51,8 @@
         }
     },
     "font-family": "Poppins"
-};</script>
+};
+</script>
 <!--end::Global Config-->
 <!--begin::Global Theme Bundle(used by all pages)-->
 <script src="{{ url_for('static', filename='assets/plugins/global/plugins.bundle.js') }}"></script>

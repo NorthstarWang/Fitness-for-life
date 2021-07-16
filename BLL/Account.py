@@ -96,4 +96,4 @@ def confirm_mail(token):
 @login_required
 def logout():
     logout_user()
-    return 'You are now logged out!'
+    return render_template('Index.html', notify="You have logged out.", type="danger")

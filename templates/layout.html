@@ -11,7 +11,7 @@
 <div id="kt_header_mobile" class="header-mobile header-mobile-fixed">
     <!--begin::Logo-->
     <a href="/">
-        <img alt="Logo" src="{{ url_for('static', filename='assets/media/logos/icon.png') }}" class="h-30px"/>
+        <img alt="Logo" src="{{ url_for('static', filename='assets/media/logos/icon.png') }}" class="h-50px"/>
     </a>
     <!--end::Logo-->
     <!--begin::Toolbar-->
@@ -19,33 +19,27 @@
         <button class="btn p-0 rounded-0 ml-4" id="kt_header_mobile_toggle">
 					<span class="svg-icon svg-icon-xl">
 						<!--begin::Svg Icon | path:assets/media/svg/icons/Text/Toggle-Left.svg-->
-						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                             height="24px" viewBox="0 0 24 24" version="1.1">
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 							<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 								<rect x="0" y="0" width="24" height="24"/>
-								<path d="M2 11.5C2 12.3284 2.67157 13 3.5 13H20.5C21.3284 13 22 12.3284 22 11.5V11.5C22 10.6716 21.3284 10 20.5 10H3.5C2.67157 10 2 10.6716 2 11.5V11.5Z"
-                                      fill="black"/>
-								<path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd"
-                                      d="M9.5 20C8.67157 20 8 19.3284 8 18.5C8 17.6716 8.67157 17 9.5 17H20.5C21.3284 17 22 17.6716 22 18.5C22 19.3284 21.3284 20 20.5 20H9.5ZM15.5 6C14.6716 6 14 5.32843 14 4.5C14 3.67157 14.6716 3 15.5 3H20.5C21.3284 3 22 3.67157 22 4.5C22 5.32843 21.3284 6 20.5 6H15.5Z"
-                                      fill="black"/>
+								<path d="M2 11.5C2 12.3284 2.67157 13 3.5 13H20.5C21.3284 13 22 12.3284 22 11.5V11.5C22 10.6716 21.3284 10 20.5 10H3.5C2.67157 10 2 10.6716 2 11.5V11.5Z" fill="black"/>
+								<path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M9.5 20C8.67157 20 8 19.3284 8 18.5C8 17.6716 8.67157 17 9.5 17H20.5C21.3284 17 22 17.6716 22 18.5C22 19.3284 21.3284 20 20.5 20H9.5ZM15.5 6C14.6716 6 14 5.32843 14 4.5C14 3.67157 14.6716 3 15.5 3H20.5C21.3284 3 22 3.67157 22 4.5C22 5.32843 21.3284 6 20.5 6H15.5Z" fill="black"/>
 							</g>
 						</svg>
-                        <!--end::Svg Icon-->
+						<!--end::Svg Icon-->
 					</span>
         </button>
         <button class="btn rounded-0 p-0 ml-2" id="kt_header_mobile_topbar_toggle">
 					<span class="svg-icon svg-icon-xxl">
 						<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                             height="24px" viewBox="0 0 24 24" version="1.1">
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 							<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 								<rect x="0" y="0" width="24" height="24"/>
 								<rect fill="#000000" x="4" y="4" width="7" height="7" rx="1.5"/>
-								<path d="M5.5,13 L9.5,13 C10.3284271,13 11,13.6715729 11,14.5 L11,18.5 C11,19.3284271 10.3284271,20 9.5,20 L5.5,20 C4.67157288,20 4,19.3284271 4,18.5 L4,14.5 C4,13.6715729 4.67157288,13 5.5,13 Z M14.5,4 L18.5,4 C19.3284271,4 20,4.67157288 20,5.5 L20,9.5 C20,10.3284271 19.3284271,11 18.5,11 L14.5,11 C13.6715729,11 13,10.3284271 13,9.5 L13,5.5 C13,4.67157288 13.6715729,4 14.5,4 Z M14.5,13 L18.5,13 C19.3284271,13 20,13.6715729 20,14.5 L20,18.5 C20,19.3284271 19.3284271,20 18.5,20 L14.5,20 C13.6715729,20 13,19.3284271 13,18.5 L13,14.5 C13,13.6715729 13.6715729,13 14.5,13 Z"
-                                      fill="#000000" opacity="0.3"/>
+								<path d="M5.5,13 L9.5,13 C10.3284271,13 11,13.6715729 11,14.5 L11,18.5 C11,19.3284271 10.3284271,20 9.5,20 L5.5,20 C4.67157288,20 4,19.3284271 4,18.5 L4,14.5 C4,13.6715729 4.67157288,13 5.5,13 Z M14.5,4 L18.5,4 C19.3284271,4 20,4.67157288 20,5.5 L20,9.5 C20,10.3284271 19.3284271,11 18.5,11 L14.5,11 C13.6715729,11 13,10.3284271 13,9.5 L13,5.5 C13,4.67157288 13.6715729,4 14.5,4 Z M14.5,13 L18.5,13 C19.3284271,13 20,13.6715729 20,14.5 L20,18.5 C20,19.3284271 19.3284271,20 18.5,20 L14.5,20 C13.6715729,20 13,19.3284271 13,18.5 L13,14.5 C13,13.6715729 13.6715729,13 14.5,13 Z" fill="#000000" opacity="0.3"/>
 							</g>
 						</svg>
-                        <!--end::Svg Icon-->
+						<!--end::Svg Icon-->
 					</span>
         </button>
     </div>
@@ -65,30 +59,57 @@
                     <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
                         <!--begin::Logo-->
                         <div class="header-logo mr-10 d-none d-lg-flex">
-                            <a href="/">
-                                <img alt="Logo" src="{{ url_for('static', filename='assets/media/logos/icon.png') }}"
-                                     class="h-35px"/>
+                            <style>
+                                .healthier-title {
+                                    transition: transform .5s;
+                                }
+
+                                .healthier-title:hover {
+                                    transition: transform .5s;
+                                    transform: scale(1.2);
+                                }
+                            </style>
+                            <a href="/" class="healthier-title">
+                                <img alt="Logo" src="{{ url_for('static', filename='assets/media/logos/icon.png') }}" class="h-65px"/>
                             </a>
                         </div>
                         <!--end::Logo-->
                         <!--begin::Header Menu-->
-                        <div id="kt_header_menu"
-                             class="header-menu header-menu-left header-menu-mobile header-menu-layout-default">
+                        <div id="kt_header_menu" class="header-menu header-menu-left header-menu-mobile header-menu-layout-default">
                             <!--begin::Header Nav-->
                             <ul class="menu-nav">
-                                <li class="menu-item menu-item-active" aria-haspopup="true">
+                                <li class="menu-item {% if title == "Main" %}menu-item-active{% endif %}" aria-haspopup="true">
                                     <a href="/" class="menu-link">
                                         <span class="menu-text">Home</span>
                                     </a>
                                 </li>
-                                {% if current_user.is_authenticated %}
-                                <li class="menu-item" aria-haspopup="true">
-                                    <a href="{{ url_for("profile._profile", user_id = current_user.id) }}" class="menu-link">
-                                        <span class="menu-text">My Profile</span>
-                                        <span class="menu-desc"></span>
-                                    </a>
-                                </li>
-                                {% endif %}
+								<li class="menu-item {% if title == "Community" %}menu-item-active{% endif %}" aria-haspopup="true">
+									<a href="/" class="menu-link">
+										<span class="menu-text">Community</span>
+										<span class="menu-desc"></span>
+									</a>
+								</li>
+								<li class="menu-item {% if title == "Article" %}menu-item-active{% endif %}" aria-haspopup="true">
+                                        <a href="{{ url_for('article.article_list') }}" class="menu-link">
+                                            <span class="menu-text">Article</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+	                            {% if current_user.is_authenticated %}
+		                            <li class="menu-item {% if title == "Advisor" %}menu-item-active{% endif %}" aria-haspopup="true">
+                                        <a href="{{ url_for("profile._profile", user_id = current_user.id) }}" class="menu-link">
+                                            <span class="menu-text">My Health Advisor</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+		                            <li class="menu-item {% if title == "Profile" %}menu-item-active{% endif %}" aria-haspopup="true">
+                                        <a href="{{ url_for("profile._profile", user_id = current_user.id) }}" class="menu-link">
+                                            <span class="menu-text">My Profile</span>
+                                            <span class="menu-desc"></span>
+                                        </a>
+                                    </li>
+	                            {% endif %}
+
                             </ul>
                             <!--end::Header Nav-->
                         </div>
@@ -98,59 +119,48 @@
                     <!--begin::Topbar-->
                     <div class="topbar">
                         {% if current_user.is_authenticated %}
-                            <!--begin::User-->
-                            <div class="topbar-item">
+	                        <!--begin::User-->
+	                        <div class="topbar-item">
                                 <div class="btn btn-icon btn-circle btn-light-primary" id="kt_quick_user_toggle">
 										<span class="svg-icon svg-icon-lg">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/General/User.svg-->
-											<svg xmlns="http://www.w3.org/2000/svg"
-                                                 xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                                 viewBox="0 0 24 24" version="1.1">
+											<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 													<polygon points="0 0 24 0 24 24 0 24"/>
-													<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z"
-                                                          fill="#000000" fill-rule="nonzero" opacity="0.3"/>
-													<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z"
-                                                          fill="#000000" fill-rule="nonzero"/>
+													<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+													<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
 												</g>
 											</svg>
-                                            <!--end::Svg Icon-->
+											<!--end::Svg Icon-->
 										</span>
                                 </div>
                             </div>
-                            <!--end::User-->
+	                        <!--end::User-->
                         {% else %}
-                            <div class="dropdown mr-1 mr-lg-3">
+	                        <div class="dropdown mr-1 mr-lg-3">
                                 <!--begin::Toggle-->
-                                <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px"
-                                     aria-expanded="false">
+                                <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px" aria-expanded="false">
                                     <div class="btn btn-icon btn-circle btn-hover-light-primary btn-dropdown">
 											<span class="svg-icon svg-icon-lg">
 												<!--begin::Svg Icon | path:assets/media/svg/icons/Media/Equalizer.svg-->
-												<svg xmlns="http://www.w3.org/2000/svg"
-                                                     xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                     height="24px" viewBox="0 0 24 24" version="1.1">
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 													<polygon points="0 0 24 0 24 24 0 24"/>
-													<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z"
-                                                          fill="#000000" fill-rule="nonzero" opacity="0.3"/>
-													<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z"
-                                                          fill="#000000" fill-rule="nonzero"/>
+													<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+													<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
 												</g>
 											</svg>
-                                                <!--end::Svg Icon-->
+												<!--end::Svg Icon-->
 											</span>
                                     </div>
                                 </div>
                                 <!--end::Toggle-->
                                 <!--begin::Dropdown-->
-                                <div class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg"
-                                     style="">
+                                <div class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg" style="">
                                     <!--begin:Header-->
                                     <div class="d-flex flex-column flex-center py-10 rounded-to border-bottom">
                                         <h4 class="text-dark font-weight-bold">Log in</h4>
-                                        <a href="/account/signup"><span
-                                                class="btn btn-primary btn-sm font-weight-bold font-size-sm mt-2">Sign in/Sign Up</span></a>
+                                        <a href="/account/signup"><span class="btn btn-primary btn-sm font-weight-bold font-size-sm mt-2">Sign in/Sign Up</span></a>
                                     </div>
                                     <!--end:Header-->
                                 </div>
@@ -195,9 +205,26 @@
     <!--end::Page-->
 </div>
 <!--end::Main-->
+{% if scrollTop %}
+<!--begin::Scrolltop-->
+	<div id="kt_scrolltop" class="scrolltop">
+			<span class="svg-icon">
+				<!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Up-2.svg-->
+				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+					<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+						<polygon points="0 0 24 0 24 24 0 24"/>
+						<rect fill="#000000" opacity="0.3" x="11" y="10" width="2" height="10" rx="1"/>
+						<path d="M6.70710678,12.7071068 C6.31658249,13.0976311 5.68341751,13.0976311 5.29289322,12.7071068 C4.90236893,12.3165825 4.90236893,11.6834175 5.29289322,11.2928932 L11.2928932,5.29289322 C11.6714722,4.91431428 12.2810586,4.90106866 12.6757246,5.26284586 L18.6757246,10.7628459 C19.0828436,11.1360383 19.1103465,11.7686056 18.7371541,12.1757246 C18.3639617,12.5828436 17.7313944,12.6103465 17.3242754,12.2371541 L12.0300757,7.38413782 L6.70710678,12.7071068 Z" fill="#000000" fill-rule="nonzero"/>
+					</g>
+				</svg>
+				<!--end::Svg Icon-->
+			</span>
+</div>
+{% endif %}
+<!--end::Scrolltop-->
 {% if current_user.is_authenticated %}
-    <!-- begin::User Panel-->
-    <div id="kt_quick_user" class="offcanvas offcanvas-right p-10">
+<!-- begin::User Panel-->
+	<div id="kt_quick_user" class="offcanvas offcanvas-right p-10">
         <!--begin::Header-->
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-5">
             <h3 class="font-weight-bold m-0">User Profile</h3>
@@ -212,15 +239,13 @@
             <div class="d-flex align-items-center mt-5">
                 <div class="symbol symbol-100 mr-5">
                     {% if current_user.icon == None %}
-                        <div class="symbol-label"
-                             style="background-image:url({{ url_for('static', filename='user/icon/default.png') }})"></div>
+	                    <div class="symbol-label" style="background-image:url({{ url_for('static', filename='user/icon/default.png') }})"></div>
                     {% else %}
-                        <img src="data:image/jpeg;base64,{{ icon }}" alt="Pic"/>
+	                    <img src="data:image/jpeg;base64,{{ icon }}" alt="Pic"/>
                     {% endif %}
                 </div>
                 <div class="d-flex flex-column">
-                    <a href="/profile/info/{{ current_user.get_id() }}"
-                       class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">{{ current_user.username }}</a>
+                    <a href="/profile/info/{{ current_user.get_id() }}" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">{{ current_user.username }}</a>
                 </div>
             </div>
             <!--end::Header-->
@@ -241,25 +266,9 @@
         </div>
         <!--end::Content-->
     </div>
-    <!-- end::User Panel-->
+<!-- end::User Panel-->
 {% endif %}
-<!--begin::Scrolltop-->
-<div id="kt_scrolltop" class="scrolltop">
-			<span class="svg-icon">
-				<!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Up-2.svg-->
-				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                     height="24px" viewBox="0 0 24 24" version="1.1">
-					<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-						<polygon points="0 0 24 0 24 24 0 24"/>
-						<rect fill="#000000" opacity="0.3" x="11" y="10" width="2" height="10" rx="1"/>
-						<path d="M6.70710678,12.7071068 C6.31658249,13.0976311 5.68341751,13.0976311 5.29289322,12.7071068 C4.90236893,12.3165825 4.90236893,11.6834175 5.29289322,11.2928932 L11.2928932,5.29289322 C11.6714722,4.91431428 12.2810586,4.90106866 12.6757246,5.26284586 L18.6757246,10.7628459 C19.0828436,11.1360383 19.1103465,11.7686056 18.7371541,12.1757246 C18.3639617,12.5828436 17.7313944,12.6103465 17.3242754,12.2371541 L12.0300757,7.38413782 L6.70710678,12.7071068 Z"
-                              fill="#000000" fill-rule="nonzero"/>
-					</g>
-				</svg>
-                <!--end::Svg Icon-->
-			</span>
-</div>
-<!--end::Scrolltop-->
+
 </body>
 <!--end::Body-->
 </html>

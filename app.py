@@ -1,7 +1,7 @@
 import os
 from base64 import b64encode
 
-from flask import Flask, render_template, Blueprint
+from flask import Flask, render_template, Blueprint, request
 from flask_login import LoginManager, current_user
 from flask_sqlalchemy import SQLAlchemy
 
@@ -24,38 +24,42 @@ main = Blueprint("main", __name__)
 from models import User, seeder_user
 from BLL.Account import account
 from BLL.User import profile
+from BLL.Article import article
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+	return User.query.get(int(user_id))
 
 
 @main.route('/')
 def index():
-    if current_user.is_authenticated:
-        user = User.query.filter_by(id=current_user.id).first()
-        if user.icon_exist():
-            icon = b64encode(user.icon).decode("utf-8")
-            return render_template('Index.html', icon=icon)
-        return render_template('Index.html')
-    return render_template('Index.html')
+	notify = request.args.get('notify')
+	state_type = "success" if request.args.get('type') is None else request.args.get('type')
+	if current_user.is_authenticated:
+		user = User.query.filter_by(id=current_user.id).first()
+		if user.icon_exist():
+			icon = b64encode(user.icon).decode("utf-8")
+			return render_template('Index.html', icon=icon, notify=notify, type=state_type)
+		return render_template('Index.html', notify=notify, type=state_type)
+	return render_template('Index.html', notify=notify, type=state_type)
 
 
 @main.errorhandler(Exception)
 def error(e):
-    return render_template('error.html', e=e)
+	return render_template('error.html', e=e)
 
 
 app.register_blueprint(main)
 app.register_blueprint(profile)
 app.register_blueprint(account)
+app.register_blueprint(article)
 
-db.drop_all()
-db.create_all()
+# db.drop_all()
+# db.create_all()
 # prepopulate data for development usage(seeding)
 # generate 5 user data
-seeder_user(5)
+# seeder_user(5)
 
 if __name__ == '__main__':
-    app.run()
+	app.run()

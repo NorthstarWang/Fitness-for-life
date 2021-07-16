@@ -21,16 +21,21 @@
         <div class="login-header py-10 flex-column-auto">
             <div class="container d-flex flex-column flex-md-row align-items-center justify-content-center justify-content-md-between">
                 <style>
-                    .healthier-title{
+                    .healthier-title {
                         transition: transform .5s;
                     }
-                    .healthier-title:hover{
+
+                    .healthier-title:hover {
                         transition: transform .5s;
                         transform: scale(1.2);
                     }
                 </style>
                 <!--begin::Logo-->
-                <a href="{{url_for("main.index")}}" class="display5-lg font-weight-bolder flex-column-auto py-5 py-md-0 healthier-title">Healthier</a>
+                <a href="{{ url_for("main.index") }}"
+                   class="display5-lg font-weight-bolder flex-column-auto py-5 py-md-0 healthier-title">
+                    <img alt="Logo" src="{{ url_for('static', filename='assets/media/logos/icon.png') }}"
+                         class="h-65px"/>
+                </a>
                 <!--end::Logo-->
                 <span class="text-muted font-weight-bold font-size-h4">New Here?
 						<a href="javascript:;" id="kt_login_signup" class="text-primary font-weight-bolder">Create an Account</a></span>
@@ -290,7 +295,7 @@
                                             confirmButton: "btn font-weight-bold btn-light-primary"
                                         }
                                     }).then(function () {
-                                        window.location.href = '/'
+                                        window.location.href = "{{ url_for("main.index",notify="You have successfully logged in!") }}"
                                     })
                                 } else if (data === '1') {
                                     swal.fire({
@@ -441,11 +446,11 @@
                 validation.validate().then(function (status) {
                     if (status === 'Valid') {
                         KTApp.blockPage({
-                          overlayColor: '#000000',
-                          state: 'success',
-                          opacity: 0.1,
-                          message: 'Signing up...'
-                         });
+                            overlayColor: '#000000',
+                            state: 'success',
+                            opacity: 0.1,
+                            message: 'Signing up...'
+                        });
                         $.ajax({
                             url: '{{ url_for('account.login_insertion') }}',
                             type: 'POST',

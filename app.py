@@ -1,3 +1,4 @@
+import json
 import os
 from base64 import b64encode
 
@@ -21,7 +22,8 @@ app.secret_key = 'Wang Yang'
 
 main = Blueprint("main", __name__)
 
-from models import User, seeder_user
+from models import User
+from models import seeder_user, seeder_article
 from BLL.Account import account
 from BLL.User import profile
 from BLL.Article import article
@@ -55,11 +57,17 @@ app.register_blueprint(profile)
 app.register_blueprint(account)
 app.register_blueprint(article)
 
-# db.drop_all()
-# db.create_all()
+db.drop_all()
+db.create_all()
 # prepopulate data for development usage(seeding)
 # generate 5 user data
-# seeder_user(5)
+seeder_user(5)
+# generate 11 articles according to seeds/article.json
+with open('seeds/article.json', encoding='utf-8') as article_json:
+	article_data = article_json.read()
+articles = json.loads(article_data)
+for n in list(articles["article"]):
+	seeder_article(str(n["title"]), str(n["content"]), str(n["tag"]), str(n["category"]), int(n["img"]))
 
 if __name__ == '__main__':
 	app.run()

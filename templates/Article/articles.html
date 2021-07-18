@@ -22,13 +22,13 @@
             <!--end::Info-->
             {% if current_user.is_authenticated %}
             <!--begin::Toolbar-->
-            <div class="d-flex align-items-center flex-wrap">
-                <!--begin::Dropdown-->
-                <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="top">
-                    <a href="#" class="btn btn-fixed-height btn-primary font-weight-bolder font-size-sm px-5 my-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="d-flex align-items-center flex-wrap">
+                    <!--begin::Dropdown-->
+                    <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="top">
+                        <a class="btn btn-fixed-height btn-primary font-weight-bolder font-size-sm px-5 my-1" data-toggle="modal" data-target="#favouriteArticles" onclick="loadFav('{{ url_for("article.get_favourite_list") }}')">
 										<span class="svg-icon svg-icon-md">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Files/File.svg-->
-											<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 													<polygon points="0 0 24 0 24 24 0 24"/>
 													<path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
@@ -38,53 +38,28 @@
 											</svg>
                                             <!--end::Svg Icon-->
 										</span>Favourite articles</a>
-                    <div class="dropdown-menu dropdown-menu-md dropdown-menu-right p-0 m-0">
-                        <!--begin::Navigation-->
-                        <ul class="navi navi-hover">
-                            <li class="navi-header font-weight-bold py-4">
-                                <span class="font-size-lg">Choose Option:</span> <i class="flaticon2-information icon-md text-muted" data-toggle="tooltip" data-placement="right" title="Click to learn more..."></i>
-                            </li>
-                            <li class="navi-separator mb-3 opacity-70"></li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-														<span class="navi-text">
-															<span class="label label-xl label-inline label-light-primary">Orders</span>
-														</span> </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-														<span class="navi-text">
-															<span class="label label-xl label-inline label-light-danger">Reports</span>
-														</span> </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-														<span class="navi-text">
-															<span class="label label-xl label-inline label-light-warning">Tasks</span>
-														</span> </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-														<span class="navi-text">
-															<span class="label label-xl label-inline label-light-success">Events</span>
-														</span> </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-														<span class="navi-text">
-															<span class="label label-xl label-inline label-light-dark">Members</span>
-														</span> </a>
-                            </li>
-                            <li class="navi-separator mt-3 opacity-70"></li>
-                            <li class="navi-footer py-4">
-                                <a class="btn btn-primary font-weight-bold btn-sm px-5" href="#"> <i class="ki ki-plus icon-sm"></i>Create</a>
-                            </li>
-                        </ul>
-                        <!--end::Navigation-->
+                    </div>
+                    <!--end::Dropdown-->
+                    <!-- Modal-->
+                    <div class="modal fade" id="favouriteArticles" tabindex="-1" role="dialog" aria-labelledby="favouriteArticlesLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="favouriteArticlesLabel">Favourite articles</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <i aria-hidden="true" class="ki ki-close"></i>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="favourite_articles_list">
+                                    <div class='d-flex flex-column flex-grow-1 mb-4 mt-4'><p class='font-size-h5 text-center font-weight-bolder'>There is no article you like for now.</p></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <!--end::Dropdown-->
-            </div>
             <!--end::Toolbar-->
             {% endif %}
         </div>
@@ -199,5 +174,6 @@
             </div>
         </div>
     </div>
+    <script src="{{ url_for('static', filename='assets/js/article.js') }}"></script>
     {% include '_includes/_scripts.html' %}
 {% endblock %}

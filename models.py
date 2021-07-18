@@ -87,6 +87,14 @@ class Article(db.Model):
 		db.session.add(self)
 		db.session.commit()
 
+	def is_favourite(self, userId):
+		# check whether the article is in favourite article lsit
+		fav_list = FavouriteArticles.query.filter_by(userId=userId).first().articles.split(",")
+		if str(self.id) in fav_list:
+			return True
+		else:
+			return False
+
 
 class FavouriteArticles(db.Model):
 	__tablename__ = "favourite_article"

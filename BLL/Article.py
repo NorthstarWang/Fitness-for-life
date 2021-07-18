@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify
 from sqlalchemy import desc
 
 from app import db, current_user
@@ -34,4 +34,15 @@ def add_favourite_article(article_id):
 	return "add" if status[0] else "remove"
 
 
+@article.route("/favourite/get", methods=['Get', 'Post'])
+def get_favourite_list():
+	favourite_list = FavouriteArticles.query.filter_by(userId=current_user.id).first()
+	favourite_array = favourite_list.articles.split(",")
+	new_array = []
+	# return a array that contains both id and title
+	for i in favourite_array:
+		if i == "":
+			break
+		new_array.append([i, Article.query.filter_by(id=int(i)).first().title, Article.query.filter_by(id=int(i)).first().category])
+	return jsonify(new_array)
 

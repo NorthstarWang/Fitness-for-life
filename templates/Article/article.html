@@ -28,7 +28,7 @@
                 <div class="d-flex align-items-center flex-wrap">
                     <!--begin::Dropdown-->
                     <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="top">
-                        <a href="#" class="btn btn-fixed-height btn-primary font-weight-bolder font-size-sm px-5 my-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="btn btn-fixed-height btn-primary font-weight-bolder font-size-sm px-5 my-1" data-toggle="modal" data-target="#favouriteArticles" onclick="loadFav('{{ url_for("article.get_favourite_list") }}')">
 										<span class="svg-icon svg-icon-md">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Files/File.svg-->
 											<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -43,6 +43,25 @@
 										</span>Favourite articles</a>
                     </div>
                     <!--end::Dropdown-->
+                    <!-- Modal-->
+                    <div class="modal fade" id="favouriteArticles" tabindex="-1" role="dialog" aria-labelledby="favouriteArticlesLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="favouriteArticlesLabel">Favourite articles</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <i aria-hidden="true" class="ki ki-close"></i>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="favourite_articles_list">
+                                    <div class='d-flex flex-column flex-grow-1 mb-4 mt-4'><p class='font-size-h5 text-center font-weight-bolder'>There is no article you like for now.</p></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             <!--end::Toolbar-->
             {% endif %}
@@ -71,45 +90,14 @@
                                 </h2>
                             </div>
                             <div class="card-toolbar">
-                                <script>
-                                    function notify(text,type){
-                                        return $.notify(text, {
-                                            placement: {
-                                                from: "top",
-                                                align: "right"
-                                            },
-                                            delay: 1000,
-                                            timer: 4000,
-                                            animate: {
-                                                enter: 'animate__animated animate__bounceInRight',
-                                                exit: 'animate__animated animate__bounceOutRight'
-                                            },
-                                            type: type
-                                        })
-                                    }
-                                    function addClass(size) {
-                                        document.getElementById("content").className = "card-body font-size-" + size;
-                                        notify("Font size has been changed.","info")
-                                    }
-
-                                    function addToFav() {
-                                        $.ajax({
-                                            url:"{{ url_for("article.add_favourite_article", article_id = article.id) }}",
-                                            type:"POST",
-                                            dataType: "Text",
-                                            success:function (result){
-                                                if(result==="add"){
-                                                    notify("This article has been added to your favourite articles.", "success")
-                                                }else if(result==="remove"){
-                                                    notify("This article has been removed from your favourite article.", "danger")
-                                                }
-                                            }
-                                        })
-
-                                    }
-                                </script>
                                 {% if current_user.is_authenticated %}
-                                    <a class="btn btn-sm btn-icon btn-light-success mr-4" data-toggle="tooltip" data-placement="left" data-original-title="Save as favourite article" onclick="addToFav()"> <i class="flaticon2-hospital"></i> </a>
+                                    {% if article.is_favourite(current_user.id) %}
+                                        <a class="btn btn-sm btn-icon btn-light-danger mr-4" id="fav" data-toggle="tooltip" data-placement="left" data-original-title="Remove from favourite articles" onclick="addToFav('{{ url_for("article.add_favourite_article", article_id = article.id) }}')">
+                                            <i id="favourite_icon" class="flaticon2-cross"></i> </a>
+                                    {% else %}
+                                        <a class="btn btn-sm btn-icon btn-light-success mr-4" id="fav" data-toggle="tooltip" data-placement="left" data-original-title="Save as favourite articles" onclick="addToFav('{{ url_for("article.add_favourite_article", article_id = article.id) }}')">
+                                            <i id="favourite_icon" class="flaticon2-add-1"></i> </a>
+                                    {% endif %}
                                 {% endif %}
                                 <div class="dropdown dropdown-inline" data-toggle="tooltip" title="" data-placement="left" data-original-title="Font Size">
                                     <a href="#" class="btn btn-sm btn-icon btn-light-primary mr-6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="flaticon2-gear"></i> </a>
@@ -148,5 +136,6 @@
             </div>
         </div>
     </div>
+    <script src="{{ url_for('static', filename='assets/js/article.js') }}"></script>
     {% include '_includes/_scripts.html' %}
 {% endblock %}

@@ -43,7 +43,7 @@ function addToFav(url) {
 }
 
 function loadFav(url) {
-    KTApp.block("#favouriteArticles .modal-content",{
+    KTApp.block("#favouriteArticles .modal-content", {
         overlayColor: '#000000',
         state: 'primary',
         opacity: 0.1,
@@ -61,7 +61,7 @@ function loadFav(url) {
             if (result.length > 0) {
                 //not empty favourite list
                 for (let i = 0; i < result.length; i++) {
-                    element.innerHTML += "<div class='d-flex flex-column flex-grow-1 mb-4 mt-4'><a href='/article/get/" + result[i][0] + "' class='text-dark-75 font-weight-bold text-hover-success font-size-lg mb-2'>" + (i + 1) + ". " + result[i][1] + "</a><span class=\"text-muted\"><span class=\"label label-success label-inline mr-2\">"+result[i][2]+"</span></span></div>"
+                    element.innerHTML += "<div class='d-flex flex-column flex-grow-1 mb-4 mt-4'><a href='/article/get/" + result[i][0] + "' class='text-dark-75 font-weight-bold text-hover-success font-size-lg mb-2'>" + (i + 1) + ". " + result[i][1] + "</a><span class=\"text-muted\"><span class=\"label label-success label-inline mr-2\">" + result[i][2] + "</span></span></div>"
                     if (i !== result.length - 1) {
                         element.innerHTML += "<div class=\"separator separator-dashed separator-border-3\"></div>\n"
                     }
@@ -71,4 +71,8 @@ function loadFav(url) {
             }
         }
     })
+}
+
+function goto(per_page, url) {
+    window.location.href = url+"&per_page=" + per_page;
 }

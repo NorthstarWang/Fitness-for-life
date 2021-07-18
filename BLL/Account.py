@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask_mail import Mail, Message
 from app import db, render_template, app
-from models import User
+from models import User, FavouriteArticles
 
 urlSerializer = URLSafeTimedSerializer('Thisisasecret!')
 app.config.from_pyfile('BLL/config.cfg')
@@ -70,7 +70,7 @@ def mail():
     PK = user.id
     token = urlSerializer.dumps(PK, salt='email-confirm')
     msg = Message('Confirmation Mail', sender='Juncus@qq.com', recipients=[email])
-    link = url_for('account.confirm_mail', token=token, external=True)
+    link = request.host_url + url_for('account.confirm_mail', token=token, external=True)
     msg.body = 'Click this link to confirm your email:{}'.format(link)
     mailer.connect()
     mailer.send(msg)
@@ -83,6 +83,9 @@ def confirm_mail(token):
         array = urlSerializer.loads(token, salt='email-confirm', max_age=86400)
         user = User.query.filter_by(id=array).first()
         user.confirm = True
+        # as id is auto generated, the id get after generation, all other database should be generated after email confirmed
+        favourite_article = FavouriteArticles(userId=user.id)
+        db.session.add(favourite_article)
         db.session.commit()
         flash(u"You have successfully confirmed your email address!", "success")
     except SignatureExpired:

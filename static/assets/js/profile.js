@@ -140,7 +140,7 @@ var KTWidgets = function () {
     }
 }();
 
-function icon(isCurrentUser, iconExist, delete_avatar_url, edit_description_url, userID) {
+function edit_profile(isCurrentUser, iconExist, delete_avatar_url, edit_url, userID, check_username_url) {
     if (isCurrentUser === "True") {
         var avatar1 = new KTImageInput('kt_image');
 
@@ -199,14 +199,17 @@ function icon(isCurrentUser, iconExist, delete_avatar_url, edit_description_url,
                 })
             });
         }
-        $('#edit_submit').click(function () {
-            if ($('#description_edit').val().trim() !== "") {
+        $('#edit_submit').on("click", function () {
+            var description = $('#description_edit').val().trim()
+            var username = $('#username_edit').val().trim()
+            if (description !== "" || username !== "") {
                 $.ajax({
-                    type: 'POST',
-                    url: edit_description_url,
+                    url: edit_url,
+                    type:"POST",
                     data: {
                         id: userID,
-                        description: $('#description_edit').val()
+                        description: description,
+                        username: username
                     },
                     success: function (data) {
                         if (data === 'success') {
@@ -223,7 +226,7 @@ function icon(isCurrentUser, iconExist, delete_avatar_url, edit_description_url,
                             })
                         } else if (data === 'failure') {
                             swal.fire({
-                                text: "Edit Failure! Too many characters! Maximum characters is 200!",
+                                text: "Edit Failure! Too many characters for description! Maximum characters is 200!",
                                 icon: "warning",
                                 buttonsStyling: false,
                                 confirmButtonText: "Ok, got it!",
@@ -245,18 +248,41 @@ function icon(isCurrentUser, iconExist, delete_avatar_url, edit_description_url,
                         })
                     }
                 })
-            } else {
-                swal.fire({
-                    text: "Please fill in something if you wish to edit description!",
-                    icon: "warning",
-                    buttonsStyling: false,
-                    confirmButtonText: "Ok, got it!",
-                    customClass: {
-                        confirmButton: "btn font-weight-bold btn-light-primary"
-                    }
-                })
             }
         })
+
+        FormValidation.formValidation(
+            document.getElementById('edit'),
+            {
+                fields: {
+                    username: {
+                        validators: {
+                            callback: {
+                                callback: function () {
+                                    return $.ajax({
+                                        url: check_username_url,
+                                        type: 'POST',
+                                        data: {
+                                            username: $('#username_edit').val(),
+                                        }
+                                    })
+                                }
+                            }
+                        }
+                    }
+                },
+                plugins: { //Learn more: https://formvalidation.io/guide/plugins
+                    trigger: new FormValidation.plugins.Trigger(),
+                    fieldStatus: new FormValidation.plugins.FieldStatus({
+                        onStatusChanged: function (areFieldsValid) {
+                            // areFieldsValid is true if all fields are valid
+                            areFieldsValid ? document.getElementById("edit_submit").disabled = false : document.getElementById("edit_submit").disabled = true
+                        }
+                    }),
+                    // Bootstrap Framework Integration
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                }
+            });
     }
 }
 
@@ -271,6 +297,7 @@ function loadFavourtieArticles(url) {
             //unblock after loading
             KTApp.unblock('#FavArt');
             //sort the articles into two tabs
+            document.getElementById("totalNumArticle").innerText = result.length + " articles"
             if (result.length > 0) {
                 var Exercise = [];
                 var Diet = [];
@@ -282,21 +309,25 @@ function loadFavourtieArticles(url) {
                     }
                 }
                 //if no favourite articles in either of the tabs, show other notification
-                if (Exercise.length===0){document.getElementById("Exercise").innerHTML = "<div class=\"d-flex align-items-center pb-9\"><h5 class='text-center'>You do not have any favourite exercise related article for now.</h5></div>"}
-                if (Diet.length===0){document.getElementById("Diet").innerHTML = "<div class=\"d-flex align-items-center pb-9\"><h5 class='text-center'>You do not have any favourite diet related article for now.</h5></div>"}
+                if (Exercise.length === 0) {
+                    document.getElementById("Exercise").innerHTML = "<div class=\"d-flex align-items-center pb-9\"><h5 class='text-center'>You do not have any favourite exercise related article for now.</h5></div>"
+                }
+                if (Diet.length === 0) {
+                    document.getElementById("Diet").innerHTML = "<div class=\"d-flex align-items-center pb-9\"><h5 class='text-center'>You do not have any favourite diet related article for now.</h5></div>"
+                }
                 //if there are articles, display it
                 for (let i = 0; i < Exercise.length; i++) {
-                    document.getElementById("Exercise").innerHTML += "<div class=\"d-flex align-items-center pb-9 mt-4 mb-4\"><div class=\"d-flex flex-column flex-grow-1\"><a href=\"/article/get/"+ Exercise[i][0] +"\" class=\"text-dark-75 font-weight-bolder text-hover-primary font-size-lg mb-1\">"+ Exercise[i][1] +"</a></div></div>"
-                    if(i!==Exercise.length-1){
+                    document.getElementById("Exercise").innerHTML += "<div class=\"d-flex align-items-center pb-9 mt-4 mb-4\"><div class=\"d-flex flex-column flex-grow-1\"><a href=\"/article/get/" + Exercise[i][0] + "\" class=\"text-dark-75 font-weight-bolder text-hover-primary font-size-lg mb-1\">" + Exercise[i][1] + "</a></div></div>"
+                    if (i !== Exercise.length - 1) {
                         //if not the last article, add seperator
-                        document.getElementById("Exercise").innerHTML+="<div class=\"separator separator-dashed separator-border-3\"></div>"
+                        document.getElementById("Exercise").innerHTML += "<div class=\"separator separator-dashed separator-border-3\"></div>"
                     }
                 }
                 for (let i = 0; i < Diet.length; i++) {
-                    document.getElementById("Diet").innerHTML += "<div class=\"d-flex align-items-center pb-9 mt-4 mb-4\"><div class=\"d-flex flex-column flex-grow-1\"><a href=\"/article/get/"+ Diet[i][0] +"\" class=\"text-dark-75 font-weight-bolder text-hover-primary font-size-lg mb-1\">"+ Diet[i][1] +"</a></div></div>"
-                    if(i!==Diet.length-1){
+                    document.getElementById("Diet").innerHTML += "<div class=\"d-flex align-items-center pb-9 mt-4 mb-4\"><div class=\"d-flex flex-column flex-grow-1\"><a href=\"/article/get/" + Diet[i][0] + "\" class=\"text-dark-75 font-weight-bolder text-hover-primary font-size-lg mb-1\">" + Diet[i][1] + "</a></div></div>"
+                    if (i !== Diet.length - 1) {
                         //if not the last article, add seperator
-                        document.getElementById("Diet").innerHTML+="<div class=\"separator separator-dashed separator-border-3\"></div>"
+                        document.getElementById("Diet").innerHTML += "<div class=\"separator separator-dashed separator-border-3\"></div>"
                     }
                 }
             } else {

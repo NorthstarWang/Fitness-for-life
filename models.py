@@ -34,7 +34,7 @@ def seeder_article(title, content, tag, category, img):
 class User(UserMixin, db.Model):
 	__tablename__ = "user"
 	id = db.Column(db.Integer, primary_key=True)
-	username = db.Column(db.String(40), unique=True, index=True, nullable=False)
+	username = db.Column(db.String(40), unique=True, nullable=False)
 	email = db.Column(db.String(100))
 	password = db.Column(db.String(30), nullable=False)
 	age = db.Column(db.Integer)

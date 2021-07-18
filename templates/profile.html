@@ -229,14 +229,14 @@
                                 <!--begin::Actions-->
 
                                     <div class="my-lg-0 my-1">
-                                        <form type="POST" id="edit" enctype="multipart/form-data">
+                                        <form id="edit">
                                             <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder mr-2" data-toggle="modal" data-target="#info_edit"><i class="flaticon-edit-1"></i>Edit profile
                                             </button>
                                             <div class="modal fade" id="info_edit" tabindex="-1" role="dialog" aria-labelledby="infoLabel" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="infoLabel">Edit Description</h5>
+                                                            <h5 class="modal-title" id="infoLabel">Edit Profile</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <i aria-hidden="true" class="ki ki-close"></i>
                                                             </button>
@@ -251,13 +251,16 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group mb-1">
+                                                                <label for="Username">Username</label><input type="text" class="form-control" id="username_edit" name="username"/>
+                                                            </div>
+                                                            <div class="form-group mb-1">
                                                                 <label for="Description">Description</label> <textarea class="form-control" id="description_edit" name="description" rows="3"></textarea>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close
                                                             </button>
-                                                            <button type="button" class="btn btn-primary font-weight-bold" id="edit_submit">Save changes
+                                                            <button type="submit" class="btn btn-primary font-weight-bold" id="edit_submit">Save changes
                                                             </button>
                                                         </div>
                                                     </div>
@@ -352,7 +355,7 @@
             <!--begin::Row-->
             {% if current_user.is_authenticated %}
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-6">
                         <!--begin::Charts Widget 4-->
                         <div class="card card-custom card-stretch gutter-b">
                             <!--begin::Header-->
@@ -386,11 +389,15 @@
                         <!--end::Charts Widget 4-->
                     </div>
 
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <!--begin::Tables Widget 2-->
                         <div class="card card-custom card-stretch gutter-b" id="FavArt">
                             <!--begin::Header-->
                             <div class="card-header border-0 pt-7">
+                                <h3 class="card-title align-items-start flex-column">
+                                    <span class="card-label font-weight-bolder font-size-h4 text-dark-75">{% if current_user.get_id()|int != user.id|int %}This user's{% else %}My{% endif %} favourite articles</span>
+                                    <span class="text-muted mt-3 font-weight-bold font-size-lg" id="totalNumArticle"></span>
+                                </h3>
                                 <div class="card-toolbar">
                                     <ul class="nav nav-pills nav-pills-sm nav-dark">
                                         <li class="nav-item ml-0">
@@ -437,7 +444,7 @@
                 loadFavourtieArticles("{{ url_for("article.get_favourite_list") }}")
             {% endif %}
             KTWidgets.init();
-            icon('{{ current_user.get_id()|int == user.id|int }}', '{{ icon!=None }}', '{{ url_for('profile.delete_avatar', user_id=user.id) }}', '{{ url_for('profile.edit_description') }}', {{ user.id }})
+            edit_profile('{{ current_user.get_id()|int == user.id|int }}', '{{ icon!=None }}', '{{ url_for('profile.delete_avatar', user_id=user.id) }}', '{{ url_for('profile.edit_profile') }}', {{ user.id }},'{{ url_for("account.check") }}')
         });
     </script>
     <!--end::Page Scripts-->

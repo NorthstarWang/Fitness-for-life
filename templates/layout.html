@@ -5,7 +5,7 @@
     {% include '_includes/_head.html' %}
 </head>
 <!--begin::Body-->
-<body id="kt_body" class="header-fixed header-mobile-fixed page-loading">
+<body id="kt_body" class="header-fixed header-mobile-fixed page-loading subheader-enabled">
 <!--begin::Main-->
 <!--begin::Header Mobile-->
 <div id="kt_header_mobile" class="header-mobile header-mobile-fixed">
@@ -175,13 +175,9 @@
             <!--end::Header-->
             <!--begin::Content-->
             <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-                <!--begin::Entry-->
-                <div class="d-flex flex-column-fluid">
                     {% block body %}
 
                     {% endblock %}
-                </div>
-                <!--end::Entry-->
             </div>
             <!--end::Content-->
             <!--begin::Footer-->

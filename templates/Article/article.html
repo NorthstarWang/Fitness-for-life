@@ -1,0 +1,152 @@
+{% extends 'layout.html' %}{% set title = "Article" %}
+{% block body %}
+    <div class="subheader py-6 py-lg-8 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">Article</h5>
+                    <!--end::Page Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                        <li class="breadcrumb-item">
+                            <a href="{{ url_for("article.article_list",page=1,per_page=10,category=article.category) }}" class="text-muted">Articles</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="" class="text-muted">Article</a>
+                        </li>
+                    </ul>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+            {% if current_user.is_authenticated %}
+            <!--begin::Toolbar-->
+                <div class="d-flex align-items-center flex-wrap">
+                    <!--begin::Dropdown-->
+                    <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="top">
+                        <a href="#" class="btn btn-fixed-height btn-primary font-weight-bolder font-size-sm px-5 my-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<span class="svg-icon svg-icon-md">
+											<!--begin::Svg Icon | path:assets/media/svg/icons/Files/File.svg-->
+											<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+													<polygon points="0 0 24 0 24 24 0 24"/>
+													<path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+													<rect fill="#000000" x="6" y="11" width="9" height="2" rx="1"/>
+													<rect fill="#000000" x="6" y="15" width="5" height="2" rx="1"/>
+												</g>
+											</svg>
+                                            <!--end::Svg Icon-->
+										</span>Favourite articles</a>
+                    </div>
+                    <!--end::Dropdown-->
+                </div>
+            <!--end::Toolbar-->
+            {% endif %}
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <style>
+                        .full-card {
+                            min-height: 80vh;
+                        }
+                    </style>
+                    <div class="card card-custom card-stretch bg-gray-200 gutter-b full-card">
+                        <div class="card-header ribbon ribbon-clip ribbon-right">
+                            <div class="ribbon-target" style="top: 12px;">
+                                <span class="ribbon-inner bg-success"></span>{{ article.category }}
+                            </div>
+                            <div class="card-title mt-6 ml-8">
+                                <h2 class="card-label">
+                                    {{ article.title }}
+                                </h2>
+                            </div>
+                            <div class="card-toolbar">
+                                <script>
+                                    function notify(text,type){
+                                        return $.notify(text, {
+                                            placement: {
+                                                from: "top",
+                                                align: "right"
+                                            },
+                                            delay: 1000,
+                                            timer: 4000,
+                                            animate: {
+                                                enter: 'animate__animated animate__bounceInRight',
+                                                exit: 'animate__animated animate__bounceOutRight'
+                                            },
+                                            type: type
+                                        })
+                                    }
+                                    function addClass(size) {
+                                        document.getElementById("content").className = "card-body font-size-" + size;
+                                        notify("Font size has been changed.","info")
+                                    }
+
+                                    function addToFav() {
+                                        $.ajax({
+                                            url:"{{ url_for("article.add_favourite_article", article_id = article.id) }}",
+                                            type:"POST",
+                                            dataType: "Text",
+                                            success:function (result){
+                                                if(result==="add"){
+                                                    notify("This article has been added to your favourite articles.", "success")
+                                                }else if(result==="remove"){
+                                                    notify("This article has been removed from your favourite article.", "danger")
+                                                }
+                                            }
+                                        })
+
+                                    }
+                                </script>
+                                {% if current_user.is_authenticated %}
+                                    <a class="btn btn-sm btn-icon btn-light-success mr-4" data-toggle="tooltip" data-placement="left" data-original-title="Save as favourite article" onclick="addToFav()"> <i class="flaticon2-hospital"></i> </a>
+                                {% endif %}
+                                <div class="dropdown dropdown-inline" data-toggle="tooltip" title="" data-placement="left" data-original-title="Font Size">
+                                    <a href="#" class="btn btn-sm btn-icon btn-light-primary mr-6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="flaticon2-gear"></i> </a>
+                                    <div class="dropdown-menu p-0 m-0 dropdown-menu-sm dropdown-menu-right">
+                                        <!--begin::Navigation-->
+                                        <ul class="navi navi-hover">
+                                            <li class="navi-item">
+                                                <a onclick="addClass('sm')" class="navi-link">
+																		<span class="navi-text">
+																			<span class="label font-size-sm label-inline">Small</span>
+																		</span> </a>
+                                            </li>
+                                            <li class="navi-item">
+                                                <a onclick="addClass('h6')" class="navi-link">
+																		<span class="navi-text">
+																			<span class="label font-size-h6 label-inline">Medium</span>
+																		</span> </a>
+                                            </li>
+                                            <li class="navi-item">
+                                                <a onclick="addClass('h3')" class="navi-link">
+																		<span class="navi-text">
+																			<span class="label font-size-h3 label-inline">Large</span>
+																		</span> </a>
+                                            </li>
+                                        </ul>
+                                        <!--end::Navigation-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body" id="content">
+                            {{ article.content }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include '_includes/_scripts.html' %}
+{% endblock %}

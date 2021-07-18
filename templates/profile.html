@@ -1,311 +1,400 @@
-{% extends 'layout.html' %}
-{% set title = "Profile" %}
+{% extends 'layout.html' %}{% set title = "Profile" %}
 {% block body %}
-    <!--begin::Container-->
-    <div class="container">
-        <!--begin::Nav Panels Wizard 4-->
-        <div class="card card-custom gutter-b">
-            <div class="card-body">
-                <!--begin::Top-->
-                <div class="d-flex">
-                    <!--begin::Pic-->
-                    <div class="flex-shrink-0 mr-7">
-                        <div class="symbol symbol-50 symbol-lg-120">
-                            {% if current_user.get_id()|int == user.id|int %}
-                                <form method="post" id="edit_avatar" action="/profile/edit/avatar"
-                                      enctype="multipart/form-data">
-                                    <div class="image-input image-input-outline" id="kt_image"
-                                         style="background-image: url({{ url_for('static', filename='user/icon/default.png') }})">
-                                        {% if icon == None %}
-                                            <div class="image-input-wrapper"
-                                                 style="background-image: url({{ url_for('static', filename='user/icon/default.png') }})"></div>
-                                        {% else %}
-                                            <img class="image-input-wrapper" src="data:;base64,{{ icon }}" alt="Pic"/>
-                                        {% endif %}
-                                        {{ form.id(value=user.id) }}
-
-                                        <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
-                                               data-action="change" data-toggle="tooltip" title=""
-                                               data-original-title="Change avatar">
-                                            <i class="fa fa-pen icon-sm text-muted"></i>
-                                            {{ form.avatar }}
-                                        </label>
-
-                                        <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
-                                              data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
-                                                          <i class="ki ki-bold-close icon-xs text-muted"></i>
-                                                         </span>
-                                        {% if icon != None %}
-                                            <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
-                                                  data-action="remove" data-toggle="tooltip" title="Remove avatar">
-                                                          <i class="ki ki-bold-close icon-xs text-muted"></i>
-                                                         </span>
-                                        {% endif %}
-                                    </div>
-                                </form>
-                            {% else %}
-                                {% if icon == None %}
-                                    <div class="symbol-label"
-                                         style="background-image:url({{ url_for('static', filename='user/icon/default.png') }})"></div>
-                                {% else %}
-                                    <img class="image-input-wrapper" src="data:;base64,{{ icon }}" alt="Pic"/>
-                                {% endif %}
-                            {% endif %}
-                        </div>
+    <div class="subheader py-6 py-lg-8 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">{{ "My Profile" if current_user.is_authenticated and user.id == current_user.id else "%s's Profile"|format(user.username) }}</h5>
+                    <!--end::Page Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                        <li class="breadcrumb-item">
+                            <a href="" class="text-muted">Profile</a>
+                        </li>
+                    </ul>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+            {% if current_user.is_authenticated and user.id == current_user.id %}
+            <!--begin::Toolbar-->
+            <div class="d-flex align-items-center flex-wrap">
+                <!--begin::Dropdown-->
+                <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="top">
+                    <a href="#" class="btn btn-fixed-height btn-bg-white btn-text-dark-50 btn-hover-text-primary btn-icon-primary font-weight-bolder font-size-sm px-5 my-1 mr-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<span class="svg-icon svg-icon-md">
+											<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Add-user.svg-->
+											<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+													<polygon points="0 0 24 0 24 24 0 24"/>
+													<path d="M18,8 L16,8 C15.4477153,8 15,7.55228475 15,7 C15,6.44771525 15.4477153,6 16,6 L18,6 L18,4 C18,3.44771525 18.4477153,3 19,3 C19.5522847,3 20,3.44771525 20,4 L20,6 L22,6 C22.5522847,6 23,6.44771525 23,7 C23,7.55228475 22.5522847,8 22,8 L20,8 L20,10 C20,10.5522847 19.5522847,11 19,11 C18.4477153,11 18,10.5522847 18,10 L18,8 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+													<path d="M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
+												</g>
+											</svg>
+                                            <!--end::Svg Icon-->
+										</span>Update Health Data</a>
+                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right p-0 m-0">
+                        <!--begin::Navigation-->
+                        <ul class="navi navi-hover">
+                            <li class="navi-header pb-1">
+                                <span class="text-primary text-uppercase font-weight-bolder font-size-sm">Add new:</span>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+														<span class="navi-icon">
+															<i class="flaticon2-shopping-cart-1"></i>
+														</span> <span class="navi-text">Order</span> </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+														<span class="navi-icon">
+															<i class="flaticon2-calendar-8"></i>
+														</span> <span class="navi-text">Event</span> <span class="navi-link-badge">
+															<span class="label label-light-danger label-inline font-weight-bold">new</span>
+														</span> </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+														<span class="navi-icon">
+															<i class="flaticon2-graph-1"></i>
+														</span> <span class="navi-text">Report</span> </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+														<span class="navi-icon">
+															<i class="flaticon2-rocket-1"></i>
+														</span> <span class="navi-text">Post</span> <span class="navi-link-badge">
+															<span class="label label-light-success label-rounded font-weight-bolder">5</span>
+														</span> </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+														<span class="navi-icon">
+															<i class="flaticon2-writing"></i>
+														</span> <span class="navi-text">File</span> </a>
+                            </li>
+                        </ul>
+                        <!--end::Navigation-->
                     </div>
-                    <!--end::Pic-->
-                    <!--begin: Info-->
-                    <div class="flex-grow-1">
-                        <!--begin::Title-->
-                        <div class="d-flex align-items-center justify-content-between flex-wrap mt-2">
-                            <!--begin::User-->
-                            <div class="mr-3">
-                                <!--begin::Name-->
-                                <SPAN class="d-flex align-items-center text-dark font-size-h5 font-weight-bold mr-3">{{ user.username }}</span>
-                                <!--end::Name-->
-                                <!--begin::Contacts-->
-                                <div class="d-flex flex-wrap my-2">
+                </div>
+                <!--end::Dropdown-->
+                <!--begin::Dropdown-->
+                <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="top">
+                    <a href="#" class="btn btn-fixed-height btn-primary font-weight-bolder font-size-sm px-5 my-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<span class="svg-icon svg-icon-md">
+											<!--begin::Svg Icon | path:assets/media/svg/icons/Files/File.svg-->
+											<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+													<polygon points="0 0 24 0 24 24 0 24"/>
+													<path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+													<rect fill="#000000" x="6" y="11" width="9" height="2" rx="1"/>
+													<rect fill="#000000" x="6" y="15" width="5" height="2" rx="1"/>
+												</g>
+											</svg>
+                                            <!--end::Svg Icon-->
+										</span>View Health Report</a>
+                    <div class="dropdown-menu dropdown-menu-md dropdown-menu-right p-0 m-0">
+                        <!--begin::Navigation-->
+                        <ul class="navi navi-hover">
+                            <li class="navi-header font-weight-bold py-4">
+                                <span class="font-size-lg">Choose Option:</span> <i class="flaticon2-information icon-md text-muted" data-toggle="tooltip" data-placement="right" title="Click to learn more..."></i>
+                            </li>
+                            <li class="navi-separator mb-3 opacity-70"></li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+														<span class="navi-text">
+															<span class="label label-xl label-inline label-light-primary">Orders</span>
+														</span> </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+														<span class="navi-text">
+															<span class="label label-xl label-inline label-light-danger">Reports</span>
+														</span> </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+														<span class="navi-text">
+															<span class="label label-xl label-inline label-light-warning">Tasks</span>
+														</span> </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+														<span class="navi-text">
+															<span class="label label-xl label-inline label-light-success">Events</span>
+														</span> </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+														<span class="navi-text">
+															<span class="label label-xl label-inline label-light-dark">Members</span>
+														</span> </a>
+                            </li>
+                            <li class="navi-separator mt-3 opacity-70"></li>
+                            <li class="navi-footer py-4">
+                                <a class="btn btn-primary font-weight-bold btn-sm px-5" href="#"> <i class="ki ki-plus icon-sm"></i>Create</a>
+                            </li>
+                        </ul>
+                        <!--end::Navigation-->
+                    </div>
+                </div>
+                <!--end::Dropdown-->
+            </div>
+            <!--end::Toolbar-->
+            {% endif %}
+        </div>
+    </div>
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Nav Panels Wizard 4-->
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <!--begin::Top-->
+                    <div class="d-flex">
+                        <!--begin::Pic-->
+                        <div class="flex-shrink-0 mr-7">
+                            <div class="symbol symbol-50 symbol-lg-120">
+                                {% if current_user.get_id()|int == user.id|int %}
+                                    <form method="post" id="edit_avatar" action="/profile/edit/avatar" enctype="multipart/form-data">
+                                        <div class="image-input image-input-outline" id="kt_image" style="background-image: url({{ url_for('static', filename='user/icon/default.png') }})">
+                                            {% if icon == None %}
+                                                <div class="image-input-wrapper" style="background-image: url({{ url_for('static', filename='user/icon/default.png') }})"></div>
+                                            {% else %}
+                                                <img class="image-input-wrapper" src="data:;base64,{{ icon }}" alt="Pic"/>
+                                            {% endif %}
+                                            {{ form.id(value=user.id) }}
+
+                                            <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
+                                                <i class="fa fa-pen icon-sm text-muted"></i> {{ form.avatar }}
+                                            </label>
+
+                                            <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                                          <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                         </span>
+                                            {% if icon != None %}
+                                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="remove" data-toggle="tooltip" title="Remove avatar">
+                                                          <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                         </span>
+                                            {% endif %}
+                                        </div>
+                                    </form>
+                                {% else %}
+                                    {% if icon == None %}
+                                        <div class="symbol-label" style="background-image:url({{ url_for('static', filename='user/icon/default.png') }})"></div>
+                                    {% else %}
+                                        <img class="image-input-wrapper" src="data:;base64,{{ icon }}" alt="Pic"/>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!--end::Pic-->
+                        <!--begin: Info-->
+                        <div class="flex-grow-1">
+                            <!--begin::Title-->
+                            <div class="d-flex align-items-center justify-content-between flex-wrap mt-2">
+                                <!--begin::User-->
+                                <div class="mr-3">
+                                    <!--begin::Name-->
+                                    <SPAN class="d-flex align-items-center text-dark font-size-h5 font-weight-bold mr-3">{{ user.username }}</span>
+                                    <!--end::Name-->
+                                    <!--begin::Contacts-->
+                                    <div class="d-flex flex-wrap my-2">
 															<span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
 																<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-notification.svg-->
-																<svg xmlns="http://www.w3.org/2000/svg"
-                                                                     xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                                     width="24px" height="24px" viewBox="0 0 24 24"
-                                                                     version="1.1">
-																	<g stroke="none" stroke-width="1" fill="none"
-                                                                       fill-rule="evenodd">
+																<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+																	<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 																		<rect x="0" y="0" width="24" height="24"/>
-																		<path d="M21,12.0829584 C20.6747915,12.0283988 20.3407122,12 20,12 C16.6862915,12 14,14.6862915 14,18 C14,18.3407122 14.0283988,18.6747915 14.0829584,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,12.0829584 Z M18.1444251,7.83964668 L12,11.1481833 L5.85557487,7.83964668 C5.4908718,7.6432681 5.03602525,7.77972206 4.83964668,8.14442513 C4.6432681,8.5091282 4.77972206,8.96397475 5.14442513,9.16035332 L11.6444251,12.6603533 C11.8664074,12.7798822 12.1335926,12.7798822 12.3555749,12.6603533 L18.8555749,9.16035332 C19.2202779,8.96397475 19.3567319,8.5091282 19.1603533,8.14442513 C18.9639747,7.77972206 18.5091282,7.6432681 18.1444251,7.83964668 Z"
-                                                                              fill="#000000"/>
-																		<circle fill="#000000" opacity="0.3" cx="19.5"
-                                                                                cy="17.5" r="2.5"/>
+																		<path d="M21,12.0829584 C20.6747915,12.0283988 20.3407122,12 20,12 C16.6862915,12 14,14.6862915 14,18 C14,18.3407122 14.0283988,18.6747915 14.0829584,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,12.0829584 Z M18.1444251,7.83964668 L12,11.1481833 L5.85557487,7.83964668 C5.4908718,7.6432681 5.03602525,7.77972206 4.83964668,8.14442513 C4.6432681,8.5091282 4.77972206,8.96397475 5.14442513,9.16035332 L11.6444251,12.6603533 C11.8664074,12.7798822 12.1335926,12.7798822 12.3555749,12.6603533 L18.8555749,9.16035332 C19.2202779,8.96397475 19.3567319,8.5091282 19.1603533,8.14442513 C18.9639747,7.77972206 18.5091282,7.6432681 18.1444251,7.83964668 Z" fill="#000000"/>
+																		<circle fill="#000000" opacity="0.3" cx="19.5" cy="17.5" r="2.5"/>
 																	</g>
 																</svg>
                                                                 <!--end::Svg Icon-->
 															</span>{{ user.email }}
-                                </div>
-                                <!--end::Contacts-->
-                                {% if not user.description %}
-                                    <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">This user
-                                        is currently too lazy to have a description.
                                     </div>
-                                {% else %}
-                                    <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">{{ user.description }}</div>
-                                {% endif %}
-                            </div>
-                            {% if current_user.get_id()|int == user.id|int %}
+                                    <!--end::Contacts-->
+                                    {% if not user.description %}
+                                        <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">This user is currently too lazy to have a description.
+                                        </div>
+                                    {% else %}
+                                        <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">{{ user.description }}</div>
+                                    {% endif %}
+                                </div>
+                                {% if current_user.get_id()|int == user.id|int %}
                                 <!--begin::Actions-->
 
-                                <div class="my-lg-0 my-1">
-                                    <form type="POST" id="edit" enctype="multipart/form-data">
-                                        <button type="button"
-                                                class="btn btn-sm btn-light-primary font-weight-bolder mr-2"
-                                                data-toggle="modal" data-target="#info_edit"><i
-                                                class="flaticon-edit-1"></i>Edit profile
-                                        </button>
-                                        <div class="modal fade" id="info_edit" tabindex="-1" role="dialog"
-                                             aria-labelledby="infoLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="infoLabel">Edit Description</h5>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                                aria-label="Close">
-                                                            <i aria-hidden="true" class="ki ki-close"></i>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="form-group mb-8">
-                                                            <div class="alert alert-custom alert-default" role="alert">
-                                                                <div class="alert-icon"><i
-                                                                        class="flaticon-warning text-primary"></i></div>
-                                                                <div class="alert-text">
-                                                                    Leave blank if you do not want to change the
-                                                                    corresponding information.
+                                    <div class="my-lg-0 my-1">
+                                        <form type="POST" id="edit" enctype="multipart/form-data">
+                                            <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder mr-2" data-toggle="modal" data-target="#info_edit"><i class="flaticon-edit-1"></i>Edit profile
+                                            </button>
+                                            <div class="modal fade" id="info_edit" tabindex="-1" role="dialog" aria-labelledby="infoLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="infoLabel">Edit Description</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <i aria-hidden="true" class="ki ki-close"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="form-group mb-8">
+                                                                <div class="alert alert-custom alert-default" role="alert">
+                                                                    <div class="alert-icon"><i class="flaticon-warning text-primary"></i></div>
+                                                                    <div class="alert-text">
+                                                                        Leave blank if you do not want to change the corresponding information.
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                            <div class="form-group mb-1">
+                                                                <label for="Description">Description</label> <textarea class="form-control" id="description_edit" name="description" rows="3"></textarea>
+                                                            </div>
                                                         </div>
-                                                        <div class="form-group mb-1">
-                                                            <label for="Description">Description</label>
-                                                            <textarea class="form-control" id="description_edit"
-                                                                      name="description" rows="3"></textarea>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary font-weight-bold" id="edit_submit">Save changes
+                                                            </button>
                                                         </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button"
-                                                                class="btn btn-light-primary font-weight-bold"
-                                                                data-dismiss="modal">Close
-                                                        </button>
-                                                        <button type="button" class="btn btn-primary font-weight-bold"
-                                                                id="edit_submit">Save changes
-                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </form>
-                                </div>
+                                        </form>
+                                    </div>
 
                                 <!--end::Actions-->
-                            {% endif %}
+                                {% endif %}
+                            </div>
+                            <!--end::Title-->
                         </div>
-                        <!--end::Title-->
+                        <!--end::Info-->
                     </div>
-                    <!--end::Info-->
-                </div>
-                <!--end::Top-->
-                <!--begin::Separator-->
-                <div class="separator separator-solid my-7"></div>
-                <!--end::Separator-->
-                <!--begin::Bottom-->
-                <div class="d-flex align-items-center flex-wrap">
-                    <!--begin: Item-->
-                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                    <!--end::Top-->
+                    <!--begin::Separator-->
+                    <div class="separator separator-solid my-7"></div>
+                    <!--end::Separator-->
+                    <!--begin::Bottom-->
+                    <div class="d-flex align-items-center flex-wrap">
+                        <!--begin: Item-->
+                        <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
 												<span class="mr-4">
 													<span class="svg-icon svg-icon-2x">
 														<!--begin::Svg Icon | path:assets/media/svg/icons/Shopping/Dollar.svg-->
-														<svg xmlns="http://www.w3.org/2000/svg"
-                                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                             height="24px" viewBox="0 0 24 24" version="1.1">
-															<g stroke="none" stroke-width="1" fill="none"
-                                                               fill-rule="evenodd">
+														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 																<rect x="0" y="0" width="24" height="24"/>
-																<rect fill="#000000" opacity="0.3" x="11.5" y="2"
-                                                                      width="2" height="4" rx="1"/>
-																<rect fill="#000000" opacity="0.3" x="11.5" y="16"
-                                                                      width="2" height="5" rx="1"/>
-																<path d="M15.493,8.044 C15.2143319,7.68933156 14.8501689,7.40750104 14.4005,7.1985 C13.9508311,6.98949895 13.5170021,6.885 13.099,6.885 C12.8836656,6.885 12.6651678,6.90399981 12.4435,6.942 C12.2218322,6.98000019 12.0223342,7.05283279 11.845,7.1605 C11.6676658,7.2681672 11.5188339,7.40749914 11.3985,7.5785 C11.2781661,7.74950085 11.218,7.96799867 11.218,8.234 C11.218,8.46200114 11.2654995,8.65199924 11.3605,8.804 C11.4555005,8.95600076 11.5948324,9.08899943 11.7785,9.203 C11.9621676,9.31700057 12.1806654,9.42149952 12.434,9.5165 C12.6873346,9.61150047 12.9723317,9.70966616 13.289,9.811 C13.7450023,9.96300076 14.2199975,10.1308324 14.714,10.3145 C15.2080025,10.4981676 15.6576646,10.7419985 16.063,11.046 C16.4683354,11.3500015 16.8039987,11.7268311 17.07,12.1765 C17.3360013,12.6261689 17.469,13.1866633 17.469,13.858 C17.469,14.6306705 17.3265014,15.2988305 17.0415,15.8625 C16.7564986,16.4261695 16.3733357,16.8916648 15.892,17.259 C15.4106643,17.6263352 14.8596698,17.8986658 14.239,18.076 C13.6183302,18.2533342 12.97867,18.342 12.32,18.342 C11.3573285,18.342 10.4263378,18.1741683 9.527,17.8385 C8.62766217,17.5028317 7.88033631,17.0246698 7.285,16.404 L9.413,14.238 C9.74233498,14.6433354 10.176164,14.9821653 10.7145,15.2545 C11.252836,15.5268347 11.7879973,15.663 12.32,15.663 C12.5606679,15.663 12.7949989,15.6376669 13.023,15.587 C13.2510011,15.5363331 13.4504991,15.4540006 13.6215,15.34 C13.7925009,15.2259994 13.9286662,15.0740009 14.03,14.884 C14.1313338,14.693999 14.182,14.4660013 14.182,14.2 C14.182,13.9466654 14.1186673,13.7313342 13.992,13.554 C13.8653327,13.3766658 13.6848345,13.2151674 13.4505,13.0695 C13.2161655,12.9238326 12.9248351,12.7908339 12.5765,12.6705 C12.2281649,12.5501661 11.8323355,12.420334 11.389,12.281 C10.9583312,12.141666 10.5371687,11.9770009 10.1255,11.787 C9.71383127,11.596999 9.34650161,11.3531682 9.0235,11.0555 C8.70049838,10.7578318 8.44083431,10.3968355 8.2445,9.9725 C8.04816568,9.54816454 7.95,9.03200304 7.95,8.424 C7.95,7.67666293 8.10199848,7.03700266 8.406,6.505 C8.71000152,5.97299734 9.10899753,5.53600171 9.603,5.194 C10.0970025,4.85199829 10.6543302,4.60183412 11.275,4.4435 C11.8956698,4.28516587 12.5226635,4.206 13.156,4.206 C13.9160038,4.206 14.6918294,4.34533194 15.4835,4.624 C16.2751706,4.90266806 16.9686637,5.31433061 17.564,5.859 L15.493,8.044 Z"
-                                                                      fill="#000000"/>
+																<rect fill="#000000" opacity="0.3" x="11.5" y="2" width="2" height="4" rx="1"/>
+																<rect fill="#000000" opacity="0.3" x="11.5" y="16" width="2" height="5" rx="1"/>
+																<path d="M15.493,8.044 C15.2143319,7.68933156 14.8501689,7.40750104 14.4005,7.1985 C13.9508311,6.98949895 13.5170021,6.885 13.099,6.885 C12.8836656,6.885 12.6651678,6.90399981 12.4435,6.942 C12.2218322,6.98000019 12.0223342,7.05283279 11.845,7.1605 C11.6676658,7.2681672 11.5188339,7.40749914 11.3985,7.5785 C11.2781661,7.74950085 11.218,7.96799867 11.218,8.234 C11.218,8.46200114 11.2654995,8.65199924 11.3605,8.804 C11.4555005,8.95600076 11.5948324,9.08899943 11.7785,9.203 C11.9621676,9.31700057 12.1806654,9.42149952 12.434,9.5165 C12.6873346,9.61150047 12.9723317,9.70966616 13.289,9.811 C13.7450023,9.96300076 14.2199975,10.1308324 14.714,10.3145 C15.2080025,10.4981676 15.6576646,10.7419985 16.063,11.046 C16.4683354,11.3500015 16.8039987,11.7268311 17.07,12.1765 C17.3360013,12.6261689 17.469,13.1866633 17.469,13.858 C17.469,14.6306705 17.3265014,15.2988305 17.0415,15.8625 C16.7564986,16.4261695 16.3733357,16.8916648 15.892,17.259 C15.4106643,17.6263352 14.8596698,17.8986658 14.239,18.076 C13.6183302,18.2533342 12.97867,18.342 12.32,18.342 C11.3573285,18.342 10.4263378,18.1741683 9.527,17.8385 C8.62766217,17.5028317 7.88033631,17.0246698 7.285,16.404 L9.413,14.238 C9.74233498,14.6433354 10.176164,14.9821653 10.7145,15.2545 C11.252836,15.5268347 11.7879973,15.663 12.32,15.663 C12.5606679,15.663 12.7949989,15.6376669 13.023,15.587 C13.2510011,15.5363331 13.4504991,15.4540006 13.6215,15.34 C13.7925009,15.2259994 13.9286662,15.0740009 14.03,14.884 C14.1313338,14.693999 14.182,14.4660013 14.182,14.2 C14.182,13.9466654 14.1186673,13.7313342 13.992,13.554 C13.8653327,13.3766658 13.6848345,13.2151674 13.4505,13.0695 C13.2161655,12.9238326 12.9248351,12.7908339 12.5765,12.6705 C12.2281649,12.5501661 11.8323355,12.420334 11.389,12.281 C10.9583312,12.141666 10.5371687,11.9770009 10.1255,11.787 C9.71383127,11.596999 9.34650161,11.3531682 9.0235,11.0555 C8.70049838,10.7578318 8.44083431,10.3968355 8.2445,9.9725 C8.04816568,9.54816454 7.95,9.03200304 7.95,8.424 C7.95,7.67666293 8.10199848,7.03700266 8.406,6.505 C8.71000152,5.97299734 9.10899753,5.53600171 9.603,5.194 C10.0970025,4.85199829 10.6543302,4.60183412 11.275,4.4435 C11.8956698,4.28516587 12.5226635,4.206 13.156,4.206 C13.9160038,4.206 14.6918294,4.34533194 15.4835,4.624 C16.2751706,4.90266806 16.9686637,5.31433061 17.564,5.859 L15.493,8.044 Z" fill="#000000"/>
 															</g>
 														</svg>
                                                         <!--end::Svg Icon-->
 													</span>
 												</span>
-                        <div class="d-flex flex-column text-dark-75">
-                            <span class="font-weight-bolder font-size-sm">Current Weight</span>
-                            <span class="font-weight-bolder font-size-h5">{{ user.weight }}KG</span>
+                            <div class="d-flex flex-column text-dark-75">
+                                <span class="font-weight-bolder font-size-sm">Current Weight</span> <span class="font-weight-bolder font-size-h5">{{ user.weight }}KG</span>
+                            </div>
                         </div>
-                    </div>
-                    <!--end: Item-->
-                    <!--begin: Item-->
-                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                        <!--end: Item-->
+                        <!--begin: Item-->
+                        <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
 												<span class="mr-4">
 													<span class="svg-icon svg-icon-2x">
 														<!--begin::Svg Icon | path:assets/media/svg/icons/Shopping/Sale2.svg-->
-														<svg xmlns="http://www.w3.org/2000/svg"
-                                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                             height="24px" viewBox="0 0 24 24" version="1.1">
-															<g stroke="none" stroke-width="1" fill="none"
-                                                               fill-rule="evenodd">
+														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 																<rect x="0" y="0" width="24" height="24"/>
-																<polygon fill="#000000" opacity="0.3"
-                                                                         points="12 20.0218549 8.47346039 21.7286168 6.86905972 18.1543453 3.07048824 17.1949849 4.13894342 13.4256452 1.84573388 10.2490577 5.08710286 8.04836581 5.3722735 4.14091196 9.2698837 4.53859595 12 1.72861679 14.7301163 4.53859595 18.6277265 4.14091196 18.9128971 8.04836581 22.1542661 10.2490577 19.8610566 13.4256452 20.9295118 17.1949849 17.1309403 18.1543453 15.5265396 21.7286168"/>
-																<polygon fill="#000000"
-                                                                         points="14.0890818 8.60255815 8.36079737 14.7014391 9.70868621 16.049328 15.4369707 9.950447"/>
-																<path d="M10.8543431,9.1753866 C10.8543431,10.1252593 10.085524,10.8938719 9.13585777,10.8938719 C8.18793881,10.8938719 7.41737243,10.1252593 7.41737243,9.1753866 C7.41737243,8.22551387 8.18793881,7.45690126 9.13585777,7.45690126 C10.085524,7.45690126 10.8543431,8.22551387 10.8543431,9.1753866"
-                                                                      fill="#000000" opacity="0.3"/>
-																<path d="M14.8641422,16.6221564 C13.9162233,16.6221564 13.1456569,15.8535438 13.1456569,14.9036711 C13.1456569,13.9520555 13.9162233,13.1851857 14.8641422,13.1851857 C15.8138085,13.1851857 16.5826276,13.9520555 16.5826276,14.9036711 C16.5826276,15.8535438 15.8138085,16.6221564 14.8641422,16.6221564 Z"
-                                                                      fill="#000000" opacity="0.3"/>
+																<polygon fill="#000000" opacity="0.3" points="12 20.0218549 8.47346039 21.7286168 6.86905972 18.1543453 3.07048824 17.1949849 4.13894342 13.4256452 1.84573388 10.2490577 5.08710286 8.04836581 5.3722735 4.14091196 9.2698837 4.53859595 12 1.72861679 14.7301163 4.53859595 18.6277265 4.14091196 18.9128971 8.04836581 22.1542661 10.2490577 19.8610566 13.4256452 20.9295118 17.1949849 17.1309403 18.1543453 15.5265396 21.7286168"/>
+																<polygon fill="#000000" points="14.0890818 8.60255815 8.36079737 14.7014391 9.70868621 16.049328 15.4369707 9.950447"/>
+																<path d="M10.8543431,9.1753866 C10.8543431,10.1252593 10.085524,10.8938719 9.13585777,10.8938719 C8.18793881,10.8938719 7.41737243,10.1252593 7.41737243,9.1753866 C7.41737243,8.22551387 8.18793881,7.45690126 9.13585777,7.45690126 C10.085524,7.45690126 10.8543431,8.22551387 10.8543431,9.1753866" fill="#000000" opacity="0.3"/>
+																<path d="M14.8641422,16.6221564 C13.9162233,16.6221564 13.1456569,15.8535438 13.1456569,14.9036711 C13.1456569,13.9520555 13.9162233,13.1851857 14.8641422,13.1851857 C15.8138085,13.1851857 16.5826276,13.9520555 16.5826276,14.9036711 C16.5826276,15.8535438 15.8138085,16.6221564 14.8641422,16.6221564 Z" fill="#000000" opacity="0.3"/>
 															</g>
 														</svg>
                                                         <!--end::Svg Icon-->
 													</span>
 												</span>
-                        <div class="d-flex flex-column text-dark-75">
-                            <span class="font-weight-bolder font-size-sm">Current Height</span>
-                            <span class="font-weight-bolder font-size-h5">{{ user.height }}CM</span>
+                            <div class="d-flex flex-column text-dark-75">
+                                <span class="font-weight-bolder font-size-sm">Current Height</span> <span class="font-weight-bolder font-size-h5">{{ user.height }}CM</span>
+                            </div>
                         </div>
-                    </div>
-                    <!--end: Item-->
-                    <!--begin: Item-->
-                    <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                        <!--end: Item-->
+                        <!--begin: Item-->
+                        <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
 												<span class="mr-4">
 													<span class="svg-icon svg-icon-2x">
 														<!--begin::Svg Icon | path:assets/media/svg/icons/Shopping/Chart-bar1.svg-->
-														<svg xmlns="http://www.w3.org/2000/svg"
-                                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                             height="24px" viewBox="0 0 24 24" version="1.1">
-															<g stroke="none" stroke-width="1" fill="none"
-                                                               fill-rule="evenodd">
+														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 																<rect x="0" y="0" width="24" height="24"></rect>
-																<rect fill="#000000" opacity="0.3" x="12" y="4"
-                                                                      width="3" height="13" rx="1.5"></rect>
-																<rect fill="#000000" opacity="0.3" x="7" y="9" width="3"
-                                                                      height="8" rx="1.5"></rect>
-																<path d="M5,19 L20,19 C20.5522847,19 21,19.4477153 21,20 C21,20.5522847 20.5522847,21 20,21 L4,21 C3.44771525,21 3,20.5522847 3,20 L3,4 C3,3.44771525 3.44771525,3 4,3 C4.55228475,3 5,3.44771525 5,4 L5,19 Z"
-                                                                      fill="#000000" fill-rule="nonzero"></path>
-																<rect fill="#000000" opacity="0.3" x="17" y="11"
-                                                                      width="3" height="6" rx="1.5"></rect>
+																<rect fill="#000000" opacity="0.3" x="12" y="4" width="3" height="13" rx="1.5"></rect>
+																<rect fill="#000000" opacity="0.3" x="7" y="9" width="3" height="8" rx="1.5"></rect>
+																<path d="M5,19 L20,19 C20.5522847,19 21,19.4477153 21,20 C21,20.5522847 20.5522847,21 20,21 L4,21 C3.44771525,21 3,20.5522847 3,20 L3,4 C3,3.44771525 3.44771525,3 4,3 C4.55228475,3 5,3.44771525 5,4 L5,19 Z" fill="#000000" fill-rule="nonzero"></path>
+																<rect fill="#000000" opacity="0.3" x="17" y="11" width="3" height="6" rx="1.5"></rect>
 															</g>
 														</svg>
                                                         <!--end::Svg Icon-->
 													</span>
 												</span>
-                        <div class="d-flex flex-column text-dark-75">
-                            <span class="font-weight-bolder font-size-sm">Current BMI</span>
-                            <span class="font-weight-bolder font-size-h5">{{ (user.weight/((user.height/100)*(user.height/100)))|round(2) }}</span>
+                            <div class="d-flex flex-column text-dark-75">
+                                <span class="font-weight-bolder font-size-sm">Current BMI</span> <span class="font-weight-bolder font-size-h5">{{ (user.weight/((user.height/100)*(user.height/100)))|round(2) }}</span>
+                            </div>
                         </div>
+                        <!--end: Item-->
                     </div>
-                    <!--end: Item-->
+                    <!--end::Bottom-->
                 </div>
-                <!--end::Bottom-->
             </div>
-        </div>
-        <!--end::Nav Panels Wizard 4-->
-        <!--begin::Row-->
-        <div class="row">
-            <div class="col-lg-8"></div>
-            <div class="col-lg-4"></div>
-        </div>
-        <!--end::Row-->
-        <!--begin::Row-->
-        <div class="row">
-            <div class="col-lg-12">
-                <!--begin::Charts Widget 4-->
-                <div class="card card-custom card-stretch gutter-b">
-                    <!--begin::Header-->
-                    <div class="card-header h-auto border-0">
-                        <div class="card-title py-5">
-                            <h3 class="card-label">
-                                <span class="d-block text-dark font-weight-bolder">Recent Orders</span>
-                            </h3>
+            <!--end::Nav Panels Wizard 4-->
+            <!--begin::Row-->
+            <div class="row">
+                <div class="col-lg-8"></div>
+                <div class="col-lg-4"></div>
+            </div>
+            <!--end::Row-->
+            <!--begin::Row-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <!--begin::Charts Widget 4-->
+                    <div class="card card-custom card-stretch gutter-b">
+                        <!--begin::Header-->
+                        <div class="card-header h-auto border-0">
+                            <div class="card-title py-5">
+                                <h3 class="card-label">
+                                    <span class="d-block text-dark font-weight-bolder">Recent Orders</span>
+                                </h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <ul class="nav nav-pills nav-pills-sm nav-dark-75" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link py-2 px-4" data-toggle="tab" href="#kt_charts_widget_2_chart_tab_1"> <span class="nav-text font-size-sm">Month</span> </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link py-2 px-4" data-toggle="tab" href="#kt_charts_widget_2_chart_tab_2"> <span class="nav-text font-size-sm">Week</span> </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link py-2 px-4 active" data-toggle="tab" href="#kt_charts_widget_2_chart_tab_3"> <span class="nav-text font-size-sm">Day</span> </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="card-toolbar">
-                            <ul class="nav nav-pills nav-pills-sm nav-dark-75" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link py-2 px-4" data-toggle="tab"
-                                       href="#kt_charts_widget_2_chart_tab_1">
-                                        <span class="nav-text font-size-sm">Month</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link py-2 px-4" data-toggle="tab"
-                                       href="#kt_charts_widget_2_chart_tab_2">
-                                        <span class="nav-text font-size-sm">Week</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link py-2 px-4 active" data-toggle="tab"
-                                       href="#kt_charts_widget_2_chart_tab_3">
-                                        <span class="nav-text font-size-sm">Day</span>
-                                    </a>
-                                </li>
-                            </ul>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body">
+                            <div id="kt_charts_widget_4_chart"></div>
                         </div>
+                        <!--end::Body-->
                     </div>
-                    <!--end::Header-->
-                    <!--begin::Body-->
-                    <div class="card-body">
-                        <div id="kt_charts_widget_4_chart"></div>
-                    </div>
-                    <!--end::Body-->
+                    <!--end::Charts Widget 4-->
                 </div>
-                <!--end::Charts Widget 4-->
             </div>
+            <!--end::Row-->
         </div>
-        <!--end::Row-->
+        <!--end::Container-->
     </div>
-    <!--end::Container-->
-
     <!--begin::Page Scripts(used by this page)-->
     {% include '_includes/_scripts.html' %}
     <script>

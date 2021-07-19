@@ -199,35 +199,50 @@ function edit_profile(isCurrentUser, iconExist, delete_avatar_url, edit_url, use
                 })
             });
         }
-        $('#edit_submit').on("click", function () {
-            var description = $('#description_edit').val().trim()
-            var username = $('#username_edit').val().trim()
-            if (description !== "" || username !== "") {
-                $.ajax({
-                    url: edit_url,
-                    type:"POST",
-                    data: {
-                        id: userID,
-                        description: description,
-                        username: username
-                    },
-                    success: function (data) {
-                        if (data === 'success') {
+        $('#edit_submit').on("click", function (e) {
+            e.preventDefault();
+
+            validation.validate().then(function (status) {
+                var description = $('#description_edit').val().trim()
+                var username = $('#username_edit').val().trim()
+                if (description !== "" || username !== "") {
+                    $.ajax({
+                        url: edit_url,
+                        type: "POST",
+                        data: {
+                            id: userID,
+                            description: description,
+                            username: username
+                        },
+                        success: function (data) {
+                            if (data === 'success') {
+                                swal.fire({
+                                    text: "Edit Successful!",
+                                    icon: "success",
+                                    buttonsStyling: false,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn font-weight-bold btn-light-primary"
+                                    }
+                                }).then(function () {
+                                    window.location.reload();
+                                })
+                            } else if (data === 'failure') {
+                                swal.fire({
+                                    text: "Edit Failure! Too many characters for description! Maximum characters is 200!",
+                                    icon: "warning",
+                                    buttonsStyling: false,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn font-weight-bold btn-light-primary"
+                                    }
+                                })
+                            }
+                        },
+                        error: function () {
                             swal.fire({
-                                text: "Edit Successful!",
-                                icon: "success",
-                                buttonsStyling: false,
-                                confirmButtonText: "Ok, got it!",
-                                customClass: {
-                                    confirmButton: "btn font-weight-bold btn-light-primary"
-                                }
-                            }).then(function () {
-                                window.location.reload();
-                            })
-                        } else if (data === 'failure') {
-                            swal.fire({
-                                text: "Edit Failure! Too many characters for description! Maximum characters is 200!",
-                                icon: "warning",
+                                text: "Error Occurred!",
+                                icon: "error",
                                 buttonsStyling: false,
                                 confirmButtonText: "Ok, got it!",
                                 customClass: {
@@ -235,23 +250,12 @@ function edit_profile(isCurrentUser, iconExist, delete_avatar_url, edit_url, use
                                 }
                             })
                         }
-                    },
-                    error: function () {
-                        swal.fire({
-                            text: "Error Occurred!",
-                            icon: "error",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn font-weight-bold btn-light-primary"
-                            }
-                        })
-                    }
-                })
-            }
+                    })
+                }
+            })
         })
 
-        FormValidation.formValidation(
+        var validation = FormValidation.formValidation(
             document.getElementById('edit'),
             {
                 fields: {

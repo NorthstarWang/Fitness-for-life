@@ -82,6 +82,11 @@
                                     In
                                 </button>
                             </div>
+                            <div class="pb-lg-0 pb-5 text-left">
+                                <a href="javascript:;"
+                                       class="text-primary font-size-h6 font-weight-bolder text-hover-primary pt-5"
+                                       id="kt_login_request">Resend confirmation link</a>
+                            </div>
                             <!--end::Action-->
                         </form>
                         <!--end::Form-->
@@ -181,14 +186,14 @@
                             <div class="pb-13 pt-lg-0 pt-5">
                                 <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">Forgotten Password
                                     ?</h3>
-                                <p class="text-muted font-weight-bold font-size-h4">Enter your email to reset your
+                                <p class="text-muted font-weight-bold font-size-h4">Enter your username to reset your
                                     password</p>
                             </div>
                             <!--end::Title-->
                             <!--begin::Form group-->
                             <div class="form-group">
                                 <input class="form-control form-control-solid h-auto p-6 rounded-lg font-size-h6"
-                                       type="email" placeholder="Email" name="email" autocomplete="off"/>
+                                       type="text" placeholder="Username" name="forget_username" id="forget_username" autocomplete="off"/>
                             </div>
                             <!--end::Form group-->
                             <!--begin::Form group-->
@@ -207,6 +212,40 @@
                         <!--end::Form-->
                     </div>
                     <!--end::Forgot-->
+                    <!--begin::Request new confirmation mail-->
+                    <div class="login-form login-request">
+                        <!--begin::Form-->
+                        <form class="form w-xxl-550px rounded-lg p-20" novalidate="novalidate"
+                              id="kt_login_request_form">
+                            <!--begin::Title-->
+                            <div class="pb-13 pt-lg-0 pt-5">
+                                <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">Resend confirmation link
+                                    ?</h3>
+                                <p class="text-muted font-weight-bold font-size-h4">Enter your username to send confirmation email</p>
+                            </div>
+                            <!--end::Title-->
+                            <!--begin::Form group-->
+                            <div class="form-group">
+                                <input class="form-control form-control-solid h-auto p-6 rounded-lg font-size-h6"
+                                       type="text" placeholder="Username" name="request_username" id="request_username" autocomplete="off"/>
+                            </div>
+                            <!--end::Form group-->
+                            <!--begin::Form group-->
+                            <div class="form-group d-flex flex-wrap pb-lg-0">
+                                <button type="button" id="kt_login_request_submit"
+                                        class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-4">
+                                    Submit
+                                </button>
+                                <button type="button" id="kt_login_request_cancel"
+                                        class="btn btn-light-primary font-weight-bolder font-size-h6 px-8 py-4 my-3">
+                                    Cancel
+                                </button>
+                            </div>
+                            <!--end::Form group-->
+                        </form>
+                        <!--end::Form-->
+                    </div>
+                    <!--end::Request new confirmation mail-->
                 </div>
                 <div class="col-lg-6 bgi-size-contain bgi-no-repeat bgi-position-y-center bgi-position-x-center min-h-150px mt-10 m-md-0"
                      style="background-image: url({{ url_for('static', filename='assets/media/svg/illustrations/accomplishment.svg') }})"></div>
@@ -226,7 +265,7 @@
     $(document).ajaxStop($.unblockUI);
     // Class Initialization
     jQuery(document).ready(function () {
-        KTLogin('{{ url_for('account.login_validation') }}',"{{ url_for("main.index",notify="You have successfully logged in !") }}",'{{ url_for('account.check') }}','{{ url_for('account.login_insertion') }}','{{ url_for('account.mail') }}');
+        KTLogin('{{ url_for('account.login_validation') }}',"{{ url_for("main.index",notify="You have successfully logged in !") }}",'{{ url_for('account.check') }}','{{ url_for('account.login_insertion') }}','{{ url_for('account.mail') }}','{{ url_for("account.resend_mail") }}','{{ url_for("account.send_changepassword") }}');
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for icon, text in messages %}

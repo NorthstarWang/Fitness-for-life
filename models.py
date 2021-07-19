@@ -1,3 +1,4 @@
+from datetime import date
 import math
 import random
 import string
@@ -20,15 +21,39 @@ def seeder_user(number):
 		            height=round(random.uniform(100.0, 200.0), 1),
 		            weight=round(random.uniform(35.0, 100.0), 1),
 		            confirm=True)
-		favourite_article = FavouriteArticles(userId=i+1)
 		db.session.add(user)
-		db.session.add(favourite_article)
 	db.session.commit()
+	# other database can only be add afterward as the user id is auto generated
+	users = User.query.all()
+	for i in users:
+		favourite_article = FavouriteArticles(userId=i.id)
+		body_profile = BodyProfile(updateDay=date.today(), weight=i.weight, userId=i.id)
+		db.session.add(favourite_article)
+		db.session.add(body_profile)
+		db.session.commit()
 
 
 def seeder_article(title, content, tag, category, img):
 	article = Article(title=title, content=content, tag=tag, category=category, img=img)
 	article.create_article()
+
+
+def check_today_weight_exist(userId, new_weight):
+	# only one update on weight each day, if anymore update posted on the same date, weight data overwrite
+	today = date.today()
+	last_day_update = BodyProfile.query.filter_by(userId=userId).order_by(db.desc(id)).first()
+	if last_day_update.updateDay == today:
+		# rewrite initiate as it already exist
+		last_day_update.weight = new_weight
+		db.session.commit()
+		# return false as no new data row has been created, instead a modification
+		return False
+	else:
+		# else create a new row for today's new weight
+		new_body_profile = BodyProfile(updateDay=today, weight=new_weight, userId=userId)
+		db.session.add(new_body_profile)
+		db.session.commit()
+		return True
 
 
 class User(UserMixin, db.Model):
@@ -43,7 +68,7 @@ class User(UserMixin, db.Model):
 	icon = db.Column(db.BLOB, nullable=True, default=None)
 	description = db.Column(db.String(200), nullable=True, default="")
 	confirm = db.Column(db.Boolean, default=False)
-	health_profile = db.relationship("BodyProfile", backref='user')
+	body_profile = db.relationship("BodyProfile", backref='user')
 	favourite_article = db.relationship("FavouriteArticles", backref='user')
 
 	def icon_exist(self):
@@ -59,19 +84,12 @@ class User(UserMixin, db.Model):
 class BodyProfile(db.Model):
 	__tablename__ = "body_profile"
 	id = db.Column(db.Integer, primary_key=True)
-	latest = db.Column(db.Boolean, nullable=False, default=True)
-	postTime = db.Column(db.DateTime, nullable=False)
+	updateDay = db.Column(db.Date, nullable=False)
 	weight = db.Column(db.Float, nullable=False)
-	height = db.Column(db.Float, nullable=False)
-	BMI = db.Column(db.Float, nullable=False)
 	userId = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 	def get_bmi(self):
 		return self.weight / math.pow(self.height / 100, 2)
-
-	def copy_previous_height(self):
-		old_height = BodyProfile.query.filter_by(userId=self.userId).all()[-1].height
-		self.height = old_height
 
 
 class Article(db.Model):

@@ -41,15 +41,18 @@ def seeder_article(title, content, tag, category, img):
 def check_today_weight_exist(userId, new_weight):
 	# only one update on weight each day, if anymore update posted on the same date, weight data overwrite
 	today = date.today()
-	last_day_update = BodyProfile.query.filter_by(userId=userId).order_by(db.desc(id)).first()
+	last_day_update = BodyProfile.query.filter_by(userId=userId).order_by(BodyProfile.id.desc()).first()
+	user = User.query.filter_by(id=userId).first()
 	if last_day_update.updateDay == today:
-		# rewrite initiate as it already exist
+		# rewrite initiate as it already exist and change user weight
+		user.weight = new_weight
 		last_day_update.weight = new_weight
 		db.session.commit()
 		# return false as no new data row has been created, instead a modification
 		return False
 	else:
 		# else create a new row for today's new weight
+		user.weight = new_weight
 		new_body_profile = BodyProfile(updateDay=today, weight=new_weight, userId=userId)
 		db.session.add(new_body_profile)
 		db.session.commit()

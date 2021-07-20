@@ -4,7 +4,7 @@ from wtforms import FileField, Form, SubmitField, HiddenField
 from base64 import b64encode
 
 from app import db, render_template
-from models import User
+from models import *
 
 
 class AvatarForm(Form):
@@ -62,3 +62,21 @@ def delete_avatar(user_id):
 		return 'success'
 	except Exception:
 		return 'failure'
+
+
+@profile.route('/update/weight', methods=['POST', 'GET'])
+def update_weight():
+	weight = float(request.form["weight"])
+	userId = int(request.form["userId"])
+	# if no new data row has been created, return 0, if new row created return 1
+	return '1' if check_today_weight_exist(userId, weight) else '0'
+
+
+@profile.route('/update/height', methods=['POST', 'GET'])
+def update_height():
+	height = float(request.form["height"])
+	userId = int(request.form["userId"])
+	user = User.query.filter_by(id=userId).first()
+	user.height = height
+	db.session.commit()
+	return 'success'

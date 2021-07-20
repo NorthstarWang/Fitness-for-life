@@ -341,3 +341,109 @@ function loadFavourtieArticles(url) {
         }
     })
 }
+
+function update_weight(userId, url) {
+    var new_weight = document.getElementById("update_weight").value
+    var current_height = document.getElementById("height_display").innerText.slice(0, -2)
+    KTApp.blockPage({
+        overlayColor: '#000000',
+        state: 'success',
+        opacity: 0.1,
+        message: 'Updating...'
+    })
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+            userId: userId,
+            weight: new_weight
+        },
+        success: function (result) {
+            if (result === '1') {
+                document.getElementById("weight_display").innerText = new_weight + "KG"
+                document.getElementById("BMI").innerText = (parseFloat(new_weight) / Math.pow(parseFloat(current_height), 2)).toFixed(2).toString()
+                $.notify("You have added your new weight for today, update a new one today if you want to overwrite the same day's record.", {
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    delay: 1000,
+                    timer: 4000,
+                    animate: {
+                        enter: 'animate__animated animate__bounceInRight',
+                        exit: 'animate__animated animate__bounceOutRight'
+                    },
+                    type: "success"
+                })
+            } else {
+                document.getElementById("weight_display").innerText = new_weight + "KG"
+                document.getElementById("BMI").innerText = (parseFloat(new_weight) / Math.pow(parseFloat(current_height)/100, 2)).toFixed(2).toString()
+                $.notify("You have overwrite your old weight for today, update a new one today if you want to overwrite the same day's record.", {
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    delay: 1000,
+                    timer: 4000,
+                    animate: {
+                        enter: 'animate__animated animate__bounceInRight',
+                        exit: 'animate__animated animate__bounceOutRight'
+                    },
+                    type: "success"
+                })
+            }
+        }
+    })
+}
+
+function change_height(userId, url) {
+    var height = document.getElementById("change_height").value
+    var current_weight = document.getElementById("weight_display").innerText.slice(0, -2)
+    KTApp.blockPage({
+        overlayColor: '#000000',
+        state: 'success',
+        opacity: 0.1,
+        message: 'Changing...'
+    })
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+            userId: userId,
+            height: height
+        },
+        success: function (result) {
+            if (result === 'success') {
+                document.getElementById("height_display").innerText = height + "CM"
+                document.getElementById("BMI").innerText = (parseFloat(current_weight) / Math.pow(parseFloat(height)/100, 2)).toFixed(2).toString()
+                $.notify("You have change your height.", {
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    delay: 500,
+                    timer: 2500,
+                    animate: {
+                        enter: 'animate__animated animate__bounceInRight',
+                        exit: 'animate__animated animate__bounceOutRight'
+                    },
+                    type: "success"
+                })
+            } else {
+                $.notify("Error Occurred, please try again later!", {
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    delay: 500,
+                    timer: 2500,
+                    animate: {
+                        enter: 'animate__animated animate__bounceInRight',
+                        exit: 'animate__animated animate__bounceOutRight'
+                    },
+                    type: "danger"
+                })
+            }
+        }
+    })
+}

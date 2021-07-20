@@ -24,59 +24,33 @@
             <!--begin::Toolbar-->
                 <div class="d-flex align-items-center flex-wrap">
                     <!--begin::Dropdown-->
-                    <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="top">
+                    <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Add/Change my body stats" data-placement="top">
                         <a href="#" class="btn btn-fixed-height btn-bg-white btn-text-dark-50 btn-hover-text-primary btn-icon-primary font-weight-bolder font-size-sm px-5 my-1 mr-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<span class="svg-icon svg-icon-md">
-											<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Add-user.svg-->
-											<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-													<polygon points="0 0 24 0 24 24 0 24"/>
-													<path d="M18,8 L16,8 C15.4477153,8 15,7.55228475 15,7 C15,6.44771525 15.4477153,6 16,6 L18,6 L18,4 C18,3.44771525 18.4477153,3 19,3 C19.5522847,3 20,3.44771525 20,4 L20,6 L22,6 C22.5522847,6 23,6.44771525 23,7 C23,7.55228475 22.5522847,8 22,8 L20,8 L20,10 C20,10.5522847 19.5522847,11 19,11 C18.4477153,11 18,10.5522847 18,10 L18,8 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
-													<path d="M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
-												</g>
-											</svg>
-                                            <!--end::Svg Icon-->
-										</span>Update Health Data</a>
+										<span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\keen\theme\demo4\dist/../src/media/svg/icons\Code\Plus.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24"/>
+                                                    <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10"/>
+                                                    <path d="M11,11 L11,7 C11,6.44771525 11.4477153,6 12,6 C12.5522847,6 13,6.44771525 13,7 L13,11 L17,11 C17.5522847,11 18,11.4477153 18,12 C18,12.5522847 17.5522847,13 17,13 L13,13 L13,17 C13,17.5522847 12.5522847,18 12,18 C11.4477153,18 11,17.5522847 11,17 L11,13 L7,13 C6.44771525,13 6,12.5522847 6,12 C6,11.4477153 6.44771525,11 7,11 L11,11 Z" fill="#000000"/>
+                                                </g>
+                                            </svg><!--end::Svg Icon-->
+                                        </span>Update Health Data</a>
                         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right p-0 m-0">
                             <!--begin::Navigation-->
                             <ul class="navi navi-hover">
                                 <li class="navi-header pb-1">
-                                    <span class="text-primary text-uppercase font-weight-bolder font-size-sm">Add new:</span>
+                                    <span class="text-primary text-uppercase font-weight-bolder font-size-sm">Add today's:</span>
                                 </li>
                                 <li class="navi-item">
-                                    <a href="#" class="navi-link">
-														<span class="navi-icon">
-															<i class="flaticon2-shopping-cart-1"></i>
-														</span> <span class="navi-text">Order</span> </a>
+                                    <a href="" class="navi-link" data-toggle="modal" data-target="#ModalWeight"> <span class="navi-text">Weight</span> </a>
+                                </li>
+                                <li class="navi-header pb-1">
+                                    <span class="text-primary text-uppercase font-weight-bolder font-size-sm">Adjust:</span>
                                 </li>
                                 <li class="navi-item">
-                                    <a href="#" class="navi-link">
-														<span class="navi-icon">
-															<i class="flaticon2-calendar-8"></i>
-														</span> <span class="navi-text">Event</span> <span class="navi-link-badge">
-															<span class="label label-light-danger label-inline font-weight-bold">new</span>
-														</span> </a>
+                                    <a href="" class="navi-link" data-toggle="modal" data-target="#ModalHeight"><span class="navi-text">Height</span> </a>
                                 </li>
-                                <li class="navi-item">
-                                    <a href="#" class="navi-link">
-														<span class="navi-icon">
-															<i class="flaticon2-graph-1"></i>
-														</span> <span class="navi-text">Report</span> </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a href="#" class="navi-link">
-														<span class="navi-icon">
-															<i class="flaticon2-rocket-1"></i>
-														</span> <span class="navi-text">Post</span> <span class="navi-link-badge">
-															<span class="label label-light-success label-rounded font-weight-bolder">5</span>
-														</span> </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a href="#" class="navi-link">
-														<span class="navi-icon">
-															<i class="flaticon2-writing"></i>
-														</span> <span class="navi-text">File</span> </a>
-                                </li>
+
                             </ul>
                             <!--end::Navigation-->
                         </div>
@@ -97,50 +71,6 @@
 											</svg>
                                             <!--end::Svg Icon-->
 										</span>View Health Report</a>
-                        <div class="dropdown-menu dropdown-menu-md dropdown-menu-right p-0 m-0">
-                            <!--begin::Navigation-->
-                            <ul class="navi navi-hover">
-                                <li class="navi-header font-weight-bold py-4">
-                                    <span class="font-size-lg">Choose Option:</span> <i class="flaticon2-information icon-md text-muted" data-toggle="tooltip" data-placement="right" title="Click to learn more..."></i>
-                                </li>
-                                <li class="navi-separator mb-3 opacity-70"></li>
-                                <li class="navi-item">
-                                    <a href="#" class="navi-link">
-														<span class="navi-text">
-															<span class="label label-xl label-inline label-light-primary">Orders</span>
-														</span> </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a href="#" class="navi-link">
-														<span class="navi-text">
-															<span class="label label-xl label-inline label-light-danger">Reports</span>
-														</span> </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a href="#" class="navi-link">
-														<span class="navi-text">
-															<span class="label label-xl label-inline label-light-warning">Tasks</span>
-														</span> </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a href="#" class="navi-link">
-														<span class="navi-text">
-															<span class="label label-xl label-inline label-light-success">Events</span>
-														</span> </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a href="#" class="navi-link">
-														<span class="navi-text">
-															<span class="label label-xl label-inline label-light-dark">Members</span>
-														</span> </a>
-                                </li>
-                                <li class="navi-separator mt-3 opacity-70"></li>
-                                <li class="navi-footer py-4">
-                                    <a class="btn btn-primary font-weight-bold btn-sm px-5" href="#"> <i class="ki ki-plus icon-sm"></i>Create</a>
-                                </li>
-                            </ul>
-                            <!--end::Navigation-->
-                        </div>
                     </div>
                     <!--end::Dropdown-->
                 </div>
@@ -152,7 +82,64 @@
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
         <div class="container">
-            <!--begin::Nav Panels Wizard 4-->
+            {% if current_user.is_authenticated and user.id == current_user.id %}
+                <!--begin::Modal-->
+                <div class="modal fade" id="ModalHeight" tabindex="-1" role="dialog" aria-labelledby="ModalHeight" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="ModalHeightLabel">Change my height</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <i aria-hidden="true" class="ki ki-close"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group mb-8">
+                                    <div class="alert alert-custom alert-default" role="alert">
+                                        <div class="alert-icon"><i class="flaticon-warning text-primary"></i></div>
+                                        <div class="alert-text">
+                                            This change will apply to all your record, and may cause statistics changes in your BMI as well as other data.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mb-1">
+                                    <input type="number" step="0.1" class="form-control" id="change_height"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                                <button type="button" onclick="change_height('{{ current_user.id }}','{{ url_for("profile.update_height") }}')" class="btn btn-primary font-weight-bold">Save change</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Modal-->
+                <!--begin::Modal-->
+                <div class="modal fade" id="ModalWeight" tabindex="-1" role="dialog" aria-labelledby="ModalWeight" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="ModalWeightLabel">Update today's weight</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <i aria-hidden="true" class="ki ki-close"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group mb-1">
+                                    <input type="number" step="0.1" class="form-control" id="update_weight"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                                <button type="button" onclick="update_weight('{{ current_user.id }}','{{ url_for("profile.update_weight") }}')" class="btn btn-primary font-weight-bold">Save update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Modal-->
+            {% endif %}
+                <!--begin::Nav Panels Wizard 4-->
             <div class="card card-custom gutter-b">
                 <div class="card-body">
                     <!--begin::Top-->
@@ -299,7 +286,7 @@
 													</span>
 												</span>
                             <div class="d-flex flex-column text-dark-75">
-                                <span class="font-weight-bolder font-size-sm">Current Weight</span> <span class="font-weight-bolder font-size-h5">{{ user.weight }}KG</span>
+                                <span class="font-weight-bolder font-size-sm">Current Weight</span> <span class="font-weight-bolder font-size-h5" id="weight_display">{{ user.weight }}KG</span>
                             </div>
                         </div>
                         <!--end: Item-->
@@ -321,7 +308,7 @@
 													</span>
 												</span>
                             <div class="d-flex flex-column text-dark-75">
-                                <span class="font-weight-bolder font-size-sm">Current Height</span> <span class="font-weight-bolder font-size-h5">{{ user.height }}CM</span>
+                                <span class="font-weight-bolder font-size-sm">Current Height</span> <span class="font-weight-bolder font-size-h5" id="height_display">{{ user.height }}CM</span>
                             </div>
                         </div>
                         <!--end: Item-->
@@ -343,7 +330,7 @@
 													</span>
 												</span>
                             <div class="d-flex flex-column text-dark-75">
-                                <span class="font-weight-bolder font-size-sm">Current BMI</span> <span class="font-weight-bolder font-size-h5">{{ (user.weight/((user.height/100)*(user.height/100)))|round(2) }}</span>
+                                <span class="font-weight-bolder font-size-sm">Current BMI</span> <span class="font-weight-bolder font-size-h5" id="BMI">{{ (user.weight/((user.height/100)*(user.height/100)))|round(2) }}</span>
                             </div>
                         </div>
                         <!--end: Item-->
@@ -351,8 +338,8 @@
                     <!--end::Bottom-->
                 </div>
             </div>
-            <!--end::Nav Panels Wizard 4-->
-            <!--begin::Row-->
+                <!--end::Nav Panels Wizard 4-->
+                <!--begin::Row-->
             {% if current_user.is_authenticated %}
                 <div class="row">
                     <div class="col-lg-6">
@@ -430,7 +417,7 @@
                         <!--end::Tables Widget 2-->
                     </div>
                 </div>
-            <!--end::Row-->
+                <!--end::Row-->
             {% endif %}
         </div>
         <!--end::Container-->
@@ -439,12 +426,13 @@
     {% include '_includes/_scripts.html' %}
     <script src="{{ url_for('static', filename='assets/js/profile.js') }}"></script>
     <script>
+    $(document).ajaxStop($.unblockUI);
         jQuery(document).ready(function () {
             {% if current_user.is_authenticated and current_user.get_id()|int == user.id|int  %}
                 loadFavourtieArticles("{{ url_for("article.get_favourite_list") }}")
             {% endif %}
             KTWidgets.init();
-            edit_profile('{{ current_user.get_id()|int == user.id|int }}', '{{ icon!=None }}', '{{ url_for('profile.delete_avatar', user_id=user.id) }}', '{{ url_for('profile.edit_profile') }}', {{ user.id }},'{{ url_for("account.check") }}')
+            edit_profile('{{ current_user.get_id()|int == user.id|int }}', '{{ icon!=None }}', '{{ url_for('profile.delete_avatar', user_id=user.id) }}', '{{ url_for('profile.edit_profile') }}', {{ user.id }}, '{{ url_for("account.check") }}')
         });
     </script>
     <!--end::Page Scripts-->

@@ -4229,7 +4229,6 @@ input[type="button"].btn-block {
 .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {
     border-color: #8950FC;
     background-color: #8950FC;
-    box-shadow:;
 }
 
 .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::after {
@@ -49928,11 +49927,11 @@ a.text-hover-dark:hover .svg-icon svg:hover g [fill],
 }
 
 .text-inverse-dark-75 {
-    color: !important;
+    color:#3F4254 !important;
 }
 
 .text-light-dark-75 {
-    color: !important;
+    color:#3F4254 !important;
 }
 
 a.text-hover-dark-75,
@@ -49989,11 +49988,11 @@ a.text-hover-dark-75:hover .svg-icon svg:hover g [fill],
 }
 
 .text-inverse-dark-65 {
-    color: !important;
+    color:5E6278 !important;
 }
 
 .text-light-dark-65 {
-    color: !important;
+    color:5E6278 !important;
 }
 
 a.text-hover-dark-65,
@@ -50172,11 +50171,11 @@ a.text-hover-dark-25:hover .svg-icon svg:hover g [fill],
 }
 
 .text-inverse-muted {
-    color: !important;
+    color:#B5B5C3 !important;
 }
 
 .text-light-muted {
-    color: !important;
+    color:#B5B5C3 !important;
 }
 
 a.text-hover-muted,
@@ -67253,7 +67252,7 @@ code {
 }
 
 .checkbox.checkbox-accent > span {
-    border-width: !important;
+    border-width:2px !important;
     border-style: solid !important;
     background-color: transparent !important;
 }

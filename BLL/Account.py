@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask_mail import Mail, Message
 from app import db, render_template, app
-from models import User, FavouriteArticles
+from models import *
 
 urlSerializer = URLSafeTimedSerializer('Thisisasecret!')
 app.config.from_pyfile('BLL/config.cfg')
@@ -146,6 +146,8 @@ def confirm_mail(token):
 		user.confirm = True
 		# as id is auto generated, the id get after generation, all other database should be generated after email confirmed
 		favourite_article = FavouriteArticles(userId=user.id)
+		body_profile = BodyProfile(updateDay=date.today(), weight=user.weight, userId=user.id)
+		db.session.add(body_profile)
 		db.session.add(favourite_article)
 		db.session.commit()
 		flash(u"You have successfully confirmed your email address!", "success")

@@ -18,6 +18,7 @@ def seeder_user(number):
 		            email=random_string_generator(10) + "@gmail.com",
 		            password=random_string_generator(12),
 		            age=random.randint(18, 60),
+		            gender=random.randint(0, 1),
 		            height=round(random.uniform(100.0, 200.0), 1),
 		            weight=round(random.uniform(35.0, 100.0), 1),
 		            confirm=True)
@@ -28,8 +29,10 @@ def seeder_user(number):
 	for i in users:
 		favourite_article = FavouriteArticles(userId=i.id)
 		body_profile = BodyProfile(updateDay=date.today(), weight=i.weight, userId=i.id)
+		health_profile = HealthProfile(userId=i.id)
 		db.session.add(favourite_article)
 		db.session.add(body_profile)
+		db.session.add(health_profile)
 		db.session.commit()
 
 
@@ -66,6 +69,8 @@ class User(UserMixin, db.Model):
 	email = db.Column(db.String(100))
 	password = db.Column(db.String(30), nullable=False)
 	age = db.Column(db.Integer)
+	# 0 for male, 1 for female
+	gender = db.Column(db.Integer, nullable=False)
 	height = db.Column(db.Float, nullable=True)
 	weight = db.Column(db.Float, nullable=True)
 	icon = db.Column(db.BLOB, nullable=True, default=None)
@@ -73,6 +78,8 @@ class User(UserMixin, db.Model):
 	confirm = db.Column(db.Boolean, default=False)
 	body_profile = db.relationship("BodyProfile", backref='user')
 	favourite_article = db.relationship("FavouriteArticles", backref='user')
+	health_profile = db.relationship("HealthProfile", backref='user')
+	diet_profile = db.relationship("DietProfile", backref='user')
 
 	def icon_exist(self):
 		if self.icon is None:
@@ -140,3 +147,24 @@ class FavouriteArticles(db.Model):
 		if self.articles != "" and str(article) in self.articles.split(","):
 			return True
 		return False
+
+
+class HealthProfile(db.Model):
+	__tablename__ = "health_profile"
+	userId = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True, nullable=False)
+	# 0 means no current target, 1 means weight loss, 2 means stay fit
+	target = db.Column(db.Integer, nullable=False, default=0)
+	# when target is weight loss, value means target weight, when target is stay fit, value is calories intake per day, else 0
+	targetValue = db.Column(db.Float, nullable=False, default=0)
+	allergy = db.Column(db.String, nullable=False, default="")
+
+
+class DietProfile(db.Model):
+	__tablename__ = "diet_profile"
+	id = db.Column(db.Integer, primary_key=True)
+	weight = db.Column(db.Integer, nullable=False)
+	calorie = db.Column(db.Integer, nullable=False)
+	userId = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	consumeDay = db.Column(db.Date, nullable=False)
+	# 0 - Not specified, 1 - Breakfast, 2 - Lunch, 3 - Dinner, 4 - supper
+	mealType = db.Column(db.Integer, nullable=False)

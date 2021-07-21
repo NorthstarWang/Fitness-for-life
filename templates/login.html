@@ -32,13 +32,10 @@
                 </style>
                 <!--begin::Logo-->
                 <a href="{{ url_for("main.index") }}"
-                   class="display5-lg font-weight-bolder flex-column-auto py-5 py-md-0 healthier-title">
-                    <img alt="Logo" src="{{ url_for('static', filename='assets/media/logos/icon.png') }}"
-                         class="h-65px"/>
-                </a>
+                   class="display5-lg font-weight-bolder flex-column-auto py-5 py-md-0 healthier-title"> <img alt="Logo" src="{{ url_for('static', filename='assets/media/logos/icon.png') }}"
+                                                                                                              class="h-65px"/> </a>
                 <!--end::Logo-->
-                <span class="text-muted font-weight-bold font-size-h4">New Here?
-						<a href="javascript:;" id="kt_login_signup" class="text-primary font-weight-bolder">Create an Account</a></span>
+                <span class="text-muted font-weight-bold font-size-h4">New Here? <a href="javascript:;" id="kt_login_signup" class="text-primary font-weight-bolder">Create an Account</a></span>
             </div>
         </div>
         <!--end::Header-->
@@ -58,18 +55,16 @@
                             <!--begin::Title-->
                             <!--begin::Form group-->
                             <div class="form-group">
-                                <label class="font-size-h6 font-weight-bolder text-dark">Username</label>
-                                <input class="form-control form-control-solid h-auto p-6 rounded-lg" type="text"
-                                       id="username_sign_in" name="username" autocomplete="off"/>
+                                <label class="font-size-h6 font-weight-bolder text-dark">Username</label> <input class="form-control form-control-solid h-auto p-6 rounded-lg" type="text"
+                                                                                                                 id="username_sign_in" name="username" autocomplete="off"/>
                             </div>
                             <!--end::Form group-->
                             <!--begin::Form group-->
                             <div class="form-group">
                                 <div class="d-flex justify-content-between mt-n5">
-                                    <label class="font-size-h6 font-weight-bolder text-dark pt-5">Password</label>
-                                    <a href="javascript:;"
-                                       class="text-primary font-size-h6 font-weight-bolder text-hover-primary pt-5"
-                                       id="kt_login_forgot">Forgot Password ?</a>
+                                    <label class="font-size-h6 font-weight-bolder text-dark pt-5">Password</label> <a href="javascript:;"
+                                                                                                                      class="text-primary font-size-h6 font-weight-bolder text-hover-primary pt-5"
+                                                                                                                      id="kt_login_forgot">Forgot Password ?</a>
                                 </div>
                                 <input class="form-control form-control-solid h-auto p-6 rounded-lg" type="password"
                                        id="password_sign_in" name="password" autocomplete="off"/>
@@ -78,14 +73,13 @@
                             <!--begin::Action-->
                             <div class="pb-lg-0 pb-5">
                                 <button type="button" id="kt_login_signin_submit"
-                                        class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3">Sign
-                                    In
+                                        class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3">Sign In
                                 </button>
                             </div>
                             <div class="pb-lg-0 pb-5 text-left">
                                 <a href="javascript:;"
-                                       class="text-primary font-size-h6 font-weight-bolder text-hover-primary pt-5"
-                                       id="kt_login_request">Resend confirmation link</a>
+                                   class="text-primary font-size-h6 font-weight-bolder text-hover-primary pt-5"
+                                   id="kt_login_request">Resend confirmation link</a>
                             </div>
                             <!--end::Action-->
                         </form>
@@ -100,10 +94,14 @@
                             <!--begin::Title-->
                             <div class="pb-13 pt-lg-0 pt-5">
                                 <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">Sign Up</h3>
-                                <p class="text-muted font-weight-bold font-size-h4">Enter your details to create your
-                                    account</p>
+                                <p class="text-muted font-weight-bold font-size-h4">Enter your details to create your account</p>
                             </div>
                             <!--end::Title-->
+                            <div class="form-group">
+                                <div class="radio-inline">
+                                    <label class="radio"> <input type="radio" name="gender" id="Male"/> <span></span> Male </label> <label class="radio"> <input type="radio" name="gender" id="Female"/> <span></span> Female </label>
+                                </div>
+                            </div>
                             <!--begin::Form group-->
                             <div class="form-group">
                                 <input class="form-control form-control-solid h-auto p-6 rounded-lg font-size-h6"
@@ -154,18 +152,14 @@
                             <!--begin::Form group-->
                             <div class="form-group">
                                 <div class="checkbox-inline">
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="agree"/>
-                                        <span></span>I Agree the
-                                        <a href="#" class="ml-1">terms and conditions</a>.</label>
+                                    <label class="checkbox"> <input type="checkbox" name="agree"/> <span></span>I Agree the <a href="#" class="ml-1">terms and conditions</a>.</label>
                                 </div>
                             </div>
                             <!--end::Form group-->
                             <!--begin::Form group-->
                             <div class="form-group d-flex flex-wrap pb-lg-0 pb-3">
                                 <button type="submit" id="kt_login_signup_submit"
-                                        class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-4">Sign
-                                    Up
+                                        class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-4">Sign Up
                                 </button>
                                 <button type="button" id="kt_login_signup_cancel"
                                         class="btn btn-light-primary font-weight-bolder font-size-h6 px-8 py-4 my-3">
@@ -184,10 +178,8 @@
                               id="kt_login_forgot_form">
                             <!--begin::Title-->
                             <div class="pb-13 pt-lg-0 pt-5">
-                                <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">Forgotten Password
-                                    ?</h3>
-                                <p class="text-muted font-weight-bold font-size-h4">Enter your username to reset your
-                                    password</p>
+                                <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">Forgotten Password ?</h3>
+                                <p class="text-muted font-weight-bold font-size-h4">Enter your username to reset your password</p>
                             </div>
                             <!--end::Title-->
                             <!--begin::Form group-->
@@ -219,8 +211,7 @@
                               id="kt_login_request_form">
                             <!--begin::Title-->
                             <div class="pb-13 pt-lg-0 pt-5">
-                                <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">Resend confirmation link
-                                    ?</h3>
+                                <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">Resend confirmation link ?</h3>
                                 <p class="text-muted font-weight-bold font-size-h4">Enter your username to send confirmation email</p>
                             </div>
                             <!--end::Title-->
@@ -255,8 +246,7 @@
     </div>
     <!--end::Login-->
 </div>
-<!--end::Main-->
-{% include '_includes/_scripts.html' %}
+<!--end::Main-->{% include '_includes/_scripts.html' %}
 </body>
 <!--end::Body-->
 <script src="{{ url_for('static', filename='assets/js/blockUI.js') }}"></script>
@@ -265,7 +255,7 @@
     $(document).ajaxStop($.unblockUI);
     // Class Initialization
     jQuery(document).ready(function () {
-        KTLogin('{{ url_for('account.login_validation') }}',"{{ url_for("main.index",notify="You have successfully logged in !") }}",'{{ url_for('account.check') }}','{{ url_for('account.login_insertion') }}','{{ url_for('account.mail') }}','{{ url_for("account.resend_mail") }}','{{ url_for("account.send_changepassword") }}');
+        KTLogin('{{ url_for('account.login_validation') }}', "{{ url_for("main.index",notify="You have successfully logged in !") }}", '{{ url_for('account.check') }}', '{{ url_for('account.login_insertion') }}', '{{ url_for('account.mail') }}', '{{ url_for("account.resend_mail") }}', '{{ url_for("account.send_changepassword") }}');
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for icon, text in messages %}

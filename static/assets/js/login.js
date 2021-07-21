@@ -160,6 +160,13 @@ function KTLogin(login_validation, notify_url, account_check_url, login_insert_u
                             }
                         }
                     },
+                    gender:{
+                        validators: {
+                            notEmpty: {
+                                message: 'Your gender is required'
+                            }
+                        }
+                    },
                     cpassword: {
                         validators: {
                             notEmpty: {
@@ -232,6 +239,7 @@ function KTLogin(login_validation, notify_url, account_check_url, login_insert_u
                         opacity: 0.1,
                         message: 'Signing up...'
                     });
+                    var gender = document.getElementById("Male").checked?"Male":"Female"
                     $.ajax({
                         url: login_insert_url,
                         type: 'POST',
@@ -242,6 +250,7 @@ function KTLogin(login_validation, notify_url, account_check_url, login_insert_u
                             age: $('#age').val(),
                             height: $('#height').val(),
                             weight: $('#weight').val(),
+                            gender: gender
                         },
                         success: function (data) {
                             $.ajax({

@@ -2,7 +2,7 @@ from flask import request, jsonify, url_for, flash, redirect, Blueprint
 from flask_login import login_user, logout_user, login_required, current_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask_mail import Mail, Message
-from app import db, render_template, app
+from app import render_template, app
 from models import *
 
 urlSerializer = URLSafeTimedSerializer('Thisisasecret!')
@@ -32,7 +32,8 @@ def login_insertion():
 	weight = float(request.form['weight'])
 	height = float(request.form['height'])
 	password = str(request.form['password'])
-	user = User(username=username, email=email, password=password, age=age, height=height, weight=weight)
+	gender = 0 if str(request.form['gender']) == "Male" else 1
+	user = User(username=username, email=email, password=password, age=age, height=height, weight=weight, gender=gender)
 	# insert new data into database
 	db.session.add(user)
 	db.session.commit()

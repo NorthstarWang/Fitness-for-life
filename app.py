@@ -27,6 +27,7 @@ from models import seeder_user, seeder_article
 from BLL.Account import account
 from BLL.User import profile
 from BLL.Article import article
+from BLL.Advisor import advisor
 
 
 @login_manager.user_loader
@@ -56,6 +57,7 @@ app.register_blueprint(main)
 app.register_blueprint(profile)
 app.register_blueprint(account)
 app.register_blueprint(article)
+app.register_blueprint(advisor)
 
 # db.drop_all()
 # db.create_all()

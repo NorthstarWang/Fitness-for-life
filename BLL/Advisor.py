@@ -22,12 +22,12 @@ def calorie_intake_calculation():
 
 @advisor.route("/<string:monitor>")
 @login_required
-def health_advisor_index(monitor):
-	target_status = HealthProfile.query.filter_by(userId=current_user.id).first().target
+def health_advisor_index(monitor, notify=None):
+	health_profile = HealthProfile.query.filter_by(userId=current_user.id).first()
 	if monitor == "diet":
-		return render_template("Advisor/advisorDiet.html", target_status=target_status)
+		return render_template("Advisor/advisorDiet.html", health_profile=health_profile, notify=notify)
 	else:
-		return render_template("Advisor/advisorWeight.html", target_status=target_status)
+		return render_template("Advisor/advisorWeight.html", health_profile=health_profile, notify=notify)
 
 
 @advisor.route("/target/set", methods=['Get', 'Post'])
@@ -44,4 +44,4 @@ def set_target():
 		health_profile.targetValue = calorie_intake_calculation()
 	# calorie is different for individual thus calculate base on age, weight, gender
 	db.session.commit()
-	return 'success'
+	return "success"

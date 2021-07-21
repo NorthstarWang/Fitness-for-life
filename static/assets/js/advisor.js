@@ -1,28 +1,14 @@
-function set_target(url, target_weight) {
+function set_target(url, target_weight=0, endpoint) {
     if (document.getElementById("stay_fit").checked) {
         $.ajax({
             url: url,
             type: "POST",
             data: {
-                target: "stay_fit",
+                target: "stay_fit"
             },
-            success: function (result) {
-                if (result === "success") {
-                    window.location.reload()
-                } else {
-                    $.notify("Error Occurred, please try again later.", {
-                        placement: {
-                            from: "top",
-                            align: "right"
-                        },
-                        delay: 1000,
-                        timer: 4000,
-                        animate: {
-                            enter: 'animate__animated animate__bounceInRight',
-                            exit: 'animate__animated animate__bounceOutRight'
-                        },
-                        type: "warning"
-                    })
+            success:function (result){
+                if(result==="success"){
+                    window.location.href = endpoint
                 }
             }
         })
@@ -32,25 +18,11 @@ function set_target(url, target_weight) {
             type: "POST",
             data: {
                 target: "weight_loss",
-                weight: target_weight
+                weight: target_weight,
             },
-            success: function (result) {
-                if (result === "success") {
-                    window.location.reload()
-                } else {
-                    $.notify("Error Occurred, please try again later.", {
-                        placement: {
-                            from: "top",
-                            align: "right"
-                        },
-                        delay: 1000,
-                        timer: 4000,
-                        animate: {
-                            enter: 'animate__animated animate__bounceInRight',
-                            exit: 'animate__animated animate__bounceOutRight'
-                        },
-                        type: "warning"
-                    })
+            success:function (result){
+                if(result==="success"){
+                    window.location.href = endpoint
                 }
             }
         })

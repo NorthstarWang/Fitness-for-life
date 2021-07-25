@@ -45,26 +45,6 @@
                         {% if health_profile.target == 0 %}Set my health target{% else %}Change my health target{% endif %}</a>
                 </div>
                 <!--end::Dropdown-->
-                <!--begin::Dropdown-->
-                <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="top">
-                    <a href="#" class="btn btn-fixed-height btn-primary font-weight-bolder font-size-sm px-5 my-1"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span
-                            class="svg-icon svg-icon-md">
-                        <!--begin::Svg Icon | path:assets/media/svg/icons/Files/File.svg-->
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                             height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <polygon points="0 0 24 0 24 24 0 24"/>
-                                <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z"
-                                      fill="#000000" fill-rule="nonzero" opacity="0.3"/>
-                                <rect fill="#000000" x="6" y="11" width="9" height="2" rx="1"/>
-                                <rect fill="#000000" x="6" y="15" width="5" height="2" rx="1"/>
-                            </g>
-                        </svg>
-                        <!--end::Svg Icon-->
-                    </span>View Weight Report</a>
-                </div>
-                <!--end::Dropdown-->
             </div>
             <!--end::Toolbar-->
         </div>
@@ -73,7 +53,34 @@
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
         <div class="container">
-            <!--begin::Modal-->
+            {% if current_user.exerciseFrequency == None %}
+                <!-- Modal-->
+                <div class="modal fade" id="exerciseFrequency" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exerciseFrequency" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exerciseFrequencyLabel">Before we start</h5>
+                            </div>
+                            <div class="modal-body">
+                                <div class="m-4 mb-6 text-center text-dark-50 font-weight-bold font-size-lg">We wish to know your frequency of exercising each week, so that our recommendation and calculation will be more accurate.</div>
+                                <div class="form-group">
+                                    <label for="exerciseFreq_dropdown">How often do you exercise?</label> <select class="form-control" id="exerciseFreq_dropdown">
+                                    <option value="0">I do not exercise</option>
+                                    <option value="1">I exercise for more than an hour 1-2 times a week(1-4 hours in total per week)</option>
+                                    <option value="2">I exercise for more than an hour 3-4 times a week(4-8 hours in total per week)</option>
+                                    <option value="3">I exercise for more than an hour 5-7 times a week(8-12 hours in total per week)</option>
+                                    <option value="4">I exercise more than all options above(More than 12 hours in total per week)</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" onclick="setExerciseFrequency('{{ url_for('advisor.set_frequency') }}','{{ url_for("advisor.health_advisor_index", monitor="weight") }}')" class="btn btn-primary font-weight-bold">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+                <!--begin::Modal-->
             <div class="modal fade" id="chooseTarget" tabindex="-1" role="dialog" aria-labelledby="chooseTarget"
                  aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -122,7 +129,7 @@
                     </div>
                 </div>
             </div>
-            <!--end::Modal-->
+                <!--end::Modal-->
             {% if health_profile.target == 0 %}
                 <div class="card card-custom gutter-b">
                     <div class="card-body d-flex align-items-center py-5 py-lg-13">
@@ -161,7 +168,110 @@
                         <!--end::Description-->
                     </div>
                 </div>
+            {% else %}
+                <div class="card card-custom gutter-b">
+                    <div class="card-body d-flex align-items-center py-5 py-lg-13">
+                        <!--begin::Icon-->
+                        <div class="d-flex flex-center position-relative ml-5 mr-15 ml-lg-9 mr-lg-15">
+                            <span class="svg-icon svg-icon-5x svg-icon-primary position-absolute opacity-15">
+                                <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-polygon.svg-->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="70px" height="70px" viewBox="0 0 70 70"
+                                     fill="none">
+                                    <g stroke="none" stroke-width="1" fill-rule="evenodd">
+                                        <path d="M28 4.04145C32.3316 1.54059 37.6684 1.54059 42 4.04145L58.3109 13.4585C62.6425 15.9594 65.3109 20.5812 65.3109 25.5829V44.4171C65.3109 49.4188 62.6425 54.0406 58.3109 56.5415L42 65.9585C37.6684 68.4594 32.3316 68.4594 28 65.9585L11.6891 56.5415C7.3575 54.0406 4.68911 49.4188 4.68911 44.4171V25.5829C4.68911 20.5812 7.3575 15.9594 11.6891 13.4585L28 4.04145Z"
+                                              fill="#000000"></path>
+                                    </g>
+                                </svg>
+                                <!--end::Svg Icon-->
+                            </span> <span class="svg-icon svg-icon-2x svg-icon-primary position-absolute">
+                            <!--begin::Svg Icon | path:assets/media/svg/icons/Tools/Compass.svg-->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24"></rect>
+                                    <path d="M7.07744993,12.3040451 C7.72444571,13.0716094 8.54044565,13.6920474 9.46808594,14.1079953 L5,23 L4.5,18 L7.07744993,12.3040451 Z M14.5865511,14.2597864 C15.5319561,13.9019016 16.375416,13.3366121 17.0614026,12.6194459 L19.5,18 L19,23 L14.5865511,14.2597864 Z M12,3.55271368e-14 C12.8284271,3.53749572e-14 13.5,0.671572875 13.5,1.5 L13.5,4 L10.5,4 L10.5,1.5 C10.5,0.671572875 11.1715729,3.56793164e-14 12,3.55271368e-14 Z"
+                                          fill="#000000" opacity="0.3"></path>
+                                    <path d="M12,10 C13.1045695,10 14,9.1045695 14,8 C14,6.8954305 13.1045695,6 12,6 C10.8954305,6 10,6.8954305 10,8 C10,9.1045695 10.8954305,10 12,10 Z M12,13 C9.23857625,13 7,10.7614237 7,8 C7,5.23857625 9.23857625,3 12,3 C14.7614237,3 17,5.23857625 17,8 C17,10.7614237 14.7614237,13 12,13 Z"
+                                          fill="#000000" fill-rule="nonzero"></path>
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
+                        </div>
+                        <!--end::Icon-->
+                        <!--begin::Description-->
+                        <div class="m-0 text-dark-50 font-weight-bold font-size-lg">Hi! {{ current_user.id }}. Based on your age, gender and weight, your basal metabolic rate is in the range of <strong
+                                class="text-info">{{ calorie_limit[0] - calorie_limit[1] }} - {{ calorie_limit[0] + calorie_limit[1] }} Kcal per day</strong>, our recommendation on your diet as well as exercises to take will also be based on this data.
+                        </div>
+                        <!--end::Description-->
+                    </div>
+                </div>
             {% endif %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card card-custom card-stretch shadow-lg gutter-b">
+                        <div class="card-header card-header-tabs-line">
+                            <div class="card-title">
+                                <h3 class="card-label">My Weight Statistics</h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <ul class="nav nav-tabs nav-bold nav-tabs-line">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#stat_week">Week</a>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Month</a>
+                                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                            <a class="dropdown-item" data-toggle="tab" href="#stat_month">Feb</a> <a class="dropdown-item" data-toggle="tab" href="#stat_month">Jan</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" data-toggle="tab" href="#stat_month">Dec, 2020</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="stat_week" role="tabpanel"></div>
+                                <div class="tab-pane fade" id="stat_month" role="tabpanel"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    {% if current_user.exerciseFrequency != None %}
+                        <div class="card card-custom card-stretch shadow-lg gutter-b">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h3 class="card-label">Recommend exercise</h3>
+                                </div>
+                                <div class="card-toolbar">
+                                    <ul class="nav nav-bold nav-pills">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" data-toggle="tab" href="#exercise_beginner">Beginner</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#exercise_intermediate">Intermediate</a>
+                                        </li>
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link" data-toggle="tab" href="#exercise_advance">Advance</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="exercise_beginner" role="tabpanel" aria-labelledby="exercise_beginner"></div>
+                                    <div class="tab-pane fade" id="exercise_intermediate" role="tabpanel" aria-labelledby="exercise_intermediate"></div>
+                                    <div class="tab-pane fade" id="exercise_advance" role="tabpanel" aria-labelledby="exercise_advance"></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
     <!--begin::Page Scripts(used by this page)-->{% include '_includes/_scripts.html' %}
@@ -169,9 +279,16 @@
     <script>
         $(document).ajaxStop($.unblockUI);
         jQuery(document).ready(function () {
+            {% if current_user.exerciseFrequency == None %}
+                //show modal for user to choose their exercise frequency per week
+                $('#exerciseFrequency').modal('show')
+            {% endif %}
             {% if request.args.get("notify") != None %}
+                //if there is any notification to show
                 {% if request.args.get("notify") == "set" %}
-                    $.notify("You have successfully set your target! Now let's try out some new features.", {
+                    notify_set()
+                {% else %}
+                    $.notify("{{ request.args.get("notify") | string }}", {
                         placement: {
                             from: "top",
                             align: "right"
@@ -187,76 +304,15 @@
                 {% endif %}
             {% endif %}
             {% if health_profile.target==0 %}
+                //if user has no target yet
                 var targetWeight = 0
             {% elif health_profile.target==1 %}
+                //if user already set a target
                 var targetWeight = {{ health_profile.targetValue }};
                 $("#weightLossInput").val(targetWeight)
                 document.getElementById("weightToLoseText").innerText = `You need to lose ${weightToLose({{ current_user.weight }}, targetWeight)}KG to achieve your goal.`
             {% endif %}
-
-            $("#weightLossInput").on("input", function () {
-                //targetWeight determine target weight, to REAL weight to loss, calculate by function weightToLoss
-                targetWeight = parseInt($(this).val())
-                var weightNeedToLose = weightToLose({{ current_user.weight }}, targetWeight)
-                document.getElementById("weightToLoseText").innerText = `You need to lose ${weightNeedToLose}KG to achieve your goal.`
-            })
-
-            $("#setTargetSubmit").on("click", function () {
-                if (document.getElementById("weight_loss").checked) {
-                    if (document.getElementById("weightLossInput").value !== "") {
-                        if (targetWeight >= {{ current_user.weight }}) {
-                            $.notify("Your target weight need to be smaller than your current weight!", {
-                                placement: {
-                                    from: "top",
-                                    align: "right"
-                                },
-                                delay: 1000,
-                                timer: 4000,
-                                animate: {
-                                    enter: 'animate__animated animate__bounceInRight',
-                                    exit: 'animate__animated animate__bounceOutRight'
-                                },
-                                type: "warning"
-                            })
-                        } else if (targetWeight <= 35) {
-                            $.notify("Your target weight is too low!", {
-                                placement: {
-                                    from: "top",
-                                    align: "right"
-                                },
-                                delay: 1000,
-                                timer: 4000,
-                                animate: {
-                                    enter: 'animate__animated animate__bounceInRight',
-                                    exit: 'animate__animated animate__bounceOutRight'
-                                },
-                                type: "warning"
-                            })
-                        } else {
-                            set_target("{{ url_for("advisor.set_target") }}", targetWeight, '{{ url_for("advisor.health_advisor_index",monitor="weight",notify="set") }}')
-                        }
-                    } else {
-                        $.notify("Please key in value!", {
-                            placement: {
-                                from: "top",
-                                align: "right"
-                            },
-                            delay: 1000,
-                            timer: 4000,
-                            animate: {
-                                enter: 'animate__animated animate__bounceInRight',
-                                exit: 'animate__animated animate__bounceOutRight'
-                            },
-                            type: "danger"
-                        })
-                    }
-                } else {
-                    console.log(true)
-                    set_target("{{ url_for("advisor.set_target") }}", 0, '{{ url_for("advisor.health_advisor_index",monitor="weight",notify="set")}}')
-                }
-
-            })
-
+            advisorWeightOnReady({{ current_user.weight }}, "{{ url_for("advisor.set_target") }}", '{{ url_for("advisor.health_advisor_index",monitor="weight",notify="set") }}')
         });
     </script>
 {% endblock %}

@@ -76,6 +76,8 @@ class User(UserMixin, db.Model):
 	icon = db.Column(db.BLOB, nullable=True, default=None)
 	description = db.Column(db.String(200), nullable=True, default="")
 	confirm = db.Column(db.Boolean, default=False)
+	# indicate the user's fitness behaviour, 0 is sedentary, 1 is lightly, 2 is Moderate, 3 is Very active, 4 is Extreme
+	exerciseFrequency = db.Column(db.Integer, nullable=True)
 	body_profile = db.relationship("BodyProfile", backref='user')
 	favourite_article = db.relationship("FavouriteArticles", backref='user')
 	health_profile = db.relationship("HealthProfile", backref='user')

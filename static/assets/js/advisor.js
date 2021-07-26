@@ -186,19 +186,7 @@ function loadWeekChart(weekChartUrl, targetWeight) {
         type: "POST",
         dataType: "json",
         success: function (data) {
-            var pastWeekDate = []
-            var current_date = new Date()
-            //current day are also included
-            pastWeekDate.push((current_date.getDate() + "/" + current_date.getMonth() + "/" + current_date.getFullYear()).toString())
-            for (var i = 0; i < 7; i++) {
-                //get the days by subtracting today's day
-                var temp_date = new Date(current_date.getTime() - i * 24 * 60 * 60 * 1000)
-                var label = temp_date.getDate() + "/" + temp_date.getMonth() + "/" + temp_date.getFullYear()
-                pastWeekDate.push(label.toString())
-            }
-            // the array need to be reversed so that the latest day will be the last to show
-            pastWeekDate.reverse()
-
+            console.log(data)
             const apexChart = "#week_chart";
             var options = {
                 series: [{
@@ -212,15 +200,20 @@ function loadWeekChart(weekChartUrl, targetWeight) {
                         enabled: false
                     }
                 },
-                markers: {
-                    size: 1,
-                },
                 dataLabels: {
                     enabled: false
                 },
                 stroke: {
                     curve: 'straight',
                     width: 1
+                },
+                plotOptions: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                },
+                markers: {
+                    size: 7
                 },
                 grid: {
                     row: {
@@ -229,7 +222,7 @@ function loadWeekChart(weekChartUrl, targetWeight) {
                     },
                 },
                 xaxis: {
-                    categories: pastWeekDate
+                    type: "datetime"
                 },
                 colors: ["#6993FF"],
                 noData: {
@@ -267,24 +260,24 @@ function loadWeekChart(weekChartUrl, targetWeight) {
 
 function getMonth(retreiveUrl, recordUrl) {
     //retreive months that user had updated their weight
-    KTApp.block("#monthList",{
+    KTApp.block("#monthList", {
         overlayColor: '#000000',
         state: 'primary',
         opacity: 0.3
     })
     $.ajax({
-        url:retreiveUrl,
+        url: retreiveUrl,
         dataType: "json",
-        type:"POST",
+        type: "POST",
         success: function (data) {
             document.getElementById("monthList").innerHTML = ""
             //return month in list
-            if (data.length===0){
+            if (data.length === 0) {
                 $('#monthList').append('<p class="text-center">No record</p>')
             }
             for (let i = 0; i < data.length; i++) {
                 //append to month list dropdown
-                $('#monthList').append('<a class="dropdown-item" data-toggle="tab" onclick="getMonthRecord(\''+ data[i] +'\',\''+ recordUrl +'\')" href="#stat_month">'+ data[i].toString() +'</a>')
+                $('#monthList').append('<a class="dropdown-item" data-toggle="tab" onclick="getMonthRecord(\'' + data[i] + '\',\'' + recordUrl + '\')" href="#stat_month">' + data[i].toString() + '</a>')
             }
             KTApp.unblock("#monthList")
         }
@@ -292,7 +285,7 @@ function getMonth(retreiveUrl, recordUrl) {
 }
 
 function getMonthRecord(data, retreiveUrl) {
-    KTApp.block("#weightChartCard",{
+    KTApp.block("#weightChartCard", {
         overlayColor: '#000000',
         state: 'primary',
         opacity: 0.3
@@ -300,16 +293,11 @@ function getMonthRecord(data, retreiveUrl) {
     $.ajax({
         url: retreiveUrl,
         data: {
-            month:data
+            month: data
         },
-        type:"POST",
-        dataType:"json",
-        success:function (result) {
-            var label = []
-            for (let i = 0; i < result; i++) {
-                label.append(result["x"])
-            }
-
+        type: "POST",
+        dataType: "json",
+        success: function (result) {
             const apexChart = "#month_chart";
             var options = {
                 series: [{
@@ -322,9 +310,6 @@ function getMonthRecord(data, retreiveUrl) {
                     zoom: {
                         enabled: false
                     }
-                },
-                markers: {
-                    size: 1,
                 },
                 dataLabels: {
                     enabled: false
@@ -339,8 +324,16 @@ function getMonthRecord(data, retreiveUrl) {
                         opacity: 0.5
                     },
                 },
+                plotOptions: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                },
                 xaxis: {
-                    categories: label
+                    type: "datetime"
+                },
+                markers: {
+                    size: 7
                 },
                 colors: ["#6993FF"],
                 noData: {

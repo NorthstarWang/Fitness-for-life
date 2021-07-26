@@ -13,7 +13,7 @@ advisor = Blueprint("advisor", __name__, url_prefix="/advisor")
 def format_axis_data(data):
 	axis_data = []
 	for i in data:
-		temp_date = str(i.updateDay.day) + "/" + str(i.updateDay.month) + "/" + str(i.updateDay.year)
+		temp_date = i.updateDay
 		temp_point = {"x": temp_date, "y": i.weight}
 		axis_data.append(temp_point)
 	return jsonify(axis_data)

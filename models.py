@@ -1,3 +1,4 @@
+import datetime
 from datetime import date
 import math
 import random
@@ -29,7 +30,11 @@ def seeder_user(number):
 	for i in users:
 		favourite_article = FavouriteArticles(userId=i.id)
 		body_profile = BodyProfile(updateDay=date.today(), weight=i.weight, userId=i.id)
+		past_bprofile = BodyProfile(updateDay=date.today() - datetime.timedelta(days=6), weight=i.weight, userId=i.id)
+		past_bprofile_1 = BodyProfile(updateDay=date.today() - datetime.timedelta(days=3), weight=i.weight, userId=i.id)
 		health_profile = HealthProfile(userId=i.id)
+		db.session.add(past_bprofile)
+		db.session.add(past_bprofile_1)
 		db.session.add(favourite_article)
 		db.session.add(body_profile)
 		db.session.add(health_profile)

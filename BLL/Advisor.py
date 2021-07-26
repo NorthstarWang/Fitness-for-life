@@ -1,5 +1,8 @@
-from flask import Blueprint, render_template, request
+import datetime
+
+from flask import Blueprint, render_template, request, jsonify
 from flask_login import login_required, current_user
+from sqlalchemy import and_
 
 from app import db
 from models import *
@@ -41,7 +44,7 @@ def calorie_intake_calculation():
 			return [round(9.082 * weight + 658.5), 108]
 
 
-@advisor.route("/<string:monitor>")
+@advisor.route("/<string:monitor>", methods=['Get', 'Post'])
 @login_required
 def health_advisor_index(monitor, notify=None):
 	health_profile = HealthProfile.query.filter_by(userId=current_user.id).first()
@@ -75,3 +78,16 @@ def set_target():
 	# calorie is different for individual thus calculate base on age, weight, gender
 	db.session.commit()
 	return "success"
+
+
+@advisor.route("/chart/week/get", methods=['Get', 'Post'])
+@login_required
+def get_week_chart():
+	current = date.today()
+	data = BodyProfile.query.filter(and_(BodyProfile.updateDay > current - datetime.timedelta(weeks=1), (BodyProfile.userId == current_user.id))).all()
+	axis_data = []
+	for i in data:
+		temp_date = str(i.updateDay.day) + "/" + str(i.updateDay.month) + "/" + str(i.updateDay.year)
+		temp_point = {"x": temp_date, "y": i.weight}
+		axis_data.append(temp_point)
+	return jsonify(axis_data)

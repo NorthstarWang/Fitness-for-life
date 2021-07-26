@@ -173,3 +173,95 @@ function setExerciseFrequency(submitUrl, redirectUrl) {
         })
     }
 }
+
+function loadWeekChart(weekChartUrl, targetWeight) {
+    KTApp.block('#weightChartCard', {
+        overlayColor: '#000000',
+        state: 'primary',
+        opacity: 0.3,
+        message: 'Loading...'
+    })
+    $.ajax({
+        url: weekChartUrl,
+        type: "POST",
+        dataType: "json",
+        success: function (data) {
+            console.log(data)
+            var pastWeekDate = []
+            var current_date = new Date()
+            //current day are also included
+            pastWeekDate.push((current_date.getDate() + "/" + current_date.getMonth() + "/" + current_date.getFullYear()).toString())
+            for (var i = 0; i < 7; i++) {
+                //get the days by subtracting today's day
+                var temp_date = new Date(current_date.getTime() - i * 24 * 60 * 60 * 1000)
+                var label = temp_date.getDate() + "/" + temp_date.getMonth() + "/" + temp_date.getFullYear()
+                pastWeekDate.push(label.toString())
+            }
+            // the array need to be reversed so that the latest day will be the last to show
+            pastWeekDate.reverse()
+
+            const apexChart = "#week_chart";
+            var options = {
+                series: [{
+                    name: "Weight(Kilograms)",
+                    data: data
+                }],
+                chart: {
+                    height: 400,
+                    type: 'line',
+                    zoom: {
+                        enabled: false
+                    }
+                },
+                markers: {
+                    size: 1,
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'straight',
+                    width: 1
+                },
+                grid: {
+                    row: {
+                        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                        opacity: 0.5
+                    },
+                },
+                xaxis: {
+                    categories: pastWeekDate
+                },
+                colors: ["#6993FF"],
+                noData: {
+                    text: 'Loading...'
+                }
+            };
+
+            //if user choose to lose weight instead of stay fit, there is a line to state the target weight
+            if (targetWeight !== 0) {
+                options.annotations = {
+                    yaxis: [{
+                        y: targetWeight,
+                        borderColor: '#00E396',
+                        label: {
+                            borderColor: '#B3F7CA',
+                            style: {
+                                fontSize: '10px',
+                                color: '#fff',
+                                background: '#00E396',
+                            },
+                            text: 'Target Weight',
+                        }
+                    }]
+                }
+            }
+
+            //render chart
+            var chart = new ApexCharts(document.querySelector(apexChart), options);
+            chart.render();
+
+            KTApp.unblock('#weightChartCard')
+        }
+    })
+}

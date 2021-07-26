@@ -186,7 +186,6 @@ function loadWeekChart(weekChartUrl, targetWeight) {
         type: "POST",
         dataType: "json",
         success: function (data) {
-            console.log(data)
             var pastWeekDate = []
             var current_date = new Date()
             //current day are also included
@@ -256,6 +255,98 @@ function loadWeekChart(weekChartUrl, targetWeight) {
                     }]
                 }
             }
+
+            //render chart
+            var chart = new ApexCharts(document.querySelector(apexChart), options);
+            chart.render();
+
+            KTApp.unblock('#weightChartCard')
+        }
+    })
+}
+
+function getMonth(retreiveUrl, recordUrl) {
+    //retreive months that user had updated their weight
+    KTApp.block("#monthList",{
+        overlayColor: '#000000',
+        state: 'primary',
+        opacity: 0.3
+    })
+    $.ajax({
+        url:retreiveUrl,
+        dataType: "json",
+        type:"POST",
+        success: function (data) {
+            document.getElementById("monthList").innerHTML = ""
+            //return month in list
+            if (data.length===0){
+                $('#monthList').append('<p class="text-center">No record</p>')
+            }
+            for (let i = 0; i < data.length; i++) {
+                //append to month list dropdown
+                $('#monthList').append('<a class="dropdown-item" data-toggle="tab" onclick="getMonthRecord(\''+ data[i] +'\',\''+ recordUrl +'\')" href="#stat_month">'+ data[i].toString() +'</a>')
+            }
+            KTApp.unblock("#monthList")
+        }
+    })
+}
+
+function getMonthRecord(data, retreiveUrl) {
+    KTApp.block("#weightChartCard",{
+        overlayColor: '#000000',
+        state: 'primary',
+        opacity: 0.3
+    })
+    $.ajax({
+        url: retreiveUrl,
+        data: {
+            month:data
+        },
+        type:"POST",
+        dataType:"json",
+        success:function (result) {
+            var label = []
+            for (let i = 0; i < result; i++) {
+                label.append(result["x"])
+            }
+
+            const apexChart = "#month_chart";
+            var options = {
+                series: [{
+                    name: "Weight(Kilograms)",
+                    data: result
+                }],
+                chart: {
+                    height: 400,
+                    type: 'line',
+                    zoom: {
+                        enabled: false
+                    }
+                },
+                markers: {
+                    size: 1,
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'straight',
+                    width: 1
+                },
+                grid: {
+                    row: {
+                        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                        opacity: 0.5
+                    },
+                },
+                xaxis: {
+                    categories: label
+                },
+                colors: ["#6993FF"],
+                noData: {
+                    text: 'Loading...'
+                }
+            };
 
             //render chart
             var chart = new ApexCharts(document.querySelector(apexChart), options);

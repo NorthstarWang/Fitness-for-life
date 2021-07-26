@@ -10,6 +10,15 @@ from models import *
 advisor = Blueprint("advisor", __name__, url_prefix="/advisor")
 
 
+def format_axis_data(data):
+	axis_data = []
+	for i in data:
+		temp_date = str(i.updateDay.day) + "/" + str(i.updateDay.month) + "/" + str(i.updateDay.year)
+		temp_point = {"x": temp_date, "y": i.weight}
+		axis_data.append(temp_point)
+	return jsonify(axis_data)
+
+
 def calorie_intake_calculation():
 	age = current_user.age
 	weight = float(current_user.weight)
@@ -85,9 +94,34 @@ def set_target():
 def get_week_chart():
 	current = date.today()
 	data = BodyProfile.query.filter(and_(BodyProfile.updateDay > current - datetime.timedelta(weeks=1), (BodyProfile.userId == current_user.id))).all()
-	axis_data = []
+	return format_axis_data(data)
+
+
+@advisor.route("/chart/month/get", methods=['Get', 'Post'])
+@login_required
+def get_month_chart():
+	month = str(request.form["month"])
+	# reformat the month from string back to date time
+	date_month = datetime.datetime.strptime(month, "%b %Y")
+	date_next_month = datetime.datetime(month=date_month.month+1, year=date_month.year, day=1)
+	data = BodyProfile.query.filter(and_(BodyProfile.updateDay >= date_month), (BodyProfile.updateDay < date_next_month), (BodyProfile.userId == current_user.id)).all()
+	return format_axis_data(data)
+
+
+@advisor.route("/record/month/get", methods=['Get', 'Post'])
+@login_required
+def get_month_record():
+	current = date.today()
+	data = BodyProfile.query.filter_by(userId=current_user.id).order_by(BodyProfile.updateDay).all()
+	month = []
+	curr_month = None
 	for i in data:
-		temp_date = str(i.updateDay.day) + "/" + str(i.updateDay.month) + "/" + str(i.updateDay.year)
-		temp_point = {"x": temp_date, "y": i.weight}
-		axis_data.append(temp_point)
-	return jsonify(axis_data)
+		# sort month
+		if curr_month is None or (curr_month.month != i.updateDay.month or curr_month.year != i.updateDay.year):
+			# short format of month
+			temp_format = i.updateDay.strftime("%b %Y")
+			curr_month = i.updateDay
+			month.append(str(temp_format))
+		else:
+			continue
+	return jsonify(month)

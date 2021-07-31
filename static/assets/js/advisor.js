@@ -362,9 +362,9 @@ function loadExercise() {
         type: "POST",
         success: function (result) {
             for (let i = 0; i < result[0].length; i++) {
-                document.getElementById("beginner_table").innerHTML += "<tr><td class=\"pl-0\"><p class=\"text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg\">"+ result[0][i]["name"] +"</p></td><td class=\"text-right\"><span class=\"text-dark-75 font-weight-bolder d-block font-size-lg\">"+ result[0][i]["calorie"] +"Kcal</span></td><td class=\"text-right\"><span class=\"text-muted font-weight-500\">"+ sortSportCategory(result[0][i]["category"]) +"</span></td></tr>"
-                document.getElementById("intermediate_table").innerHTML += "<tr><td class=\"pl-0\"><p class=\"text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg\">"+ result[1][i]["name"] +"</p></td><td class=\"text-right\"><span class=\"text-dark-75 font-weight-bolder d-block font-size-lg\">"+ result[1][i]["calorie"] +"Kcal</span></td><td class=\"text-right\"><span class=\"text-muted font-weight-500\">"+ sortSportCategory(result[1][i]["category"]) +"</span></td></tr>"
-                document.getElementById("advance_table").innerHTML += "<tr><td class=\"pl-0\"><p class=\"text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg\">"+ result[2][i]["name"] +"</p></td><td class=\"text-right\"><span class=\"text-dark-75 font-weight-bolder d-block font-size-lg\">"+ result[2][i]["calorie"] +"Kcal</span></td><td class=\"text-right\"><span class=\"text-muted font-weight-500\">"+ sortSportCategory(result[2][i]["category"]) +"</span></td></tr>"
+                document.getElementById("beginner_table").innerHTML += "<tr><td class=\"pl-0\"><p class=\"text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg\">" + result[0][i]["name"] + "</p></td><td class=\"text-right\"><span class=\"text-dark-75 font-weight-bolder d-block font-size-lg\">" + result[0][i]["calorie"] + "Kcal/30 mins</span></td><td class=\"text-right\"><span class=\"text-muted font-weight-500\">" + sortSportCategory(result[0][i]["category"]) + "</span></td></tr>"
+                document.getElementById("intermediate_table").innerHTML += "<tr><td class=\"pl-0\"><p class=\"text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg\">" + result[1][i]["name"] + "</p></td><td class=\"text-right\"><span class=\"text-dark-75 font-weight-bolder d-block font-size-lg\">" + result[1][i]["calorie"] + "Kcal/30 mins</span></td><td class=\"text-right\"><span class=\"text-muted font-weight-500\">" + sortSportCategory(result[1][i]["category"]) + "</span></td></tr>"
+                document.getElementById("advance_table").innerHTML += "<tr><td class=\"pl-0\"><p class=\"text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg\">" + result[2][i]["name"] + "</p></td><td class=\"text-right\"><span class=\"text-dark-75 font-weight-bolder d-block font-size-lg\">" + result[2][i]["calorie"] + "Kcal/30 mins</span></td><td class=\"text-right\"><span class=\"text-muted font-weight-500\">" + sortSportCategory(result[2][i]["category"]) + "</span></td></tr>"
             }
             KTApp.unblock("#sportCard")
         }
@@ -396,4 +396,63 @@ function reloadSport() {
     document.getElementById("intermediate_table").innerHTML = ""
     document.getElementById("advance_table").innerHTML = ""
     loadExercise()
+}
+
+
+function update_weight(userId, url) {
+    var new_weight = document.getElementById("update_weight").value
+    KTApp.blockPage({
+        overlayColor: '#000000',
+        state: 'success',
+        opacity: 0.1,
+        message: 'Updating...'
+    })
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+            userId: userId,
+            weight: new_weight
+        },
+        success: function () {
+            window.location.reload()
+        }
+    })
+}
+
+function change_height(userId, url) {
+    var height = document.getElementById("change_height").value
+    KTApp.blockPage({
+        overlayColor: '#000000',
+        state: 'success',
+        opacity: 0.1,
+        message: 'Changing...'
+    })
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+            userId: userId,
+            height: height
+        },
+        success: function (result) {
+            if (result === 'success') {
+                window.location.reload()
+            } else {
+                $.notify("Error Occurred, please try again later!", {
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    delay: 500,
+                    timer: 2500,
+                    animate: {
+                        enter: 'animate__animated animate__bounceInRight',
+                        exit: 'animate__animated animate__bounceOutRight'
+                    },
+                    type: "danger"
+                })
+            }
+        }
+    })
 }

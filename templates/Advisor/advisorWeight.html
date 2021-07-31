@@ -220,7 +220,8 @@
                                         <a class="nav-link active" data-toggle="tab" href="#stat_week">Past 7 days</a>
                                     </li>
                                     <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" onclick="getMonth('{{ url_for("advisor.get_month_record") }}', '{{ url_for("advisor.get_month_chart") }}')" aria-haspopup="true" aria-expanded="false">Month</a>
+                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" onclick="getMonth('{{ url_for("advisor.get_month_record") }}', '{{ url_for("advisor.get_month_chart") }}')" aria-haspopup="true"
+                                           aria-expanded="false">Month</a>
                                         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right" id="monthList">
                                         </div>
                                     </li>
@@ -243,12 +244,13 @@
             <div class="row">
                 <div class="col-12">
                     {% if current_user.exerciseFrequency != None %}
-                        <div class="card card-custom card-stretch shadow-lg gutter-b">
+                        <div class="card card-custom card-stretch shadow-lg gutter-b" id="sportCard">
                             <div class="card-header">
                                 <div class="card-title">
                                     <h3 class="card-label">Recommend exercise</h3>
                                 </div>
                                 <div class="card-toolbar">
+                                    <a class="btn btn-icon btn-sm btn-success mr-1" data-card-tool="reload" onclick="reloadSport()" data-toggle="tooltip" data-placement="top" title="" data-original-title="Reload recommendation"> <i class="ki ki-reload icon-nm"></i> </a>
                                     <ul class="nav nav-bold nav-pills">
                                         <li class="nav-item">
                                             <a class="nav-link active" data-toggle="tab" href="#exercise_beginner">Beginner</a>
@@ -264,9 +266,51 @@
                             </div>
                             <div class="card-body">
                                 <div class="tab-content">
-                                    <div class="tab-pane fade show active" id="exercise_beginner" role="tabpanel" aria-labelledby="exercise_beginner"></div>
-                                    <div class="tab-pane fade" id="exercise_intermediate" role="tabpanel" aria-labelledby="exercise_intermediate"></div>
-                                    <div class="tab-pane fade" id="exercise_advance" role="tabpanel" aria-labelledby="exercise_advance"></div>
+                                    <div class="tab-pane fade show active" id="exercise_beginner" role="tabpanel" aria-labelledby="exercise_beginner">
+                                        <div class="table-responsive">
+                                            <table class="table table-borderless table-vertical-center">
+                                                <thead>
+                                                <tr>
+                                                    <th class="p-0 min-w-150px"></th>
+                                                    <th class="p-0 min-w-140px"></th>
+                                                    <th class="p-0 min-w-110px"></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="beginner_table">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="exercise_intermediate" role="tabpanel" aria-labelledby="exercise_intermediate">
+                                        <div class="table-responsive">
+                                            <table class="table table-borderless table-vertical-center">
+                                                <thead>
+                                                <tr>
+                                                    <th class="p-0 min-w-150px"></th>
+                                                    <th class="p-0 min-w-140px"></th>
+                                                    <th class="p-0 min-w-110px"></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="intermediate_table">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="exercise_advance" role="tabpanel" aria-labelledby="exercise_advance">
+                                        <div class="table-responsive">
+                                            <table class="table table-borderless table-vertical-center">
+                                                <thead>
+                                                <tr>
+                                                    <th class="p-0 min-w-150px"></th>
+                                                    <th class="p-0 min-w-140px"></th>
+                                                    <th class="p-0 min-w-110px"></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="advance_table">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -281,7 +325,7 @@
     <script>
         $(document).ajaxStop($.unblockUI);
         jQuery(document).ready(function () {
-            loadWeekChart('{{ url_for("advisor.get_week_chart") }}',{{ health_profile.targetValue if health_profile.target == 1 else 0 }})
+            loadWeekChart('{{ url_for("advisor.get_week_chart") }}', {{ health_profile.targetValue if health_profile.target == 1 else 0 }})
             {% if current_user.exerciseFrequency == None %}
                 //show modal for user to choose their exercise frequency per week
                 $('#exerciseFrequency').modal('show')
@@ -316,6 +360,7 @@
                 document.getElementById("weightToLoseText").innerText = `You need to lose ${weightToLose({{ current_user.weight }}, targetWeight)}KG to achieve your goal.`
             {% endif %}
             advisorWeightOnReady({{ current_user.weight }}, "{{ url_for("advisor.set_target") }}", '{{ url_for("advisor.health_advisor_index",monitor="weight",notify="set") }}')
+        loadExercise()
         });
     </script>
 {% endblock %}

@@ -23,7 +23,7 @@ app.secret_key = 'Wang Yang'
 main = Blueprint("main", __name__)
 
 from models import User
-from models import seeder_user, seeder_article
+from models import seeder_user, seeder_article, seeder_sport
 from BLL.Account import account
 from BLL.User import profile
 from BLL.Article import article
@@ -70,6 +70,15 @@ app.register_blueprint(advisor)
 # articles = json.loads(article_data)
 # for n in list(articles["article"]):
 # 	seeder_article(str(n["title"]), str(n["content"]), str(n["tag"]), str(n["category"]), int(n["img"]))
+# article_json.close()
+
+# generate 35 sports according to seeds/sport.json
+# with open('seeds/sport.json', encoding='utf-8') as sport_json:
+# 	sport_data = sport_json.read()
+# sports = json.loads(sport_data)
+# for n in list(sports):
+# 	seeder_sport(str(n["name"]), int(n["calorie"]), int(n["rate"]), int(n["difficulty"]), str(n["category"]))
+# sport_json.close()
 
 if __name__ == '__main__':
 	app.run()

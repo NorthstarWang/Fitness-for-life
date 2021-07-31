@@ -226,7 +226,7 @@ function loadWeekChart(weekChartUrl, targetWeight) {
                 },
                 colors: ["#6993FF"],
                 noData: {
-                    text: 'Loading...'
+                    text: 'There is no weight data of you for now, update to view your statistics.'
                 }
             };
 
@@ -337,7 +337,7 @@ function getMonthRecord(data, retreiveUrl) {
                 },
                 colors: ["#6993FF"],
                 noData: {
-                    text: 'Loading...'
+                    text: 'There is no weight data of you for now, update to view your statistics.'
                 }
             };
 
@@ -348,4 +348,52 @@ function getMonthRecord(data, retreiveUrl) {
             KTApp.unblock('#weightChartCard')
         }
     })
+}
+
+function loadExercise() {
+    KTApp.block("#sportCard", {
+        overlayColor: '#000000',
+        state: 'primary',
+        opacity: 0.3
+    })
+    $.ajax({
+        url: "/advisor/sport/get/5",
+        dataType: "JSON",
+        type: "POST",
+        success: function (result) {
+            for (let i = 0; i < result[0].length; i++) {
+                document.getElementById("beginner_table").innerHTML += "<tr><td class=\"pl-0\"><p class=\"text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg\">"+ result[0][i]["name"] +"</p></td><td class=\"text-right\"><span class=\"text-dark-75 font-weight-bolder d-block font-size-lg\">"+ result[0][i]["calorie"] +"Kcal</span></td><td class=\"text-right\"><span class=\"text-muted font-weight-500\">"+ sortSportCategory(result[0][i]["category"]) +"</span></td></tr>"
+                document.getElementById("intermediate_table").innerHTML += "<tr><td class=\"pl-0\"><p class=\"text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg\">"+ result[1][i]["name"] +"</p></td><td class=\"text-right\"><span class=\"text-dark-75 font-weight-bolder d-block font-size-lg\">"+ result[1][i]["calorie"] +"Kcal</span></td><td class=\"text-right\"><span class=\"text-muted font-weight-500\">"+ sortSportCategory(result[1][i]["category"]) +"</span></td></tr>"
+                document.getElementById("advance_table").innerHTML += "<tr><td class=\"pl-0\"><p class=\"text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg\">"+ result[2][i]["name"] +"</p></td><td class=\"text-right\"><span class=\"text-dark-75 font-weight-bolder d-block font-size-lg\">"+ result[2][i]["calorie"] +"Kcal</span></td><td class=\"text-right\"><span class=\"text-muted font-weight-500\">"+ sortSportCategory(result[2][i]["category"]) +"</span></td></tr>"
+            }
+            KTApp.unblock("#sportCard")
+        }
+    })
+}
+
+function sortSportCategory(array) {
+    for (let i = 0; i < array.length; i++) {
+        switch (array[i]) {
+            case "1":
+                array[i] = "Cardio"
+                break
+            case "2":
+                array[i] = "Body Shape"
+                break
+            case "3":
+                array[i] = "Strength"
+                break
+            case "4":
+                array[i] = "Stamina"
+                break
+        }
+    }
+    return array.join(", ")
+}
+
+function reloadSport() {
+    document.getElementById("beginner_table").innerHTML = ""
+    document.getElementById("intermediate_table").innerHTML = ""
+    document.getElementById("advance_table").innerHTML = ""
+    loadExercise()
 }

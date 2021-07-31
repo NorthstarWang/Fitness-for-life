@@ -1,0 +1,254 @@
+[
+  {
+    "name": "Weight Lifting: general",
+    "calorie": 90,
+    "difficulty": 1,
+    "category": "3",
+    "rate": 18
+  },
+  {
+    "name": "Aerobics: water",
+    "calorie": 120,
+    "difficulty": 1,
+    "category": "1,2,4",
+    "rate": 24
+  },
+  {
+    "name": "Stretching, Hatha Yoga",
+    "calorie": 120,
+    "difficulty": 0,
+    "category": "1,2",
+    "rate": 24
+  },
+  {
+    "name": "Calisthenics: moderate",
+    "calorie": 135,
+    "difficulty": 0,
+    "category": "1,2,4",
+    "rate": 27
+  },
+  {
+    "name": "Aerobics: low impact",
+    "calorie": 165,
+    "difficulty": 1,
+    "category": "2,3,4",
+    "rate": 34
+  },
+  {
+    "name": "Stair Step Machine: general",
+    "calorie": 180,
+    "difficulty": 0,
+    "category": "1,4",
+    "rate": 36
+  },
+  {
+    "name": "Weight Lifting: vigorous",
+    "calorie": 180,
+    "difficulty": 2,
+    "category": "3",
+    "rate": 36
+  },
+  {
+    "name": "Aerobics, Step: low impact",
+    "calorie": 210,
+    "difficulty": 1,
+    "category": "1,2,3,4",
+    "rate": 42
+  },
+  {
+    "name": "Aerobics: high impact",
+    "calorie": 210,
+    "difficulty": 2,
+    "category": "1,2,3,4",
+    "rate": 42
+  },
+  {
+    "name": "Bicycling, Stationary: moderate",
+    "calorie": 210,
+    "difficulty": 0,
+    "category": "1,4",
+    "rate": 42
+  },
+  {
+    "name": "Rowing, Stationary: moderate",
+    "calorie": 210,
+    "difficulty": 0,
+    "category": "1,4",
+    "rate": 42
+  },
+  {
+    "name": "Calisthenics: vigorous",
+    "calorie": 240,
+    "difficulty": 1,
+    "category": "1,2,4",
+    "rate": 66
+  },
+  {
+    "name": "Rowing, Stationary: vigorous",
+    "calorie": 255,
+    "difficulty": 1,
+    "category": "1,2,3,4",
+    "rate": 100
+  },
+  {
+    "name": "Elliptical Trainer: general",
+    "calorie": 270,
+    "difficulty": 0,
+    "category": "1,4",
+    "rate": 54
+  },
+  {
+    "name": "Ski Machine: general",
+    "calorie": 285,
+    "difficulty": 0,
+    "category": "1,2,3,4",
+    "rate": 57
+  },
+  {
+    "name": "Aerobics, Step: high impact",
+    "calorie": 300,
+    "difficulty": 2,
+    "category": "1,4",
+    "rate": 60
+  },
+  {
+    "name": "Dancing: slow, waltz, foxtrot",
+    "calorie": 90,
+    "difficulty": 0,
+    "category": "2",
+    "rate": 18
+  },
+  {
+    "name": "Volleyball: non-competitive, general play",
+    "calorie": 90,
+    "difficulty": 0,
+    "category": "1,4",
+    "rate": 18
+  },
+  {
+    "name": "Volleyball: competitive, gymnasium play",
+    "calorie": 226,
+    "difficulty": 2,
+    "category": "1,4",
+    "rate": 55
+  },
+  {
+    "name": "Walking: 3.5 mph (17 min/mi)",
+    "calorie": 107,
+    "difficulty": 0,
+    "category": "4",
+    "rate": 26
+  },
+  {
+    "name": "Walking: 4 mph (15 min/mi)",
+    "calorie": 135,
+    "difficulty": 0,
+    "category": "4",
+    "rate": 30
+  },
+  {
+    "name": "Badminton: general",
+    "calorie": 114,
+    "difficulty": 0,
+    "category": "1,4",
+    "rate": 25
+  },
+  {
+    "name": "Dancing: disco, ballroom, square",
+    "calorie": 165,
+    "difficulty": 1,
+    "category": "1,2,4",
+    "rate": 34
+  },
+  {
+    "name": "Dancing: Fast, ballet, twist",
+    "calorie": 180,
+    "difficulty": 2,
+    "category": "1,2,4",
+    "rate": 36
+  },
+  {
+    "name": "Walk/Jog: jog <10 min",
+    "calorie": 180,
+    "difficulty": 0,
+    "category": "1,4",
+    "rate": 36
+  },
+  {
+    "name": "Tennis: general",
+    "calorie": 210,
+    "difficulty": 1,
+    "category": "1,4",
+    "rate": 42
+  },
+  {
+    "name": "Running: 5 mph (12 min/mile)",
+    "calorie": 240,
+    "difficulty": 0,
+    "category": "1,4",
+    "rate": 44
+  },
+  {
+    "name": "Running: cross-country",
+    "calorie": 255,
+    "difficulty": 2,
+    "category": "1,4",
+    "rate": 61
+  },
+  {
+    "name": "Running: 6 mph (10 min/mile)",
+    "calorie": 360,
+    "difficulty": 2,
+    "category": "1,4",
+    "rate": 30
+  },
+  {
+    "name": "Running: 7.5 mph (8 min/mile)",
+    "calorie": 375,
+    "difficulty": 2,
+    "category": "1,4",
+    "rate": 75
+  },
+  {
+    "name": "Running: 10 mph (6 min/mile)",
+    "calorie": 453,
+    "difficulty": 2,
+    "category": "1,4",
+    "rate": 109
+  },
+  {
+    "name": "Bicycling: 12-13.9 mph",
+    "calorie": 240,
+    "difficulty": 0,
+    "category": "1,3,4",
+    "rate": 48
+  },
+  {
+    "name": "Bicycling: BMX or mountain",
+    "calorie": 255,
+    "difficulty": 1,
+    "category": "1,3,4",
+    "rate": 51
+  },
+  {
+    "name": "Bicycling: 14-15.9 mph",
+    "calorie": 300,
+    "difficulty": 1,
+    "category": "1,3,4",
+    "rate": 60
+  },
+  {
+    "name": "Bicycling: 16-19 mph",
+    "calorie": 360,
+    "difficulty": 2,
+    "category": "1,3,4",
+    "rate": 72
+  },
+  {
+    "name": "Bicycling: > 20 mph",
+    "calorie": 495,
+    "difficulty": 2,
+    "category": "1,3,4",
+    "rate": 99
+  }
+]

@@ -2,12 +2,17 @@ import datetime
 
 from flask import Blueprint, render_template, request, jsonify
 from flask_login import login_required, current_user
-from sqlalchemy import and_
+from sqlalchemy import and_, func
 
 from app import db
 from models import *
 
 advisor = Blueprint("advisor", __name__, url_prefix="/advisor")
+
+
+def calculate_calorie_consumption(weight, base_calorie, rate):
+	weight_difference = weight - 57
+	return round(weight_difference / 13.5 * rate + base_calorie)
 
 
 def format_axis_data(data):
@@ -103,7 +108,7 @@ def get_month_chart():
 	month = str(request.form["month"])
 	# reformat the month from string back to date time
 	date_month = datetime.datetime.strptime(month, "%b %Y")
-	date_next_month = datetime.datetime(month=date_month.month+1, year=date_month.year, day=1)
+	date_next_month = datetime.datetime(month=date_month.month + 1, year=date_month.year, day=1)
 	data = BodyProfile.query.filter(and_(BodyProfile.updateDay >= date_month), (BodyProfile.updateDay < date_next_month), (BodyProfile.userId == current_user.id)).all()
 	return format_axis_data(data)
 
@@ -125,3 +130,20 @@ def get_month_record():
 		else:
 			continue
 	return jsonify(month)
+
+
+@advisor.route("/sport/get/<int:number>", methods=['Get', 'Post'])
+@login_required
+def get_sport(number):
+	# calculate sport energy consumption based on user weight
+	# get numbers of random row
+	easy_sport = Sport.query.filter_by(difficulty=0).order_by(func.random()).limit(number)
+	intermediate_sport = Sport.query.filter_by(difficulty=1).order_by(func.random()).limit(number)
+	advance_sport = Sport.query.filter_by(difficulty=2).order_by(func.random()).limit(number)
+	# create a return dictionary that key is the difficulty level
+	ret_dict = {0: [], 1: [], 2: []}
+	for i in range(number):
+		ret_dict[0].append({"name": easy_sport[i].name, "calorie": calculate_calorie_consumption(current_user.weight, easy_sport[i].calorie, easy_sport[i].rate), "category": easy_sport[i].category.split(",")})
+		ret_dict[1].append({"name": intermediate_sport[i].name, "calorie": calculate_calorie_consumption(current_user.weight, intermediate_sport[i].calorie, intermediate_sport[i].rate), "category": intermediate_sport[i].category.split(",")})
+		ret_dict[2].append({"name": advance_sport[i].name, "calorie": calculate_calorie_consumption(current_user.weight, advance_sport[i].calorie, advance_sport[i].rate), "category": advance_sport[i].category.split(",")})
+	return jsonify(ret_dict)

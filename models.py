@@ -41,6 +41,11 @@ def seeder_user(number):
 		db.session.commit()
 
 
+def seeder_sport(name, calorie, rate, difficulty, category):
+	sport = Sport(name=name, calorie=calorie, rate=rate, category=category, difficulty=difficulty)
+	sport.create_sport()
+
+
 def seeder_article(title, content, tag, category, img):
 	article = Article(title=title, content=content, tag=tag, category=category, img=img)
 	article.create_article()
@@ -175,3 +180,21 @@ class DietProfile(db.Model):
 	consumeDay = db.Column(db.Date, nullable=False)
 	# 0 - Not specified, 1 - Breakfast, 2 - Lunch, 3 - Dinner, 4 - supper
 	mealType = db.Column(db.Integer, nullable=False)
+
+
+class Sport(db.Model):
+	__tablename__ = "sport"
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String, nullable=False)
+	# calorie consumption are for average 57KG(125 pounds) person trained for 30 mins
+	calorie = db.Column(db.Integer, nullable=False)
+	# rate is the increment of calorie lost, for every 13.5kg(30 pounds) increase, the constant rate increase
+	rate = db.Column(db.Integer, nullable=False)
+	# 0 is beginner, 1 is intermediate, 2 is advance
+	difficulty = db.Column(db.Integer, nullable=False)
+	# 1 for cardio, 2 for body shape(flexibility), 3 for muscular strength, 4 for stamina, the string store the interger split by colon
+	category = db.Column(db.String, nullable=False)
+
+	def create_sport(self):
+		db.session.add(self)
+		db.session.commit()

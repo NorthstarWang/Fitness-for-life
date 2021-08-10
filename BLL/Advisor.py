@@ -130,6 +130,14 @@ def get_month_chart():
 	return format_axis_data(data)
 
 
+@advisor.route("/sport/trend/get", methods=['Get', 'Post'])
+def get_trending_sports():
+	sports = Sport.query.order_by(func.random()).limit(7).all()
+	ret_array = []
+	for i in sports:
+		ret_array.append({"difficulty": i.difficulty, "name": i.name})
+	return jsonify(ret_array)
+
 @advisor.route("/chart/month/get/BMI", methods=['Get', 'Post'])
 @login_required
 def get_BMI_month_chart():

@@ -186,7 +186,6 @@ function loadWeekChart(weekChartUrl, targetWeight) {
         type: "POST",
         dataType: "json",
         success: function (data) {
-            console.log(data)
             const apexChart = "#week_chart";
             var options = {
                 series: [{
@@ -258,6 +257,89 @@ function loadWeekChart(weekChartUrl, targetWeight) {
     })
 }
 
+function loadBMIWeekChart(weekChartUrl, targetWeight) {
+    KTApp.block('#BMIChartCard', {
+        overlayColor: '#000000',
+        state: 'primary',
+        opacity: 0.3,
+        message: 'Loading...'
+    })
+    $.ajax({
+        url: weekChartUrl,
+        type: "POST",
+        dataType: "json",
+        success: function (data) {
+            const apexChart = "#week_chart_BMI";
+            var options = {
+                series: [{
+                    name: "Weight(Kilograms)",
+                    data: data
+                }],
+                chart: {
+                    height: 400,
+                    type: 'line',
+                    zoom: {
+                        enabled: false
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'straight',
+                    width: 1
+                },
+                plotOptions: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                },
+                markers: {
+                    size: 7
+                },
+                grid: {
+                    row: {
+                        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                        opacity: 0.5
+                    },
+                },
+                xaxis: {
+                    type: "datetime"
+                },
+                colors: ["#6993FF"],
+                noData: {
+                    text: 'There is no weight data of you for now, update to view your statistics.'
+                }
+            };
+
+            //if user choose to lose weight instead of stay fit, there is a line to state the target weight
+            if (targetWeight !== 0) {
+                options.annotations = {
+                    yaxis: [{
+                        y: targetWeight,
+                        borderColor: '#00E396',
+                        label: {
+                            borderColor: '#B3F7CA',
+                            style: {
+                                fontSize: '10px',
+                                color: '#fff',
+                                background: '#00E396',
+                            },
+                            text: 'Target Weight',
+                        }
+                    }]
+                }
+            }
+
+            //render chart
+            var chart = new ApexCharts(document.querySelector(apexChart), options);
+            chart.render();
+
+            KTApp.unblock('#BMIChartCard')
+        }
+    })
+}
+
 function getMonth(retreiveUrl, recordUrl) {
     //retreive months that user had updated their weight
     KTApp.block("#monthList", {
@@ -284,6 +366,32 @@ function getMonth(retreiveUrl, recordUrl) {
     })
 }
 
+function getBMIMonth(retreiveUrl, recordUrl) {
+    //retreive months that user had updated their weight
+    KTApp.block("#monthList_BMI", {
+        overlayColor: '#000000',
+        state: 'primary',
+        opacity: 0.3
+    })
+    $.ajax({
+        url: retreiveUrl,
+        dataType: "json",
+        type: "POST",
+        success: function (data) {
+            document.getElementById("monthList_BMI").innerHTML = ""
+            //return month in list
+            if (data.length === 0) {
+                $('#monthList_BMI').append('<p class="text-center">No record</p>')
+            }
+            for (let i = 0; i < data.length; i++) {
+                //append to month list dropdown
+                $('#monthList_BMI').append('<a class="dropdown-item" data-toggle="tab" onclick="getBMIMonthRecord(\'' + data[i] + '\',\'' + recordUrl + '\')" href="#stat_month_BMI">' + data[i].toString() + '</a>')
+            }
+            KTApp.unblock("#monthList_BMI")
+        }
+    })
+}
+
 function getMonthRecord(data, retreiveUrl) {
     KTApp.block("#weightChartCard", {
         overlayColor: '#000000',
@@ -298,6 +406,7 @@ function getMonthRecord(data, retreiveUrl) {
         type: "POST",
         dataType: "json",
         success: function (result) {
+            document.getElementById("month_chart").innerHTML = ''
             const apexChart = "#month_chart";
             var options = {
                 series: [{
@@ -346,6 +455,73 @@ function getMonthRecord(data, retreiveUrl) {
             chart.render();
 
             KTApp.unblock('#weightChartCard')
+        }
+    })
+}
+
+function getBMIMonthRecord(data, retreiveUrl) {
+    KTApp.block("#BMIChartCard", {
+        overlayColor: '#000000',
+        state: 'primary',
+        opacity: 0.3
+    })
+    $.ajax({
+        url: retreiveUrl,
+        data: {
+            month: data
+        },
+        type: "POST",
+        dataType: "json",
+        success: function (result) {
+            document.getElementById("month_chart_BMI").innerHTML = ''
+            const apexChart = "#month_chart_BMI";
+            var options = {
+                series: [{
+                    name: "Weight(Kilograms)",
+                    data: result
+                }],
+                chart: {
+                    height: 400,
+                    type: 'line',
+                    zoom: {
+                        enabled: false
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'straight',
+                    width: 1
+                },
+                grid: {
+                    row: {
+                        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                        opacity: 0.5
+                    },
+                },
+                plotOptions: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                },
+                xaxis: {
+                    type: "datetime"
+                },
+                markers: {
+                    size: 7
+                },
+                colors: ["#6993FF"],
+                noData: {
+                    text: 'There is no weight data of you for now, update to view your statistics.'
+                }
+            };
+
+            //render chart
+            var chart = new ApexCharts(document.querySelector(apexChart), options);
+            chart.render();
+
+            KTApp.unblock('#BMIChartCard')
         }
     })
 }

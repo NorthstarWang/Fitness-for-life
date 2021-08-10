@@ -361,7 +361,7 @@ function update_weight(userId, url) {
         success: function (result) {
             if (result === '1') {
                 document.getElementById("weight_display").innerText = new_weight + "KG"
-                document.getElementById("BMI").innerText = (parseFloat(new_weight) / Math.pow(parseFloat(current_height), 2)).toFixed(2).toString()
+                document.getElementById("BMI").innerText = (parseFloat(new_weight) / Math.pow(parseFloat(current_height)/100, 2)).toFixed(2).toString()
                 $.notify("You have added your new weight for today, update a new one today if you want to overwrite the same day's record.", {
                     placement: {
                         from: "top",
@@ -444,6 +444,116 @@ function change_height(userId, url) {
                     type: "danger"
                 })
             }
+        }
+    })
+}
+
+function loadChart(weightUrl, BMIUrl) {
+    $.ajax({
+        url: weightUrl,
+        type: "POST",
+        dataType: "json",
+        success: function (data) {
+            const apexChart = "#week_chart_weight";
+            var options = {
+                series: [{
+                    name: "Weight(Kilograms)",
+                    data: data
+                }],
+                chart: {
+                    height: 400,
+                    type: 'line',
+                    zoom: {
+                        enabled: false
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'straight',
+                    width: 1
+                },
+                plotOptions: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                },
+                markers: {
+                    size: 7
+                },
+                grid: {
+                    row: {
+                        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                        opacity: 0.5
+                    },
+                },
+                xaxis: {
+                    type: "datetime"
+                },
+                colors: ["#6993FF"],
+                noData: {
+                    text: 'No recent data'
+                }
+            };
+
+            //render chart
+            var chart = new ApexCharts(document.querySelector(apexChart), options);
+            chart.render();
+        }
+    })
+
+    $.ajax({
+        url: BMIUrl,
+        type: "POST",
+        dataType: "json",
+        success: function (data) {
+            const apexChart = "#week_chart_BMI";
+            var options = {
+                series: [{
+                    name: "Weight(Kilograms)",
+                    data: data
+                }],
+                chart: {
+                    height: 400,
+                    type: 'line',
+                    zoom: {
+                        enabled: false
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'straight',
+                    width: 1
+                },
+                plotOptions: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                },
+                markers: {
+                    size: 7
+                },
+                grid: {
+                    row: {
+                        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                        opacity: 0.5
+                    },
+                },
+                xaxis: {
+                    type: "datetime"
+                },
+                colors: ["#6993FF"],
+                noData: {
+                    text: 'No recent data'
+                }
+            };
+
+            //render chart
+            var chart = new ApexCharts(document.querySelector(apexChart), options);
+            chart.render();
         }
     })
 }

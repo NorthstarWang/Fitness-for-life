@@ -24,6 +24,15 @@ def format_axis_data(data):
 	return jsonify(axis_data)
 
 
+def format_axis_data_BMI(data):
+	axis_data = []
+	for i in data:
+		temp_date = i.updateDay
+		temp_point = {"x": temp_date, "y": round(i.weight/((current_user.height/100)*(current_user.height/100)), 2)}
+		axis_data.append(temp_point)
+	return jsonify(axis_data)
+
+
 def calorie_intake_calculation():
 	age = current_user.age
 	weight = float(current_user.weight)
@@ -102,6 +111,14 @@ def get_week_chart():
 	return format_axis_data(data)
 
 
+@advisor.route("/chart/week/get/BMI", methods=['Get', 'Post'])
+@login_required
+def get_week_chart_BMI():
+	current = date.today()
+	data = BodyProfile.query.filter(and_(BodyProfile.updateDay > current - datetime.timedelta(weeks=1), (BodyProfile.userId == current_user.id))).all()
+	return format_axis_data_BMI(data)
+
+
 @advisor.route("/chart/month/get", methods=['Get', 'Post'])
 @login_required
 def get_month_chart():
@@ -111,6 +128,17 @@ def get_month_chart():
 	date_next_month = datetime.datetime(month=date_month.month + 1, year=date_month.year, day=1)
 	data = BodyProfile.query.filter(and_(BodyProfile.updateDay >= date_month), (BodyProfile.updateDay < date_next_month), (BodyProfile.userId == current_user.id)).all()
 	return format_axis_data(data)
+
+
+@advisor.route("/chart/month/get/BMI", methods=['Get', 'Post'])
+@login_required
+def get_BMI_month_chart():
+	month = str(request.form["month"])
+	# reformat the month from string back to date time
+	date_month = datetime.datetime.strptime(month, "%b %Y")
+	date_next_month = datetime.datetime(month=date_month.month + 1, year=date_month.year, day=1)
+	data = BodyProfile.query.filter(and_(BodyProfile.updateDay >= date_month), (BodyProfile.updateDay < date_next_month), (BodyProfile.userId == current_user.id)).all()
+	return format_axis_data_BMI(data)
 
 
 @advisor.route("/record/month/get", methods=['Get', 'Post'])

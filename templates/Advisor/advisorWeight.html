@@ -83,60 +83,60 @@
         </div>
     </div>
     <!--begin::Modal-->
-                <div class="modal fade" id="ModalHeight" tabindex="-1" role="dialog" aria-labelledby="ModalHeight" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="ModalHeightLabel">Change my height</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <i aria-hidden="true" class="ki ki-close"></i>
-                                </button>
+    <div class="modal fade" id="ModalHeight" tabindex="-1" role="dialog" aria-labelledby="ModalHeight" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalHeightLabel">Change my height</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-8">
+                        <div class="alert alert-custom alert-default" role="alert">
+                            <div class="alert-icon"><i class="flaticon-warning text-primary"></i></div>
+                            <div class="alert-text">
+                                This change will apply to all your record, and may cause statistics changes in your BMI as well as other data.
                             </div>
-                            <div class="modal-body">
-                                <div class="form-group mb-8">
-                                    <div class="alert alert-custom alert-default" role="alert">
-                                        <div class="alert-icon"><i class="flaticon-warning text-primary"></i></div>
-                                        <div class="alert-text">
-                                            This change will apply to all your record, and may cause statistics changes in your BMI as well as other data.
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
 
-                                <div class="form-group mb-1">
-                                    <input type="number" step="0.1" class="form-control" id="change_height"/>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-                                <button type="button" onclick="change_height('{{ current_user.id }}','{{ url_for("profile.update_height") }}')" class="btn btn-primary font-weight-bold">Save change</button>
-                            </div>
-                        </div>
+                    <div class="form-group mb-1">
+                        <input type="number" step="0.1" class="form-control" id="change_height"/>
                     </div>
                 </div>
-                <!--end::Modal-->
-                <!--begin::Modal-->
-                <div class="modal fade" id="ModalWeight" tabindex="-1" role="dialog" aria-labelledby="ModalWeight" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="ModalWeightLabel">Update today's weight</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <i aria-hidden="true" class="ki ki-close"></i>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group mb-1">
-                                    <input type="number" step="0.1" class="form-control" id="update_weight"/>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-                                <button type="button" onclick="update_weight('{{ current_user.id }}','{{ url_for("profile.update_weight") }}')" class="btn btn-primary font-weight-bold">Save update</button>
-                            </div>
-                        </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="change_height('{{ current_user.id }}','{{ url_for("profile.update_height") }}')" class="btn btn-primary font-weight-bold">Save change</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Modal-->
+    <!--begin::Modal-->
+    <div class="modal fade" id="ModalWeight" tabindex="-1" role="dialog" aria-labelledby="ModalWeight" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalWeightLabel">Update today's weight</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-1">
+                        <input type="number" step="0.1" class="form-control" id="update_weight"/>
                     </div>
                 </div>
-                <!--end::Modal-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="update_weight('{{ current_user.id }}','{{ url_for("profile.update_weight") }}')" class="btn btn-primary font-weight-bold">Save update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Modal-->
     <!--begin::Entry-->
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
@@ -331,6 +331,40 @@
             </div>
             <div class="row">
                 <div class="col-12">
+                    <div class="card card-custom card-stretch shadow-lg gutter-b" id="BMIChartCard">
+                        <div class="card-header card-header-tabs-line">
+                            <div class="card-title">
+                                <h3 class="card-label">My BMI Statistics</h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <ul class="nav nav-tabs nav-bold nav-tabs-line">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#stat_week_BMI">Past 7 days</a>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" onclick="getBMIMonth('{{ url_for("advisor.get_month_record") }}', '{{ url_for("advisor.get_BMI_month_chart") }}')" aria-haspopup="true"
+                                           aria-expanded="false">Month</a>
+                                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right" id="monthList_BMI">
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="stat_week_BMI" role="tabpanel">
+                                    <div id="week_chart_BMI" style="height: 400px;"></div>
+                                </div>
+                                <div class="tab-pane fade" id="stat_month_BMI" role="tabpanel">
+                                    <div id="month_chart_BMI" style="height: 400px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
                     {% if current_user.exerciseFrequency != None %}
                         <div class="card card-custom card-stretch shadow-lg gutter-b" id="sportCard">
                             <div class="card-header">
@@ -415,6 +449,7 @@
         $(document).ajaxStop($.unblockUI);
         jQuery(document).ready(function () {
             loadWeekChart('{{ url_for("advisor.get_week_chart") }}', {{ health_profile.targetValue if health_profile.target == 1 else 0 }})
+            loadBMIWeekChart('{{ url_for("advisor.get_week_chart_BMI") }}', {{ health_profile.targetValue if health_profile.target == 1 else 0 }})
             {% if current_user.exerciseFrequency == None %}
                 //show modal for user to choose their exercise frequency per week
                 $('#exerciseFrequency').modal('show')

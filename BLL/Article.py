@@ -1,11 +1,20 @@
 from flask import Blueprint, render_template, request, jsonify
 from flask_login import login_required
-from sqlalchemy import desc
+from sqlalchemy import desc, func
 
 from app import db, current_user
 from models import Article, FavouriteArticles
 
 article = Blueprint("article", __name__, url_prefix="/article")
+
+
+@article.route("/get/trend", methods=['Get', 'Post'])
+def get_trending_articles():
+	articles = Article.query.order_by(func.random()).limit(5).all()
+	ret_array = []
+	for i in articles:
+		ret_array.append({"title": i.title, "img": i.img, "tag": i.tag, "id": i.id})
+	return jsonify(ret_array)
 
 
 @article.route("/index")
@@ -52,4 +61,3 @@ def get_favourite_list():
 			break
 		new_array.append([i, Article.query.filter_by(id=int(i)).first().title, Article.query.filter_by(id=int(i)).first().category])
 	return jsonify(new_array)
-

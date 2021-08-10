@@ -385,7 +385,7 @@ function getBMIMonth(retreiveUrl, recordUrl) {
             }
             for (let i = 0; i < data.length; i++) {
                 //append to month list dropdown
-                $('#monthList_BMI').append('<a class="dropdown-item" data-toggle="tab" onclick="getBMIMonthRecord(\'' + data[i] + '\',\'' + recordUrl + '\')" href="#stat_month_BMI">' + data[i].toString() + '</a>')
+                    $('#monthList_BMI').append('<a class="dropdown-item" data-toggle="tab" onclick="getBMIMonthRecord(\'' + data[i] + '\',\'' + recordUrl + '\')" href="#stat_month_BMI">' + data[i].toString() + '</a>')
             }
             KTApp.unblock("#monthList_BMI")
         }

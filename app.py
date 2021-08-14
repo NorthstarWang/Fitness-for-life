@@ -1,6 +1,8 @@
+import datetime
 import json
 import os
 from base64 import b64encode
+from datetime import date
 
 from flask import Flask, render_template, Blueprint, request
 from flask_login import LoginManager, current_user
@@ -23,11 +25,30 @@ app.secret_key = 'Wang Yang'
 main = Blueprint("main", __name__)
 
 from models import User
-from models import seeder_user, seeder_article, seeder_sport
+from models import seeder_user, seeder_article, seeder_sport, BodyProfile
 from BLL.Account import account
 from BLL.User import profile
 from BLL.Article import article
 from BLL.Advisor import advisor
+
+
+def getJoinDayCount():
+	day = (date.today() - current_user.createDate + datetime.timedelta(days=1)).days
+	# format this day into string
+	if day % 10 == 1:
+		return str(day) + "st"
+	elif day % 10 == 2:
+		return str(day) + "nd"
+	elif day % 10 == 3:
+		return str(day) + "rd"
+	else:
+		return str(day) + "th"
+
+
+def getWeightProgress():
+	# return the weight difference of user from the day he/she join healthier, negative means weight loss, else weight gain
+	origin = BodyProfile.query.filter_by(userId=current_user.id).first()
+	return [round(origin.weight-current_user.weight, 2), (date.today() - origin.updateDay).days]
 
 
 @login_manager.user_loader
@@ -43,8 +64,8 @@ def index():
 		user = User.query.filter_by(id=current_user.id).first()
 		if user.icon_exist():
 			icon = b64encode(user.icon).decode("utf-8")
-			return render_template('Index.html', icon=icon, notify=notify, type=state_type)
-		return render_template('Index.html', notify=notify, type=state_type)
+			return render_template('Index.html', icon=icon, notify=notify, type=state_type, dayJoin=getJoinDayCount(), weightProgress=getWeightProgress())
+		return render_template('Index.html', notify=notify, type=state_type, dayJoin=getJoinDayCount(), weightProgress=getWeightProgress())
 	return render_template('Index.html', notify=notify, type=state_type)
 
 

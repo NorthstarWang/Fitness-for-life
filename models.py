@@ -22,7 +22,8 @@ def seeder_user(number):
 		            gender=random.randint(0, 1),
 		            height=round(random.uniform(100.0, 200.0), 1),
 		            weight=round(random.uniform(35.0, 100.0), 1),
-		            confirm=True)
+		            confirm=True,
+		            createDate=date.today())
 		db.session.add(user)
 	db.session.commit()
 	# other database can only be add afterward as the user id is auto generated
@@ -88,6 +89,7 @@ class User(UserMixin, db.Model):
 	confirm = db.Column(db.Boolean, default=False)
 	# indicate the user's fitness behaviour, 0 is sedentary, 1 is lightly, 2 is Moderate, 3 is Very active, 4 is Extreme
 	exerciseFrequency = db.Column(db.Integer, nullable=True)
+	createDate = db.Column(db.Date, nullable=False, default=datetime.date.today())
 	body_profile = db.relationship("BodyProfile", backref='user')
 	favourite_article = db.relationship("FavouriteArticles", backref='user')
 	health_profile = db.relationship("HealthProfile", backref='user')

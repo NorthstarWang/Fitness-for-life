@@ -8,8 +8,8 @@
                 <div class="row">
                     <div class="col-lg-5">
                         <!--begin::Card-->
-                        <div class="card card-custom bg-primary rounded card-stretch card-stretch-half card-shadowless gutter-b" style="min-height: 200px">
-                            <div class="card-body align-items-center justify-content-center" style="top: 50%;transform: translateY(-50%);position: absolute;-ms-transform: translateY(-50%);">
+                        <div class="card card-custom bg-primary rounded card-stretch card-stretch-half card-shadowless gutter-b" style="min-height: 250px">
+                            <div class="card-body align-items-center justify-content-center" style="top: 50%;transform: translateX(0%) translateY(-50%);position: absolute;-ms-transform: translateX(0%) translateY(-50%);text-align: right">
                                 <p class="text-center text-light-primary"><strong class="font-weight-boldest display-1-xl display-2">{{ dayJoin }}</strong> day to stay fit</p>
                             </div>
                         </div>
@@ -87,8 +87,7 @@
                                 <div class="">
                                     <h3 class="pb-1 text-dark-75 font-weight-bolder font-size-h5">Welcome! Dear user:</h3>
                                     <p class="m-0 text-dark-50 font-weight-bold font-size-lg">To explore and unlock more functions, please <a href="{{ url_for("account.sign_up") }}"
-                                                                                                                                              class="text-primary">login</a> into the system. You can also explore our <a href="#"
-                                                                                                                                                                                                                          class="pr-1 text-primary">community</a> and
+                                                                                                                                              class="text-primary">login</a> into the system. You can also explore our
                                         <a href="{{ url_for("article.article_list",page=1,per_page=10,category="Diet") }}" class="pr-1 text-primary">article</a> without signing in.</p>
                                 </div>
                                 <!--end::Description-->

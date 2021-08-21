@@ -170,7 +170,6 @@ class HealthProfile(db.Model):
 	target = db.Column(db.Integer, nullable=False, default=0)
 	# when target is weight loss, value means target weight, when target is stay fit, value is calories intake per day, else 0
 	targetValue = db.Column(db.Float, nullable=False, default=0)
-	allergy = db.Column(db.String, nullable=False, default="")
 
 
 class DietProfile(db.Model):

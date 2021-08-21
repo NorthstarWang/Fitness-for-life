@@ -77,9 +77,6 @@
                                 <li class="menu-item {% if title == "Main" %}menu-item-active{% endif %}" aria-haspopup="true">
                                     <a href="/" class="menu-link"> <span class="menu-text">Home</span> </a>
                                 </li>
-                                <li class="menu-item {% if title == "Community" %}menu-item-active{% endif %}" aria-haspopup="true">
-                                    <a href="/" class="menu-link"> <span class="menu-text">Community</span> <span class="menu-desc"></span> </a>
-                                </li>
                                 <li class="menu-item {% if title == "Article" %}menu-item-active{% endif %}" aria-haspopup="true">
                                     <a href="{{ url_for('article.article_list',page=1,per_page=10,category="Diet") }}" class="menu-link"> <span class="menu-text">Article</span> <span class="menu-desc"></span> </a>
                                 </li>

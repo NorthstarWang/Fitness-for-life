@@ -385,7 +385,7 @@ function getBMIMonth(retreiveUrl, recordUrl) {
             }
             for (let i = 0; i < data.length; i++) {
                 //append to month list dropdown
-                    $('#monthList_BMI').append('<a class="dropdown-item" data-toggle="tab" onclick="getBMIMonthRecord(\'' + data[i] + '\',\'' + recordUrl + '\')" href="#stat_month_BMI">' + data[i].toString() + '</a>')
+                $('#monthList_BMI').append('<a class="dropdown-item" data-toggle="tab" onclick="getBMIMonthRecord(\'' + data[i] + '\',\'' + recordUrl + '\')" href="#stat_month_BMI">' + data[i].toString() + '</a>')
             }
             KTApp.unblock("#monthList_BMI")
         }
@@ -630,5 +630,218 @@ function change_height(userId, url) {
                 })
             }
         }
+    })
+}
+
+function chart(calorie_limit, calorie_taken) {
+    const apexChart = "#calorie_chart";
+    var options = {
+        chart: {
+            height: 420,
+            type: "radialBar",
+        },
+
+        series: [(parseInt(calorie_taken) / parseInt(calorie_limit)).toFixed(1)],
+        colors: [function ({value, seriesIndex, w}) {
+            if (value < 90) {
+                return '#00FF40'
+            } else if (value < 95) {
+                return '#FFBF00'
+            } else {
+                return '#DF3A01'
+            }
+        }],
+        plotOptions: {
+            radialBar: {
+                hollow: {
+                    margin: 0,
+                    size: "75%",
+                    background: "#9A2EFE"
+                },
+                track: {
+                    dropShadow: {
+                        enabled: true,
+                        top: 2,
+                        left: 0,
+                        blur: 4,
+                        opacity: 0.15
+                    }
+                },
+                dataLabels: {
+                    name: {
+                        offsetY: -10,
+                        color: "#fff",
+                        fontSize: "13px"
+                    },
+                    value: {
+                        color: "#fff",
+                        fontSize: "30px",
+                        show: true
+                    }
+                }
+            }
+        },
+        stroke: {
+            lineCap: "round"
+        },
+        labels: ["Total Consumption Monitor"]
+    };
+
+    var chart = new ApexCharts(document.querySelector(apexChart), options);
+    chart.render();
+}
+
+function kanban() {
+    new jKanban({
+        element: '#meal_kanban',
+        responsivePercentage: false,
+        gutter: "10px",
+        widthBoard: "300px",
+        boards: [{
+            'id': '_breakfast',
+            'title': 'Breakfast',
+            'class': 'light-success',
+            'item': [{
+                'title': `
+                                <div class="d-flex align-items-center">
+                        	        <div class="symbol symbol-success mr-3">
+                        	            <img alt="Pic" src="assets/media/users/150-6.jpg" />
+                        	        </div>
+                        	        <div class="d-flex flex-column align-items-start">
+                        	            <span class="text-dark-50 font-weight-bold mb-1">SEO Optimization</span>
+                        	            <span class="label label-inline label-light-success font-weight-bold">In progress</span>
+                        	        </div>
+                        	    </div>
+                            `,
+            }
+            ]
+        },
+            {
+                'id': '_lunch',
+                'title': 'Lunch',
+                'class': 'light-warning',
+                'item': [{
+                    'title': `
+                                <div class="d-flex align-items-center">
+                        	        <div class="symbol symbol-success mr-3">
+                        	            <img alt="Pic" src="assets/media/users/150-11.jpg" />
+                        	        </div>
+                        	        <div class="d-flex flex-column align-items-start">
+                        	            <span class="text-dark-50 font-weight-bold mb-1">Server Setup</span>
+                        	            <span class="label label-inline label-light-dark font-weight-bold">Completed</span>
+                        	        </div>
+                        	    </div>
+                            `,
+                }
+                ]
+            },
+            {
+                'id': '_dinner',
+                'title': 'Dinner',
+                'class': 'light-primary',
+                'item': [{
+                    'title': `
+                                <div class="d-flex align-items-center">
+                        	        <div class="symbol symbol-success mr-3">
+                            	         <img alt="Pic" src="assets/media/users/150-6.jpg" />
+                        	        </div>
+                        	        <div class="d-flex flex-column align-items-start">
+                        	            <span class="text-dark-50 font-weight-bold mb-1">Marketing</span>
+                        	            <span class="label label-inline label-light-danger font-weight-bold">Planning</span>
+                        	        </div>
+                        	    </div>
+                            `,
+                }
+                ]
+            }
+        ]
+    });
+}
+
+function loadTable() {
+    var options = {
+        // datasource definition
+        data: {
+            type: 'remote',
+            source: {
+                read: {
+                    method: "GET",
+                    contentType: 'application/json',
+                    url: 'https://healthier-recipe-api.azurewebsites.net/api/HttpTrigger?code=qxBTuTf8B0GadfnmRkWNWdTsLCuaWguAuMLc5BAqdka74r2wfvemFA==',
+                    map: function (raw) {
+                        console.log(raw)
+                        // sample data mapping
+                        var dataSet = raw;
+                        if (typeof raw.data !== 'undefined') {
+                            dataSet = raw.data;
+                        }
+                        return dataSet["hits"]
+                    }
+                },
+            }
+        },
+
+        // layout definition
+        layout: {
+            scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
+            height: 500, // datatable's body's fixed height
+            footer: false, // display/hide footer
+        },
+
+        // column sorting
+        sortable: true,
+
+        pagination: false,
+
+        search: {
+            search: {
+                onEnter: false,
+            },
+            input: $('#food_datatable_search_query'),
+            key: 'name'
+        },
+
+        // columns definition
+        columns: [
+            {
+                field: 'ID',
+                title: 'ID',
+                width: 30,
+                type: 'number',
+                template: function (row) {
+                    return row["recipe"]["label"];
+                },
+            }, {
+                field: 'Add',
+                title: 'Add',
+                sortable: false,
+                width: 125,
+                overflow: 'visible',
+                autoHide: false,
+                template: function () {
+                    return '\
+							<div class="dropdown dropdown-inline">\
+								<a href="javascript:;" class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">\
+	                                <i class="la la-plus"></i>\
+	                            </a>\
+							  	<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
+									<ul class="nav nav-hoverable flex-column">\
+							    		<li class="nav-item"><a class="nav-link" href="#"><span class="nav-text">Breakfast</span></a></li>\
+							    		<li class="nav-item"><a class="nav-link" href="#"><span class="nav-text">Lunch</span></a></li>\
+							    		<li class="nav-item"><a class="nav-link" href="#"><span class="nav-text">Dinner</span></a></li>\
+									</ul>\
+							  	</div>\
+							</div>\
+						';
+                },
+            }],
+
+    };
+
+    var datatable = $('#food_datatable').KTDatatable(options);
+    
+    $('#search_food').on("click",function () {
+        datatable.setDataSourceParam('name', $('#food_datatable_search_query').val().toLowerCase());
+        datatable.load()
     })
 }

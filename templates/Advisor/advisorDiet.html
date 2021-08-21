@@ -83,7 +83,6 @@
             <!--end::Toolbar-->
         </div>
     </div>
-
     <!--begin::Modal-->
     <div class="modal fade" id="ModalHeight" tabindex="-1" role="dialog" aria-labelledby="ModalHeight" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
@@ -215,19 +214,277 @@
             </div>
         </div>
     {% endif %}
+    <!-- Modal-->
+    <div class="modal fade" id="add_food" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="add_food" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="add_food_label">Add food to today's diet list</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!--begin::Search Form-->
+                    <div class="mb-7">
+                        <div class="row align-items-center">
+                            <div class="col-lg-9 col-xl-8">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <input type="text" class="form-control" placeholder="Search..." id="food_datatable_search_query"/> <span> <i class="flaticon2-search-1 text-muted"></i> </span>
+                                        </div>
+                                        <div class="btn" id="search_food">Search</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Search Form-->
+                    <!--begin: Datatable-->
+                    <div class="datatable datatable-bordered datatable-head-custom" id="food_datatable"></div>
+                    <!--end: Datatable-->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-danger font-weight-bold" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-light-success font-weight-bold">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!--begin::Entry-->
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
         <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    {% if health_profile.target == 0 %}
+                        <div class="card card-custom gutter-b shadow-sm">
+                            <div class="card-body d-flex align-items-center py-5 py-lg-13">
+                                <!--begin::Icon-->
+                                <div class="d-flex flex-center position-relative ml-5 mr-15 ml-lg-9 mr-lg-15">
+                                    <span class="svg-icon svg-icon-5x svg-icon-primary position-absolute opacity-15">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-polygon.svg-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="70px" height="70px" viewBox="0 0 70 70"
+                                             fill="none">
+                                            <g stroke="none" stroke-width="1" fill-rule="evenodd">
+                                                <path d="M28 4.04145C32.3316 1.54059 37.6684 1.54059 42 4.04145L58.3109 13.4585C62.6425 15.9594 65.3109 20.5812 65.3109 25.5829V44.4171C65.3109 49.4188 62.6425 54.0406 58.3109 56.5415L42 65.9585C37.6684 68.4594 32.3316 68.4594 28 65.9585L11.6891 56.5415C7.3575 54.0406 4.68911 49.4188 4.68911 44.4171V25.5829C4.68911 20.5812 7.3575 15.9594 11.6891 13.4585L28 4.04145Z"
+                                                      fill="#000000"></path>
+                                            </g>
+                                        </svg>
+                                        <!--end::Svg Icon-->
+                                    </span> <span class="svg-icon svg-icon-2x svg-icon-primary position-absolute">
+                                    <!--begin::Svg Icon | path:assets/media/svg/icons/Tools/Compass.svg-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                         width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24"></rect>
+                                            <path d="M7.07744993,12.3040451 C7.72444571,13.0716094 8.54044565,13.6920474 9.46808594,14.1079953 L5,23 L4.5,18 L7.07744993,12.3040451 Z M14.5865511,14.2597864 C15.5319561,13.9019016 16.375416,13.3366121 17.0614026,12.6194459 L19.5,18 L19,23 L14.5865511,14.2597864 Z M12,3.55271368e-14 C12.8284271,3.53749572e-14 13.5,0.671572875 13.5,1.5 L13.5,4 L10.5,4 L10.5,1.5 C10.5,0.671572875 11.1715729,3.56793164e-14 12,3.55271368e-14 Z"
+                                                  fill="#000000" opacity="0.3"></path>
+                                            <path d="M12,10 C13.1045695,10 14,9.1045695 14,8 C14,6.8954305 13.1045695,6 12,6 C10.8954305,6 10,6.8954305 10,8 C10,9.1045695 10.8954305,10 12,10 Z M12,13 C9.23857625,13 7,10.7614237 7,8 C7,5.23857625 9.23857625,3 12,3 C14.7614237,3 17,5.23857625 17,8 C17,10.7614237 14.7614237,13 12,13 Z"
+                                                  fill="#000000" fill-rule="nonzero"></path>
+                                        </g>
+                                    </svg>
+                                    <!--end::Svg Icon-->
+                                </span>
+                                </div>
+                                <!--end::Icon-->
+                                <!--begin::Description-->
+                                <div class="m-0 text-dark-50 font-weight-bold font-size-lg">Hi! {{ current_user.id }}. We notice that you have not choose your health target yet, if you wish to let us get to know you more and unlock more functions that are more suitable to you, please
+                                    <a class="text-info" data-toggle="modal" data-target="#chooseTarget">select your health target</a>.
+                                </div>
+                                <!--end::Description-->
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="card card-custom gutter-b shadow-sm">
+                            <div class="card-body d-flex align-items-center py-5 py-lg-13">
+                                <!--begin::Icon-->
+                                <div class="d-flex flex-center position-relative ml-5 mr-15 ml-lg-9 mr-lg-15">
+                                    <span class="svg-icon svg-icon-5x svg-icon-primary position-absolute opacity-15">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-polygon.svg-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="70px" height="70px" viewBox="0 0 70 70"
+                                             fill="none">
+                                            <g stroke="none" stroke-width="1" fill-rule="evenodd">
+                                                <path d="M28 4.04145C32.3316 1.54059 37.6684 1.54059 42 4.04145L58.3109 13.4585C62.6425 15.9594 65.3109 20.5812 65.3109 25.5829V44.4171C65.3109 49.4188 62.6425 54.0406 58.3109 56.5415L42 65.9585C37.6684 68.4594 32.3316 68.4594 28 65.9585L11.6891 56.5415C7.3575 54.0406 4.68911 49.4188 4.68911 44.4171V25.5829C4.68911 20.5812 7.3575 15.9594 11.6891 13.4585L28 4.04145Z"
+                                                      fill="#000000"></path>
+                                            </g>
+                                        </svg>
+                                        <!--end::Svg Icon-->
+                                    </span> <span class="svg-icon svg-icon-2x svg-icon-primary position-absolute">
+                                    <!--begin::Svg Icon | path:assets/media/svg/icons/Tools/Compass.svg-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                         width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24"></rect>
+                                            <path d="M7.07744993,12.3040451 C7.72444571,13.0716094 8.54044565,13.6920474 9.46808594,14.1079953 L5,23 L4.5,18 L7.07744993,12.3040451 Z M14.5865511,14.2597864 C15.5319561,13.9019016 16.375416,13.3366121 17.0614026,12.6194459 L19.5,18 L19,23 L14.5865511,14.2597864 Z M12,3.55271368e-14 C12.8284271,3.53749572e-14 13.5,0.671572875 13.5,1.5 L13.5,4 L10.5,4 L10.5,1.5 C10.5,0.671572875 11.1715729,3.56793164e-14 12,3.55271368e-14 Z"
+                                                  fill="#000000" opacity="0.3"></path>
+                                            <path d="M12,10 C13.1045695,10 14,9.1045695 14,8 C14,6.8954305 13.1045695,6 12,6 C10.8954305,6 10,6.8954305 10,8 C10,9.1045695 10.8954305,10 12,10 Z M12,13 C9.23857625,13 7,10.7614237 7,8 C7,5.23857625 9.23857625,3 12,3 C14.7614237,3 17,5.23857625 17,8 C17,10.7614237 14.7614237,13 12,13 Z"
+                                                  fill="#000000" fill-rule="nonzero"></path>
+                                        </g>
+                                    </svg>
+                                    <!--end::Svg Icon-->
+                                </span>
+                                </div>
+                                <!--end::Icon-->
+                                <!--begin::Description-->
+                                <div class="m-0 text-dark-50 font-weight-bold font-size-lg">Hi! {{ current_user.id }}. Based on your age, gender and weight, your basal metabolic rate is in the range of <strong
+                                        class="text-info">{{ calorie_limit[0] - calorie_limit[1] }} - {{ calorie_limit[0] + calorie_limit[1] }} Kcal per day</strong>, our recommendation on your diet as well as exercises to take will also be based on this data.
+                                </div>
+                                <!--end::Description-->
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <!--begin::Stats Widget 14-->
+                    <div class="card card-custom bg-primary card-stretch card-stretch-half card-shadowless gutter-b" style="min-height: 250px">
+                        <!--begin::Header-->
+                        <div class="card-header border-0 pt-6">
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label font-weight-bolder font-size-h4 text-white">Recent daily meal calorie intake percentage</span>
+                            </h3>
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body">
+                            <!--begin::Chart-->
+                            <div class="progress-vertical h-125px flex-grow-1">
+                                <div class="progress bg-success" data-toggle="tooltip" title="" data-original-title="60%">
+                                    <div class="progress-bar bg-white" role="progressbar" style="height: 60%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="progress bg-success" data-toggle="tooltip" title="" data-original-title="70%">
+                                    <div class="progress-bar bg-white" role="progressbar" style="height: 70%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="progress bg-success" data-toggle="tooltip" title="" data-original-title="80%">
+                                    <div class="progress-bar bg-white" role="progressbar" style="height: 80%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="progress bg-success" data-toggle="tooltip" title="" data-original-title="90%">
+                                    <div class="progress-bar bg-white" role="progressbar" style="height: 90%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="progress bg-success" data-toggle="tooltip" title="" data-original-title="75%">
+                                    <div class="progress-bar bg-white" role="progressbar" style="height: 75%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            <!--end::Chart-->
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Stats Widget 14-->
 
+                    <div class="card card-custom card-stretch card-stretch-half bg-success gutter-b card-shadowless">
+                        <!--begin::Header-->
+                        <div class="card-header border-0 pt-7">
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label font-weight-bolder font-size-h4 text-white">Today's Nutrition</span>
+                            </h3>
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body pt-1">
+                            <!--begin::Item-->
+                            <div class="d-flex flex-column pb-5">
+                                <!--begin::Status-->
+                                <div class="d-flex justify-content-between pb-3">
+                                    <a href="" class="font-weight-bold font-size-h6 text-white">Carbohydrate</a>
+                                    <div class="font-weight-bold text-light-success font-size-h6">62%</div>
+                                </div>
+                                <!--begendin::Status-->
+                                <!--begin::Progress-->
+                                <div class="progress progress-xs bg-light-info">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 62%" aria-valuenow="24" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <!--end::Progress-->
+                            </div>
+                            <!--end::Item-->
+                            <!--begin::Item-->
+                            <div class="d-flex flex-column pb-5">
+                                <!--begin::Status-->
+                                <div class="d-flex justify-content-between pb-3">
+                                    <a href="" class="font-weight-bold font-size-h6 text-white">Protein</a>
+                                    <div class="font-weight-bold text-light-success font-size-h6">75%</div>
+                                </div>
+                                <!--begendin::Status-->
+                                <!--begin::Progress-->
+                                <div class="progress progress-xs bg-light-primary">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 75%" aria-valuenow="24" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <!--end::Progress-->
+                            </div>
+                            <!--end::Item-->
+                            <!--begin::Item-->
+                            <div class="d-flex flex-column">
+                                <!--begin::Status-->
+                                <div class="d-flex justify-content-between pb-3">
+                                    <a href="" class="font-weight-bold font-size-h6 text-white">Fat</a>
+                                    <div class="font-weight-bold text-light-success font-size-h6">42%</div>
+                                </div>
+                                <!--begendin::Status-->
+                                <!--begin::Progress-->
+                                <div class="progress progress-xs bg-light-warning">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 42%" aria-valuenow="24" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <!--end::Progress-->
+                            </div>
+                            <!--end::Item-->
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card card-custom card-stretch card-stretch shadow-lg gutter-b">
+                        <!--begin::Header-->
+                        <div class="card-header border-0 pt-7">
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label font-weight-bolder font-size-h4 text-dark-75">Today's Calorie Consumption</span><span
+                                    class="text-muted mt-3 font-weight-bold font-size-lg">Recommend Calorie Intake: Less than {{ ((calorie_limit[0] + calorie_limit[1])*0.9)|round }} Kcal(Below 90% on the monitor).</span>
+                            </h3>
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body pt-1">
+                            <!--begin::Item-->
+                            <div class="d-flex flex-column pb-15">
+                                <div id="calorie_chart"></div>
+                            </div>
+                            <!--end::Item-->
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <!--begin::Card-->
+                    <div class="card card-custom">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h3 class="card-label">Today's Diet</h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <button class="btn btn-sm btn-success mr-1" data-toggle="modal" data-target="#add_food"><i class="ki ki-plus icon-nm"></i> Add food</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="meal_kanban" class="row"></div>
+                        </div>
+                    </div>
+                    <!--end::Card--></div>
+            </div>
         </div>
     </div>
     <!--begin::Page Scripts(used by this page)-->
     {% include '_includes/_scripts.html' %}
+    <script src="{{ url_for('static', filename='assets/js/kanban.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/advisor.js') }}"></script>
     <script>
         $(document).ajaxStop($.unblockUI);
         jQuery(document).ready(function () {
+            loadTable()
+            chart('{{ calorie_limit[0] + calorie_limit[1] }}', 11)
+            kanban()
             {% if current_user.exerciseFrequency == None %}
                 //show modal for user to choose their exercise frequency per week
                 $('#exerciseFrequency').modal('show')

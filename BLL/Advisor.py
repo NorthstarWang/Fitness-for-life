@@ -1,5 +1,3 @@
-import datetime
-
 from flask import Blueprint, render_template, request, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy import and_, func
@@ -97,7 +95,7 @@ def set_target():
 		health_profile.targetValue = target_weight
 	else:
 		health_profile.target = 2
-		health_profile.targetValue = calorie_intake_calculation()
+		health_profile.targetValue = calorie_intake_calculation()[0]
 	# calorie is different for individual thus calculate base on age, weight, gender
 	db.session.commit()
 	return "success"
@@ -137,6 +135,7 @@ def get_trending_sports():
 	for i in sports:
 		ret_array.append({"difficulty": i.difficulty, "name": i.name})
 	return jsonify(ret_array)
+
 
 @advisor.route("/chart/month/get/BMI", methods=['Get', 'Post'])
 @login_required

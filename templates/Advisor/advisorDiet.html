@@ -208,7 +208,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" onclick="setExerciseFrequency('{{ url_for('advisor.set_frequency') }}','{{ url_for("advisor.health_advisor_index", monitor="weight") }}')" class="btn btn-primary font-weight-bold">Submit</button>
+                        <button type="button" onclick="setExerciseFrequency('{{ url_for('advisor.set_frequency') }}','{{ url_for("advisor.health_advisor_index", monitor="diet") }}')" class="btn btn-primary font-weight-bold">Submit</button>
                     </div>
                 </div>
             </div>
@@ -464,9 +464,12 @@
                         <div class="card-header">
                             <div class="card-title">
                                 <h3 class="card-label">Today's Diet</h3>
+                                <p class="text-muted mt-3 font-weight-bold font-size-lg">Right click to remove food</p>
                             </div>
                             <div class="card-toolbar">
-                                <button class="btn btn-sm btn-success mr-1" data-toggle="modal" data-target="#add_food"><i class="ki ki-plus icon-nm"></i> Add food</button>
+                                <button class="btn btn-sm btn-light-primary mr-3" data-toggle="modal" data-target="#add_food"><i class="la la-plus icon-nm"></i> Add food</button>
+                                <button onclick="save_kanban('{{ url_for("advisor.set_today_diet") }}')" class="btn btn-sm btn-light-success mr-3" data-toggle="tooltip" data-placement="top" title="Save" data-original-title="Save all"><i class="la la-save icon-nm"></i> Save all</button>
+                                <button onclick="clear_kanban()" class="btn btn-sm btn-light-danger mr-3" data-toggle="tooltip" data-placement="top" title="Clear" data-original-title="Clear all"><i class="la la-trash icon-nm"></i> Clear all</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -486,7 +489,7 @@
         jQuery(document).ready(function () {
             loadTable()
             chart('{{ calorie_limit[0] + calorie_limit[1] }}', 11)
-            kanban()
+            kanban('{{ url_for("advisor.get_today_diet") }}')
             {% if current_user.exerciseFrequency == None %}
                 //show modal for user to choose their exercise frequency per week
                 $('#exerciseFrequency').modal('show')

@@ -1,4 +1,5 @@
 import datetime
+import json
 from datetime import date
 import math
 import random
@@ -175,12 +176,33 @@ class HealthProfile(db.Model):
 class DietProfile(db.Model):
 	__tablename__ = "diet_profile"
 	id = db.Column(db.Integer, primary_key=True)
-	weight = db.Column(db.Integer, nullable=False)
-	calorie = db.Column(db.Integer, nullable=False)
 	userId = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	consumeDay = db.Column(db.Date, nullable=False)
-	# 0 - Not specified, 1 - Breakfast, 2 - Lunch, 3 - Dinner, 4 - supper
+	# calorie limit on that date
+	calorie = db.Column(db.Float, nullable=False)
+	diet_kanban = db.relationship("DietKanban", backref='diet_profile')
+
+
+class DietKanban(db.Model):
+	__tablename__ = "diet_kanban"
+	id = db.Column(db.Integer, primary_key=True)
+	# food name
+	name = db.Column(db.String, nullable=False)
+	# image src link
+	image = db.Column(db.String)
+	# nutrition in kcal
+	carb = db.Column(db.Float)
+	protein = db.Column(db.Float)
+	fat = db.Column(db.Float)
+	fatPerHundreds = db.Column(db.Float)
+	carbPerHundreds = db.Column(db.Float)
+	proteinPerHundreds = db.Column(db.Float)
+	# weight consumed in grams
+	weight = db.Column(db.Integer, nullable=False)
+	# 1 - Breakfast, 2 - Lunch, 3 - Dinner
 	mealType = db.Column(db.Integer, nullable=False)
+	caloriePerHundreds = db.Column(db.Float, nullable=False)
+	referenceId = db.Column(db.Integer, db.ForeignKey('diet_profile.id'))
 
 
 class Sport(db.Model):

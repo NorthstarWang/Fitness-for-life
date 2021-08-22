@@ -1,3 +1,5 @@
+var meal_kanban;
+
 function set_target(url, target_weight = 0, endpoint) {
     if (document.getElementById("stay_fit").checked) {
         $.ajax({
@@ -121,7 +123,6 @@ function advisorWeightOnReady(current_weight, set_target_url, health_advisor_ind
                 })
             }
         } else {
-            console.log(true)
             set_target(set_target_url, 0, health_advisor_index_url)
         }
 
@@ -690,9 +691,151 @@ function chart(calorie_limit, calorie_taken) {
     chart.render();
 }
 
-function kanban() {
-    new jKanban({
+function kanban(foodsUrl) {
+    $.ajax({
+        url:foodsUrl,
+        type:"GET",
+        dataType:"JSON",
+        success:function (result){
+            console.log(result)
+            var breakfast_items = [];
+            var lunch_items = [];
+            var dinner_items = [];
+            if(result!=="Empty"){
+                for (let i = 0; i < result.length; i++) {
+                    var item = {
+                        "title" : `
+                         <div class="d-flex align-items-center">
+                            <div class="symbol symbol-light-primary mr-3">
+                                <img alt="Pic" src="` + result[i]["image"] + `" />
+                            </div>
+                            <div class="d-flex flex-column align-items-start">
+                                <span class="text-dark-50 font-weight-bold mb-1 food-name">` + result[i]["name"] + `</span>
+                                <span class="label label-inline label-light-success font-weight-bold calorie">`+ (parseFloat(result[i]["caloriePerHundreds"])/100*parseFloat(result[i]["weight"])).toFixed(0) + `Kcal/` + result[i]["weight"] +`g</span>
+                                <input type="hidden" name="caloriePerHundreds" value="` + result[i]["caloriePerHundreds"] + `">
+                                <input type="hidden" name="set" value="true">
+                                <input type="hidden" name="fat" value="`+ result[i]["fat"] +`"/>
+                                <input type="hidden" name="carb" value="`+ result[i]["carb"] +`"/>
+                                <input type="hidden" name="protein" value="`+ result[i]["protein"] +`"/>
+                                <input type="hidden" name="fat_per_hundreds" value="` + result[i]["fatPerHundreds"] + `"/>
+                                <input type="hidden" name="carb_per_hundreds" value="` + result[i]["carbPerHundreds"] + `"/>
+                                <input type="hidden" name="protein_per_hundreds" value="` + result[i]["proteinPerHundreds"] + `"/>
+                            </div>
+                        </div>
+                        `
+                    }
+                    if (result[i]['mealType']===1){
+                        breakfast_items.push(item)
+                    }else if(result[i]['mealType']===2){
+                        lunch_items.push(item)
+                    }else if(result[i]['mealType']===3){
+                        dinner_items.push(item)
+                    }
+                }
+            }
+    meal_kanban = new jKanban({
         element: '#meal_kanban',
+        click: function (el) {
+            var calorie_label = el.children[0].children[1].children[1]
+            if (calorie_label.classList.contains("label-light-warning")) {
+                swal.fire({
+                    customClass: {
+                        input: 'form-control',
+                        cancelButton: 'btn btn-danger',
+                        confirmButton: 'btn btn-success font-weight-bold',
+                    },
+                    title: 'How much did you consume',
+                    input: 'number',
+                    inputAttributes: {
+                        step: 1,
+                        placeholder: "Unit: gram(Integer)"
+                    },
+                    imageUrl: el.children[0].children[0].children[0].getAttribute("src"),
+                    imageWidth: 300,
+                    imageHeight: 300,
+                    imageAlt: 'Pic',
+                    showCancelButton: true,
+                    buttonsStyling: false,
+                    confirmButtonText: 'Set',
+                    inputValidator: (value) => {
+                        if (!value) {
+                            return 'Only integer is allowed'
+                        }
+                    },
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        var grams = $(swal.getInput()).val()
+                        calorie_label.innerText = (parseFloat($(swal.getInput()).val()) / 100 * parseInt(el.children[0].children[1].children[2].value)).toFixed(0).toString() + "Kcal/" + grams + "g"
+                        var parent = $(el.children[0].children[1])
+                        parent[0].children[3].value = "true"
+                        var fat_avg = parent.find('[name="fat_per_hundreds"]')[0].value
+                        var carb_avg = parent.find('[name="carb_per_hundreds"]')[0].value
+                        var protein_avg = parent.find('[name="protein_per_hundreds"]')[0].value
+                        parent.find('[name="fat"]')[0].value = (parseFloat(fat_avg) * parseFloat(grams) / 100).toFixed(1)
+                        parent.find('[name="carb"]')[0].value = (parseFloat(carb_avg) * parseFloat(grams) / 100).toFixed(1)
+                        parent.find('[name="protein"]')[0].value = (parseFloat(protein_avg) * parseFloat(grams) / 100).toFixed(1)
+                        calorie_label.classList.remove("label-light-warning")
+                        calorie_label.classList.add("label-light-success")
+                    }
+                })
+            } else if (calorie_label.classList.contains("label-light-success")) {
+                swal.fire({
+                    customClass: {
+                        input: 'form-control',
+                        cancelButton: 'btn btn-danger',
+                        confirmButton: 'btn btn-success font-weight-bold',
+                    },
+                    title: 'How much did you consume',
+                    input: 'number',
+                    inputAttributes: {
+                        value: calorie_label.innerText,
+                        step: 1,
+                        placeholder: "Unit: gram(Integer)"
+                    },
+                    imageUrl: el.children[0].children[0].children[0].getAttribute("src"),
+                    imageWidth: 300,
+                    imageHeight: 300,
+                    imageAlt: 'Pic',
+                    showCancelButton: true,
+                    buttonsStyling: false,
+                    confirmButtonText: 'Update',
+                    inputValidator: (value) => {
+                        if (!value) {
+                            return 'Only integer is allowed'
+                        }
+                    },
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        var grams = $(swal.getInput()).val()
+                        calorie_label.innerText = (parseFloat($(swal.getInput()).val()) / 100 * parseInt(el.children[0].children[1].children[2].value)).toFixed(0).toString() + "Kcal/" + grams + "g"
+                        var parent = $(el.children[0].children[1])
+                        parent[0].children[3].value = "true"
+                        var fat_avg = parent.find('[name="fat_per_hundreds"]')[0].value
+                        var carb_avg = parent.find('[name="carb_per_hundreds"]')[0].value
+                        var protein_avg = parent.find('[name="protein_per_hundreds"]')[0].value
+                        parent.find('[name="fat"]')[0].value = (parseFloat(fat_avg) * parseFloat(grams) / 100).toFixed(1)
+                        parent.find('[name="carb"]')[0].value = (parseFloat(carb_avg) * parseFloat(grams) / 100).toFixed(1)
+                        parent.find('[name="protein"]')[0].value = (parseFloat(protein_avg) * parseFloat(grams) / 100).toFixed(1)
+                    }
+                })
+            }
+        },
+        context: function (el, event) {
+            swal.fire({
+                title: "Do you want to delete this food?",
+                showCancelButton: true,
+                customClass: {
+                    cancelButton: 'btn btn-danger',
+                    confirmButton: 'btn btn-success font-weight-bold',
+                },
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    meal_kanban.removeElement(el)
+                }
+            })
+        },
         responsivePercentage: false,
         gutter: "10px",
         widthBoard: "300px",
@@ -700,22 +843,24 @@ function kanban() {
             'id': '_breakfast',
             'title': 'Breakfast',
             'class': 'light-success',
-            'item': []
+            'item': breakfast_items
         },
             {
                 'id': '_lunch',
                 'title': 'Lunch',
                 'class': 'light-warning',
-                'item': []
+                'item': lunch_items
             },
             {
                 'id': '_dinner',
                 'title': 'Dinner',
                 'class': 'light-primary',
-                'item': []
+                'item': dinner_items
             }
         ]
     });
+        }
+    })
 }
 
 function loadTable() {
@@ -812,9 +957,19 @@ function loadTable() {
                 overflow: 'visible',
                 width: 150,
                 template: function (row) {
+                    // the hidden field has value about food, since food has not yet set the weight yet, the fat/carb/protein is not filled yet
                     var calorie_per_hundreds = ((parseFloat(row["recipe"]["calories"]) / parseFloat(row["recipe"]["totalWeight"])) * 100).toFixed(0)
+                    var fat_per_hundreds = (((parseFloat(row["recipe"]["totalNutrients"]["FAT"]["quantity"]) * 9) / parseFloat(row["recipe"]["totalWeight"])) * 100).toFixed(1)
+                    var carb_per_hundreds = (((parseFloat(row["recipe"]["totalNutrients"]["CHOCDF"]["quantity"]) * 4) / parseFloat(row["recipe"]["totalWeight"])) * 100).toFixed(1)
+                    var protein_per_hundreds = (((parseFloat(row["recipe"]["totalNutrients"]["PROCNT"]["quantity"]) * 4) / parseFloat(row["recipe"]["totalWeight"])) * 100).toFixed(1)
                     return `
-                            <p class="text-dark-75 font-weight-bold font-size-lg">` + calorie_per_hundreds + `Kcal/100g</p>
+                            <p class="text-dark-75 font-weight-bold font-size-lg calorie-per-hundreds">` + calorie_per_hundreds + `Kcal/100g</p>
+                            <input type="hidden" name="fat_per_hundreds" value="` + fat_per_hundreds + `"/>
+                            <input type="hidden" name="carb_per_hundreds" value="` + carb_per_hundreds + `"/>
+                            <input type="hidden" name="protein_per_hundreds" value="` + protein_per_hundreds + `"/>
+                            <input type="hidden" name="fat" value=""/>
+                            <input type="hidden" name="carb" value=""/>
+                            <input type="hidden" name="protein" value=""/>
                         `
                 }
             }, {
@@ -881,6 +1036,7 @@ function loadTable() {
 
     var datatable = $('#food_datatable').KTDatatable(options);
 
+    //search button
     $('#search_food').on("click", function () {
         datatable.setDataSourceParam('name', $('#food_datatable_search_query').val().toLowerCase());
         datatable.load()
@@ -888,50 +1044,167 @@ function loadTable() {
 }
 
 function checkMeal(btn) {
+    // add food to kanban after add button clicked
     var column = $(btn).parents(".datatable-row")
     var img = column.find('img').attr('src')
     var name = column.find('[name="food_name"]')[0].innerText
-    if($(btn).val()==="breakfast"){
-        $('#meal_kanban>div.kanban-container>div[data-id="_breakfast"]>.kanban-drag')[0].innerHTML += `
-                    <div class="kanban-item">
+    var calorie_text = column.find('.calorie-per-hundreds')[0].innerText
+    var calorie = parseInt(calorie_text.substring(0, calorie_text.length - 9))
+    var carb_per_hundreds = column.find('[name="carb_per_hundreds"]')[0].value
+    var fat_per_hundreds = column.find('[name="fat_per_hundreds"]')[0].value
+    var protein_per_hundreds = column.find('[name="protein_per_hundreds"]')[0].value
+    if ($(btn).val() === "breakfast") {
+        meal_kanban.addElement(
+            '_breakfast', {
+                'title': `
                         <div class="d-flex align-items-center">
                             <div class="symbol symbol-light-primary mr-3">
-                                <img alt="Pic" src="`+ img +`" />
+                                <img alt="Pic" src="` + img + `" />
                             </div>
                             <div class="d-flex flex-column align-items-start">
-                                <span class="text-dark-50 font-weight-bold mb-1">`+ name +`</span>
-                                <span class="label label-inline label-light-success font-weight-bold">Not Set</span>
+                                <span class="text-dark-50 font-weight-bold mb-1 food-name">` + name + `</span>
+                                <span class="label label-inline label-light-warning font-weight-bold calorie">Weight Not Set</span>
+                                <input type="hidden" name="caloriePerHundreds" value="` + calorie + `">
+                                <input type="hidden" name="set" value="false">
+                                <input type="hidden" name="fat" value=""/>
+                                <input type="hidden" name="carb" value=""/>
+                                <input type="hidden" name="protein" value=""/>
+                                <input type="hidden" name="fat_per_hundreds" value="` + fat_per_hundreds + `"/>
+                                <input type="hidden" name="carb_per_hundreds" value="` + carb_per_hundreds + `"/>
+                                <input type="hidden" name="protein_per_hundreds" value="` + protein_per_hundreds + `"/>
                             </div>
                         </div>
-                    </div>
-        `
-    }else if($(btn).val()==="lunch"){
-        $('#meal_kanban>div.kanban-container>div[data-id="_lunch"]>.kanban-drag')[0].innerHTML += `
-                    <div class="kanban-item">
+                    `
+            }
+        );
+    } else if ($(btn).val() === "lunch") {
+        meal_kanban.addElement(
+            '_lunch', {
+                'title': `
                         <div class="d-flex align-items-center">
                             <div class="symbol symbol-light-primary mr-3">
-                                <img alt="Pic" src="`+ img +`" />
+                                <img alt="Pic" src="` + img + `" />
                             </div>
                             <div class="d-flex flex-column align-items-start">
-                                <span class="text-dark-50 font-weight-bold mb-1">`+ name +`</span>
-                                <span class="label label-inline label-light-success font-weight-bold">Not Set</span>
+                                <span class="text-dark-50 font-weight-bold mb-1 food-name">` + name + `</span>
+                                <span class="label label-inline label-light-warning font-weight-bold calorie">Weight Not Set</span>
+                                <input type="hidden" name="caloriePerHundreds" value="` + calorie + `">
+                                <input type="hidden" name="set" value="false">
+                                <input type="hidden" name="fat" value=""/>
+                                <input type="hidden" name="carb" value=""/>
+                                <input type="hidden" name="protein" value=""/>
+                                <input type="hidden" name="fat_per_hundreds" value="` + fat_per_hundreds + `"/>
+                                <input type="hidden" name="carb_per_hundreds" value="` + carb_per_hundreds + `"/>
+                                <input type="hidden" name="protein_per_hundreds" value="` + protein_per_hundreds + `"/>
                             </div>
                         </div>
-                    </div>
-        `
-    }else{
-        $('#meal_kanban>div.kanban-container>div[data-id="_dinner"]>.kanban-drag')[0].innerHTML += `
-                    <div class="kanban-item">
+                    `
+            }
+        );
+    } else {
+        meal_kanban.addElement(
+            '_dinner', {
+                'title': `
                         <div class="d-flex align-items-center">
                             <div class="symbol symbol-light-primary mr-3">
-                                <img alt="Pic" src="`+ img +`" />
+                                <img alt="Pic" src="` + img + `" />
                             </div>
                             <div class="d-flex flex-column align-items-start">
-                                <span class="text-dark-50 font-weight-bold mb-1">`+ name +`</span>
-                                <span class="label label-inline label-light-success font-weight-bold">Not Set</span>
+                                <span class="text-dark-50 font-weight-bold mb-1 food-name">` + name + `</span>
+                                <span class="label label-inline label-light-warning font-weight-bold calorie">Weight Not Set</span>
+                                <input type="hidden" name="caloriePerHundreds" value="` + calorie + `">
+                                <input type="hidden" name="set" value="false">
+                                <input type="hidden" name="fat" value=""/>
+                                <input type="hidden" name="carb" value=""/>
+                                <input type="hidden" name="protein" value=""/>
+                                <input type="hidden" name="fat_per_hundreds" value="` + fat_per_hundreds + `"/>
+                                <input type="hidden" name="carb_per_hundreds" value="` + carb_per_hundreds + `"/>
+                                <input type="hidden" name="protein_per_hundreds" value="` + protein_per_hundreds + `"/>
                             </div>
                         </div>
-                    </div>
-        `
+                    `
+            }
+        );
+    }
+}
+
+function clear_kanban() {
+    //clear all food item in kanban
+    const boards = ["_breakfast", "_lunch", "_dinner"]
+    for (let i = 0; i < boards.length; i++) {
+        while (meal_kanban.getBoardElements(boards[i]).length !== 0) {
+            meal_kanban.getBoardElements(boards[i])[0].remove()
+        }
+    }
+}
+
+function save_kanban(saveUrl) {
+    //save foods in kanban to database
+    var foods = []
+    const boards = ["_breakfast", "_lunch", "_dinner"]
+    for (let i = 0; i < boards.length; i++) {
+        for (let j = 0; j < meal_kanban.getBoardElements(boards[i]).length; j++) {
+            if ($(meal_kanban.getBoardElements(boards[i])[j]).find("[name='set']")[0].value === "true") {
+                var fat = $(meal_kanban.getBoardElements(boards[i])[j]).find("[name='fat']")[0].value
+                var carb = $(meal_kanban.getBoardElements(boards[i])[j]).find("[name='carb']")[0].value
+                var protein = $(meal_kanban.getBoardElements(boards[i])[j]).find("[name='protein']")[0].value
+                var fatPH = $(meal_kanban.getBoardElements(boards[i])[j]).find("[name='fat_per_hundreds']")[0].value
+                var proteinPH = $(meal_kanban.getBoardElements(boards[i])[j]).find("[name='protein_per_hundreds']")[0].value
+                var carbPH = $(meal_kanban.getBoardElements(boards[i])[j]).find("[name='carb_per_hundreds']")[0].value
+                var calorie = $(meal_kanban.getBoardElements(boards[i])[j]).find("[name='caloriePerHundreds']")[0].value
+                var image = $(meal_kanban.getBoardElements(boards[i])[j]).find("img")[0].getAttribute("src")
+                var name = $(meal_kanban.getBoardElements(boards[i])[j]).find(".food-name")[0].innerHTML
+                var weight_text = $(meal_kanban.getBoardElements(boards[i])[j]).find(".calorie")[0].innerText.split("/")[1]
+                var weight = weight_text.substring(0, weight_text.length - 1)
+                var food = {
+                    fat: fat,
+                    carb: carb,
+                    fatPerHundreds:fatPH,
+                    carbPerHundreds:carbPH,
+                    proteinPerHundreds:proteinPH,
+                    protein: protein,
+                    image: image,
+                    name: name,
+                    mealType: mealAnalysis(boards[i]),
+                    weight: weight,
+                    caloriePerHundreds: calorie
+                }
+                foods.push(food)
+            }
+        }
+    }
+
+    $.ajax({
+        url: saveUrl,
+        data: JSON.stringify(foods),
+        contentType: "application/json;charset=utf-8",
+        type: "POST",
+        success: function (result) {
+            if (result === "success") {
+                $.notify("You have successfully saved the foods", {
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    delay: 500,
+                    timer: 1500,
+                    animate: {
+                        enter: 'animate__animated animate__bounceInRight',
+                        exit: 'animate__animated animate__bounceOutRight'
+                    },
+                    type: "success"
+                })
+            }
+        }
+    })
+}
+
+function mealAnalysis(board_name) {
+    if (board_name === "_breakfast") {
+        return 1
+    } else if (board_name === "_lunch") {
+        return 2
+    } else {
+        return 3
     }
 }

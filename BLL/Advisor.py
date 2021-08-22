@@ -26,7 +26,7 @@ def format_axis_data_BMI(data):
 	axis_data = []
 	for i in data:
 		temp_date = i.updateDay
-		temp_point = {"x": temp_date, "y": round(i.weight/((current_user.height/100)*(current_user.height/100)), 2)}
+		temp_point = {"x": temp_date, "y": round(i.weight / ((current_user.height / 100) * (current_user.height / 100)), 2)}
 		axis_data.append(temp_point)
 	return jsonify(axis_data)
 
@@ -151,7 +151,6 @@ def get_BMI_month_chart():
 @advisor.route("/record/month/get", methods=['Get', 'Post'])
 @login_required
 def get_month_record():
-	current = date.today()
 	data = BodyProfile.query.filter_by(userId=current_user.id).order_by(BodyProfile.updateDay).all()
 	month = []
 	curr_month = None
@@ -182,3 +181,63 @@ def get_sport(number):
 		ret_dict[1].append({"name": intermediate_sport[i].name, "calorie": calculate_calorie_consumption(current_user.weight, intermediate_sport[i].calorie, intermediate_sport[i].rate), "category": intermediate_sport[i].category.split(",")})
 		ret_dict[2].append({"name": advance_sport[i].name, "calorie": calculate_calorie_consumption(current_user.weight, advance_sport[i].calorie, advance_sport[i].rate), "category": advance_sport[i].category.split(",")})
 	return jsonify(ret_dict)
+
+
+@advisor.route("/diet/set", methods=['Get', 'Post'])
+@login_required
+def set_today_diet():
+	# get food info
+	foods = request.get_json()
+	user = current_user.id
+	today = date.today()
+	# check whether there is already a kanban and profile for diet today
+	dietProfileExist = DietProfile.query.filter(and_(DietProfile.consumeDay == today), (DietProfile.userId == user)).all()
+	# if no profile yet, create one
+	if len(dietProfileExist) == 0:
+		dietProfile = DietProfile(userId=user, consumeDay=today, calorie=calorie_intake_calculation()[0] + calorie_intake_calculation()[1])
+		db.session.add(dietProfile)
+		db.session.commit()
+	dietProfileId = DietProfile.query.filter(and_(DietProfile.consumeDay == today), (DietProfile.userId == user)).first().id
+
+	# if there is any food in current day list, clear it all
+	foodExist = DietKanban.query.filter_by(referenceId=dietProfileId).all()
+	if len(foodExist) > 0:
+		foodExist.clear()
+		db.session.commit()
+
+	for food in foods:
+		dietKanban = DietKanban(name=str(food["name"]), fatPerHundreds=float(food["fatPerHundreds"]), carbPerHundreds=float(food["carbPerHundreds"]), proteinPerHundreds=float(food["proteinPerHundreds"]), image=str(food["image"]),
+		                        carb=float(food["carb"]), protein=float(food["protein"]), fat=float(food["fat"]), weight=int(food["weight"]), mealType=int(food["mealType"]),
+		                        caloriePerHundreds=float(food["caloriePerHundreds"]), referenceId=int(dietProfileId))
+		db.session.add(dietKanban)
+		db.session.commit()
+	return "success"
+
+
+@advisor.route("/diet/get", methods=['Get', 'Post'])
+@login_required
+def get_today_diet():
+	user = current_user.id
+	today = date.today()
+	dietProfile = DietProfile.query.filter(and_(DietProfile.consumeDay == today), (DietProfile.userId == user)).first()
+	if dietProfile is not None:
+		food_list = DietKanban.query.filter_by(referenceId=dietProfile.id).all()
+		foods = []
+		for food in food_list:
+			temp = {
+				"name": food.name,
+				"fatPerHundreds": food.fatPerHundreds,
+				"carbPerHundreds": food.carbPerHundreds,
+				"proteinPerHundreds": food.proteinPerHundreds,
+				"image": food.image,
+				"carb": food.carb,
+				"protein": food.protein,
+				"fat": food.fat,
+				"weight": food.weight,
+				"mealType": food.mealType,
+				"caloriePerHundreds": food.caloriePerHundreds
+			}
+			foods.append(temp)
+		return jsonify(foods)
+	else:
+		return "Empty"

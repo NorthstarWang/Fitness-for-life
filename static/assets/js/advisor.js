@@ -574,7 +574,6 @@ function reloadSport() {
     loadExercise()
 }
 
-
 function update_weight(userId, url) {
     var new_weight = document.getElementById("update_weight").value
     KTApp.blockPage({
@@ -701,58 +700,19 @@ function kanban() {
             'id': '_breakfast',
             'title': 'Breakfast',
             'class': 'light-success',
-            'item': [{
-                'title': `
-                                <div class="d-flex align-items-center">
-                        	        <div class="symbol symbol-success mr-3">
-                        	            <img alt="Pic" src="assets/media/users/150-6.jpg" />
-                        	        </div>
-                        	        <div class="d-flex flex-column align-items-start">
-                        	            <span class="text-dark-50 font-weight-bold mb-1">SEO Optimization</span>
-                        	            <span class="label label-inline label-light-success font-weight-bold">In progress</span>
-                        	        </div>
-                        	    </div>
-                            `,
-            }
-            ]
+            'item': []
         },
             {
                 'id': '_lunch',
                 'title': 'Lunch',
                 'class': 'light-warning',
-                'item': [{
-                    'title': `
-                                <div class="d-flex align-items-center">
-                        	        <div class="symbol symbol-success mr-3">
-                        	            <img alt="Pic" src="assets/media/users/150-11.jpg" />
-                        	        </div>
-                        	        <div class="d-flex flex-column align-items-start">
-                        	            <span class="text-dark-50 font-weight-bold mb-1">Server Setup</span>
-                        	            <span class="label label-inline label-light-dark font-weight-bold">Completed</span>
-                        	        </div>
-                        	    </div>
-                            `,
-                }
-                ]
+                'item': []
             },
             {
                 'id': '_dinner',
                 'title': 'Dinner',
                 'class': 'light-primary',
-                'item': [{
-                    'title': `
-                                <div class="d-flex align-items-center">
-                        	        <div class="symbol symbol-success mr-3">
-                            	         <img alt="Pic" src="assets/media/users/150-6.jpg" />
-                        	        </div>
-                        	        <div class="d-flex flex-column align-items-start">
-                        	            <span class="text-dark-50 font-weight-bold mb-1">Marketing</span>
-                        	            <span class="label label-inline label-light-danger font-weight-bold">Planning</span>
-                        	        </div>
-                        	    </div>
-                            `,
-                }
-                ]
+                'item': []
             }
         ]
     });
@@ -760,6 +720,11 @@ function kanban() {
 
 function loadTable() {
     var options = {
+        translate: {
+            records: {
+                noRecords: 'No food currently, please search foods using search bar.'
+            }
+        },
         // datasource definition
         data: {
             type: 'remote',
@@ -769,7 +734,6 @@ function loadTable() {
                     contentType: 'application/json',
                     url: 'https://healthier-recipe-api.azurewebsites.net/api/HttpTrigger?code=qxBTuTf8B0GadfnmRkWNWdTsLCuaWguAuMLc5BAqdka74r2wfvemFA==',
                     map: function (raw) {
-                        console.log(raw)
                         // sample data mapping
                         var dataSet = raw;
                         if (typeof raw.data !== 'undefined') {
@@ -784,33 +748,93 @@ function loadTable() {
         // layout definition
         layout: {
             scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
-            height: 500, // datatable's body's fixed height
-            footer: false, // display/hide footer
+            height: 400, // datatable's body's fixed height
+            footer: true, // display/hide footer
         },
-
-        // column sorting
-        sortable: true,
 
         pagination: false,
-
-        search: {
-            search: {
-                onEnter: false,
-            },
-            input: $('#food_datatable_search_query'),
-            key: 'name'
-        },
 
         // columns definition
         columns: [
             {
-                field: 'ID',
-                title: 'ID',
-                width: 30,
-                type: 'number',
+                field: 'Image',
+                title: '',
+                sortable: false,
+                overflow: 'visible',
+                width: 150,
                 template: function (row) {
-                    return row["recipe"]["label"];
+                    var type_color;
+                    if (row["recipe"]["dietLabels"].length === 0) {
+                        type_color = "warning"
+                    } else {
+                        type_color = "success"
+                    }
+                    return `
+                    <a class="btn btn-light-` + type_color + ` d-inline-flex align-items-center btn-lg mr-5" role="button" data-toggle="popover" data-content="View recipe" href="` + row["recipe"]["url"] + `">
+                        <span class="symbol symbol-80">
+                            <img alt="Pic" src="` + row["recipe"]["image"] + `"/>
+                        </span>
+                    </a>
+                    `
                 },
+            }, {
+                field: 'Name',
+                title: "Food Name",
+                overflow: 'visible',
+                sortable: false,
+                width: 200,
+                template: function (row) {
+                    return `
+                            <a href="` + row["recipe"]["url"] + `" class="btn btn-pill btn-link btn-hover-success text-left text-dark-75 font-weight-bold font-size-lg" name="food_name" role="button" data-toggle="popover" data-content="View recipe">` + row["recipe"]["label"] + `</a>
+                        `
+                }
+            }, {
+                field: 'Calorie',
+                title: "Calorie Per 100 grams",
+                sortable: true,
+                sortCallback: function (data, sort) {
+                    return $(data).sort(function (a, b) {
+                        var aField = ((parseFloat(a["recipe"]["calories"]) / parseFloat(a["recipe"]["totalWeight"])) * 100).toFixed(0)
+                        var bField = ((parseFloat(b["recipe"]["calories"]) / parseFloat(b["recipe"]["totalWeight"])) * 100).toFixed(0)
+                        if (sort === 'asc') {
+                            return aField > bField
+                                ? 1 : aField < bField
+                                    ? -1
+                                    : 0;
+                        } else {
+                            return aField < bField
+                                ? 1 : aField > bField
+                                    ? -1
+                                    : 0;
+                        }
+                    });
+                },
+                overflow: 'visible',
+                width: 150,
+                template: function (row) {
+                    var calorie_per_hundreds = ((parseFloat(row["recipe"]["calories"]) / parseFloat(row["recipe"]["totalWeight"])) * 100).toFixed(0)
+                    return `
+                            <p class="text-dark-75 font-weight-bold font-size-lg">` + calorie_per_hundreds + `Kcal/100g</p>
+                        `
+                }
+            }, {
+                field: 'mealType',
+                title: "Recommend to consume on",
+                width: 150,
+                sortable: false,
+                template: function (row) {
+                    var html = ``
+                    for (let i = 0; i < row["recipe"]["mealType"].length; i++) {
+                        if (row["recipe"]["mealType"][i] === "breakfast") {
+                            html += `<span class="label label-inline label-light-success font-weight-bold">Breakfast</span>`
+                        } else if (row["recipe"]["mealType"][i] === "lunch/dinner") {
+                            html += `<span class="label label-inline label-light-info font-weight-bold">Lunch/Dinner</span>`
+                        } else {
+                            html += `<span class="label label-inline label-light-primary font-weight-bold">` + row["recipe"]["mealType"][i] + `</span>`
+                        }
+                    }
+                    return html
+                }
             }, {
                 field: 'Add',
                 title: 'Add',
@@ -819,29 +843,95 @@ function loadTable() {
                 overflow: 'visible',
                 autoHide: false,
                 template: function () {
-                    return '\
-							<div class="dropdown dropdown-inline">\
-								<a href="javascript:;" class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">\
-	                                <i class="la la-plus"></i>\
-	                            </a>\
-							  	<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
-									<ul class="nav nav-hoverable flex-column">\
-							    		<li class="nav-item"><a class="nav-link" href="#"><span class="nav-text">Breakfast</span></a></li>\
-							    		<li class="nav-item"><a class="nav-link" href="#"><span class="nav-text">Lunch</span></a></li>\
-							    		<li class="nav-item"><a class="nav-link" href="#"><span class="nav-text">Dinner</span></a></li>\
-									</ul>\
-							  	</div>\
-							</div>\
-						';
+                    return `
+							<div class="dropdown dropdown-inline">
+								<button type="button" data-toggle="dropdown" class="btn btn-light-success btn-lg btn-circle btn-icon dropdown-btn">
+	                                <i class="la la-plus"></i>
+	                            </button>
+							  	<div class="dropdown-menu dropdown-menu-lg">
+									    <div class="form-group px-8 py-8">
+                                            <label>Food taken at</label>
+                                            <form>
+                                                <div class="radio-inline">
+                                                    <label class="radio">
+                                                        <input type="radio" onclick="checkMeal(this)" name="meal" value="breakfast"/>
+                                                        <span></span>
+                                                        Breakfast
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" onclick="checkMeal(this)" name="meal" value="lunch"/>
+                                                        <span></span>
+                                                        Lunch
+                                                    </label>
+                                                    <label class="radio">
+                                                        <input type="radio" onclick="checkMeal(this)" name="meal" value="dinner"/>
+                                                        <span></span>
+                                                        Dinner
+                                                    </label>
+                                                </div>
+                                            </form>
+                                        </div>
+							  	</div>
+							</div>
+						`;
                 },
             }],
 
     };
 
     var datatable = $('#food_datatable').KTDatatable(options);
-    
-    $('#search_food').on("click",function () {
+
+    $('#search_food').on("click", function () {
         datatable.setDataSourceParam('name', $('#food_datatable_search_query').val().toLowerCase());
         datatable.load()
     })
+}
+
+function checkMeal(btn) {
+    var column = $(btn).parents(".datatable-row")
+    var img = column.find('img').attr('src')
+    var name = column.find('[name="food_name"]')[0].innerText
+    if($(btn).val()==="breakfast"){
+        $('#meal_kanban>div.kanban-container>div[data-id="_breakfast"]>.kanban-drag')[0].innerHTML += `
+                    <div class="kanban-item">
+                        <div class="d-flex align-items-center">
+                            <div class="symbol symbol-light-primary mr-3">
+                                <img alt="Pic" src="`+ img +`" />
+                            </div>
+                            <div class="d-flex flex-column align-items-start">
+                                <span class="text-dark-50 font-weight-bold mb-1">`+ name +`</span>
+                                <span class="label label-inline label-light-success font-weight-bold">Not Set</span>
+                            </div>
+                        </div>
+                    </div>
+        `
+    }else if($(btn).val()==="lunch"){
+        $('#meal_kanban>div.kanban-container>div[data-id="_lunch"]>.kanban-drag')[0].innerHTML += `
+                    <div class="kanban-item">
+                        <div class="d-flex align-items-center">
+                            <div class="symbol symbol-light-primary mr-3">
+                                <img alt="Pic" src="`+ img +`" />
+                            </div>
+                            <div class="d-flex flex-column align-items-start">
+                                <span class="text-dark-50 font-weight-bold mb-1">`+ name +`</span>
+                                <span class="label label-inline label-light-success font-weight-bold">Not Set</span>
+                            </div>
+                        </div>
+                    </div>
+        `
+    }else{
+        $('#meal_kanban>div.kanban-container>div[data-id="_dinner"]>.kanban-drag')[0].innerHTML += `
+                    <div class="kanban-item">
+                        <div class="d-flex align-items-center">
+                            <div class="symbol symbol-light-primary mr-3">
+                                <img alt="Pic" src="`+ img +`" />
+                            </div>
+                            <div class="d-flex flex-column align-items-start">
+                                <span class="text-dark-50 font-weight-bold mb-1">`+ name +`</span>
+                                <span class="label label-inline label-light-success font-weight-bold">Not Set</span>
+                            </div>
+                        </div>
+                    </div>
+        `
+    }
 }

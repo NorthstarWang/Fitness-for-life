@@ -1,3 +1,5 @@
+import os
+
 from flask import request, jsonify, url_for, flash, redirect, Blueprint
 from flask_login import login_user, logout_user, login_required, current_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
@@ -6,7 +8,12 @@ from app import render_template, app
 from models import *
 
 urlSerializer = URLSafeTimedSerializer('Thisisasecret!')
-app.config.from_pyfile('BLL/config.cfg')
+app.config["MAIL_SERVER"] = 'smtp.gmail.com'
+app.config["MAIL_PORT"] = 465
+app.config["MAIL_USE_SSL"] = True
+app.config["MAIL_USE_TLS"] = False
+app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
+app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
 mailer = Mail(app)
 
 account = Blueprint("account", __name__, url_prefix="/account")

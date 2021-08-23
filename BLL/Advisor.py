@@ -61,6 +61,9 @@ def create_diet_profile(today, user):
 		dietProfile = DietProfile(userId=user, consumeDay=today, calorie=calorie_intake_calculation()[0] + calorie_intake_calculation()[1])
 		db.session.add(dietProfile)
 		db.session.commit()
+		return DietProfile.query.filter(and_(DietProfile.consumeDay == today), (DietProfile.userId == user)).first().id
+	else:
+		return dietProfileExist[0].id
 
 
 def clear_today_meal(dietProfileId):
@@ -254,8 +257,7 @@ def set_today_diet():
 	foods = request.get_json()
 	user = current_user.id
 	today = date.today()
-	dietProfileId = DietProfile.query.filter(and_(DietProfile.consumeDay == today), (DietProfile.userId == user)).first().id
-	create_diet_profile(today, user)
+	dietProfileId = create_diet_profile(today, user)
 	# if there is any food in current day list, clear it all
 	clear_today_meal(dietProfileId)
 	for food in foods:

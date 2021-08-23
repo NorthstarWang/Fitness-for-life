@@ -21,16 +21,19 @@ def get_today_consumption():
 
 
 def get_today_nutrition():
-	todayProfileId = DietProfile.query.filter(and_(DietProfile.userId == current_user.id), (DietProfile.consumeDay == date.today())).first().id
-	todayFoods = DietKanban.query.filter_by(referenceId=todayProfileId).all()
-	sumFat = 0
-	sumCarb = 0
-	sumProtein = 0
-	for food in todayFoods:
-		sumFat += food.fatPerHundreds * food.weight / 100
-		sumCarb += food.carbPerHundreds * food.weight / 100
-		sumProtein += food.proteinPerHundreds * food.weight / 100
-	return [round(sumFat, 1), round(sumCarb, 1), round(sumProtein, 1)]
+	todayProfileId = DietProfile.query.filter(and_(DietProfile.userId == current_user.id), (DietProfile.consumeDay == date.today())).first()
+	if todayProfileId is not None:
+		todayFoods = DietKanban.query.filter_by(referenceId=todayProfileId.id).all()
+		sumFat = 0
+		sumCarb = 0
+		sumProtein = 0
+		for food in todayFoods:
+			sumFat += food.fatPerHundreds * food.weight / 100
+			sumCarb += food.carbPerHundreds * food.weight / 100
+			sumProtein += food.proteinPerHundreds * food.weight / 100
+		return [round(sumFat, 1), round(sumCarb, 1), round(sumProtein, 1)]
+	else:
+		return [0, 0, 0]
 
 
 def get_recent_meal_calorie():

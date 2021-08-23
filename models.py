@@ -13,6 +13,32 @@ def random_string_generator(str_size, allowed_chars=string.ascii_letters):
 	return ''.join(random.choice(allowed_chars) for _ in range(str_size))
 
 
+def seeder_user_specific():
+	user = User(username="TestAccount",
+	            email=random_string_generator(10) + "@gmail.com",
+	            password="12345678",
+	            age=20,
+	            gender=1,
+	            height=170.0,
+	            weight=75.0,
+	            confirm=True,
+	            createDate=date.today())
+	db.session.add(user)
+	db.session.commit()
+	newUserid = 1
+	favourite_article = FavouriteArticles(userId=newUserid)
+	body_profile = BodyProfile(updateDay=date.today(), weight=75.0, userId=newUserid)
+	past_bprofile = BodyProfile(updateDay=date.today() - datetime.timedelta(days=6), weight=75.0, userId=newUserid)
+	past_bprofile_1 = BodyProfile(updateDay=date.today() - datetime.timedelta(days=3), weight=75.0, userId=newUserid)
+	health_profile = HealthProfile(userId=newUserid)
+	db.session.add(past_bprofile)
+	db.session.add(past_bprofile_1)
+	db.session.add(favourite_article)
+	db.session.add(body_profile)
+	db.session.add(health_profile)
+	db.session.commit()
+
+
 def seeder_user(number):
 	# generate seed user data for development use
 	for i in range(number):

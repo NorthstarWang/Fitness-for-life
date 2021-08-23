@@ -24,7 +24,7 @@ app.secret_key = 'Wang Yang'
 
 main = Blueprint("main", __name__)
 
-from models import User
+from models import User, seeder_user_specific
 from models import seeder_user, seeder_article, seeder_sport, BodyProfile
 from BLL.Account import account
 from BLL.User import profile
@@ -80,26 +80,26 @@ app.register_blueprint(account)
 app.register_blueprint(article)
 app.register_blueprint(advisor)
 
-# db.drop_all()
-# db.create_all()
+db.drop_all()
+db.create_all()
 # prepopulate data for development usage(seeding)
 # generate 5 user data
-# seeder_user(5)
+seeder_user_specific()
 # generate 11 articles according to seeds/article.json
-# with open('seeds/article.json', encoding='utf-8') as article_json:
-# 	article_data = article_json.read()
-# articles = json.loads(article_data)
-# for n in list(articles["article"]):
-# 	seeder_article(str(n["title"]), str(n["content"]), str(n["tag"]), str(n["category"]), int(n["img"]))
-# article_json.close()
+with open('seeds/article.json', encoding='utf-8') as article_json:
+	article_data = article_json.read()
+articles = json.loads(article_data)
+for n in list(articles["article"]):
+	seeder_article(str(n["title"]), str(n["content"]), str(n["tag"]), str(n["category"]), int(n["img"]))
+article_json.close()
 
 # generate 35 sports according to seeds/sport.json
-# with open('seeds/sport.json', encoding='utf-8') as sport_json:
-# 	sport_data = sport_json.read()
-# sports = json.loads(sport_data)
-# for n in list(sports):
-# 	seeder_sport(str(n["name"]), int(n["calorie"]), int(n["rate"]), int(n["difficulty"]), str(n["category"]))
-# sport_json.close()
+with open('seeds/sport.json', encoding='utf-8') as sport_json:
+	sport_data = sport_json.read()
+sports = json.loads(sport_data)
+for n in list(sports):
+	seeder_sport(str(n["name"]), int(n["calorie"]), int(n["rate"]), int(n["difficulty"]), str(n["category"]))
+sport_json.close()
 
 if __name__ == '__main__':
 	app.run()

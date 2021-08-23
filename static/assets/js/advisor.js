@@ -65,7 +65,7 @@ function notify_set() {
     })
 }
 
-function advisorDietOnReady(current_weight,set_target_url,health_advisor_index_url) {
+function advisorDietOnReady(current_weight, set_target_url, health_advisor_index_url) {
     $("#weightLossInput").on("input", function () {
         //targetWeight determine target weight, to REAL weight to loss, calculate by function weightToLoss
         targetWeight = parseInt($(this).val())
@@ -705,7 +705,7 @@ function chart(calorie_limit, calorie_taken) {
             type: "radialBar",
         },
 
-        series: [(parseInt(calorie_taken)*100 / parseInt(calorie_limit)).toFixed(1)],
+        series: [(parseInt(calorie_taken) * 100 / parseInt(calorie_limit)).toFixed(1)],
         colors: [function ({value, seriesIndex, w}) {
             if (value < 90) {
                 return '#00FF40'
@@ -757,29 +757,31 @@ function chart(calorie_limit, calorie_taken) {
 
 function kanban(foodsUrl) {
     $.ajax({
-        url:foodsUrl,
-        type:"GET",
-        dataType:"JSON",
-        success:function (result){
+        url: foodsUrl,
+        type: "GET",
+        dataType: "JSON",
+        success: function (result) {
+            console.log("check")
+            console.log(result)
             var breakfast_items = [];
             var lunch_items = [];
             var dinner_items = [];
-            if(result!=="Empty"){
+            if (result !== "Empty") {
                 for (let i = 0; i < result.length; i++) {
                     var item = {
-                        "title" : `
+                        "title": `
                          <div class="d-flex align-items-center">
                             <div class="symbol symbol-light-primary mr-3">
                                 <img alt="Pic" src="` + result[i]["image"] + `" />
                             </div>
                             <div class="d-flex flex-column align-items-start">
                                 <span class="text-dark-50 font-weight-bold mb-1 food-name">` + result[i]["name"] + `</span>
-                                <span class="label label-inline label-light-success font-weight-bold calorie">`+ (parseFloat(result[i]["caloriePerHundreds"])/100*parseFloat(result[i]["weight"])).toFixed(0) + `Kcal/` + result[i]["weight"] +`g</span>
+                                <span class="label label-inline label-light-success font-weight-bold calorie">` + (parseFloat(result[i]["caloriePerHundreds"]) / 100 * parseFloat(result[i]["weight"])).toFixed(0) + `Kcal/` + result[i]["weight"] + `g</span>
                                 <input type="hidden" name="caloriePerHundreds" value="` + result[i]["caloriePerHundreds"] + `">
                                 <input type="hidden" name="set" value="true">
-                                <input type="hidden" name="fat" value="`+ result[i]["fat"] +`"/>
-                                <input type="hidden" name="carb" value="`+ result[i]["carb"] +`"/>
-                                <input type="hidden" name="protein" value="`+ result[i]["protein"] +`"/>
+                                <input type="hidden" name="fat" value="` + result[i]["fat"] + `"/>
+                                <input type="hidden" name="carb" value="` + result[i]["carb"] + `"/>
+                                <input type="hidden" name="protein" value="` + result[i]["protein"] + `"/>
                                 <input type="hidden" name="fat_per_hundreds" value="` + result[i]["fatPerHundreds"] + `"/>
                                 <input type="hidden" name="carb_per_hundreds" value="` + result[i]["carbPerHundreds"] + `"/>
                                 <input type="hidden" name="protein_per_hundreds" value="` + result[i]["proteinPerHundreds"] + `"/>
@@ -787,141 +789,144 @@ function kanban(foodsUrl) {
                         </div>
                         `
                     }
-                    if (result[i]['mealType']===1){
+                    if (result[i]['mealType'] === 1) {
                         breakfast_items.push(item)
-                    }else if(result[i]['mealType']===2){
+                    } else if (result[i]['mealType'] === 2) {
                         lunch_items.push(item)
-                    }else if(result[i]['mealType']===3){
+                    } else if (result[i]['mealType'] === 3) {
                         dinner_items.push(item)
                     }
                 }
             }
-    meal_kanban = new jKanban({
-        element: '#meal_kanban',
-        click: function (el) {
-            var calorie_label = el.children[0].children[1].children[1]
-            if (calorie_label.classList.contains("label-light-warning")) {
-                swal.fire({
-                    customClass: {
-                        input: 'form-control',
-                        cancelButton: 'btn btn-danger',
-                        confirmButton: 'btn btn-success font-weight-bold',
-                    },
-                    title: 'How much did you consume',
-                    input: 'number',
-                    inputAttributes: {
-                        step: 1,
-                        placeholder: "Unit: gram(Integer)"
-                    },
-                    imageUrl: el.children[0].children[0].children[0].getAttribute("src"),
-                    imageWidth: 300,
-                    imageHeight: 300,
-                    imageAlt: 'Pic',
-                    showCancelButton: true,
-                    buttonsStyling: false,
-                    confirmButtonText: 'Set',
-                    inputValidator: (value) => {
-                        if (!value) {
-                            return 'Only integer is allowed'
-                        }
-                    },
-                }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
-                        var grams = $(swal.getInput()).val()
-                        calorie_label.innerText = (parseFloat($(swal.getInput()).val()) / 100 * parseInt(el.children[0].children[1].children[2].value)).toFixed(0).toString() + "Kcal/" + grams + "g"
-                        var parent = $(el.children[0].children[1])
-                        parent[0].children[3].value = "true"
-                        var fat_avg = parent.find('[name="fat_per_hundreds"]')[0].value
-                        var carb_avg = parent.find('[name="carb_per_hundreds"]')[0].value
-                        var protein_avg = parent.find('[name="protein_per_hundreds"]')[0].value
-                        parent.find('[name="fat"]')[0].value = (parseFloat(fat_avg) * parseFloat(grams) / 100).toFixed(1)
-                        parent.find('[name="carb"]')[0].value = (parseFloat(carb_avg) * parseFloat(grams) / 100).toFixed(1)
-                        parent.find('[name="protein"]')[0].value = (parseFloat(protein_avg) * parseFloat(grams) / 100).toFixed(1)
-                        calorie_label.classList.remove("label-light-warning")
-                        calorie_label.classList.add("label-light-success")
+            meal_kanban = new jKanban({
+                element: '#meal_kanban',
+                click: function (el) {
+                    var calorie_label = el.children[0].children[1].children[1]
+                    if (calorie_label.classList.contains("label-light-warning")) {
+                        swal.fire({
+                            customClass: {
+                                input: 'form-control',
+                                cancelButton: 'btn btn-danger',
+                                confirmButton: 'btn btn-success font-weight-bold',
+                            },
+                            title: 'How much did you consume',
+                            input: 'number',
+                            inputAttributes: {
+                                step: 1,
+                                placeholder: "Unit: gram(Integer)"
+                            },
+                            imageUrl: el.children[0].children[0].children[0].getAttribute("src"),
+                            imageWidth: 300,
+                            imageHeight: 300,
+                            imageAlt: 'Pic',
+                            showCancelButton: true,
+                            buttonsStyling: false,
+                            confirmButtonText: 'Set',
+                            inputValidator: (value) => {
+                                if (!value) {
+                                    return 'Only integer is allowed'
+                                }
+                            },
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                var grams = $(swal.getInput()).val()
+                                calorie_label.innerText = (parseFloat($(swal.getInput()).val()) / 100 * parseInt(el.children[0].children[1].children[2].value)).toFixed(0).toString() + "Kcal/" + grams + "g"
+                                var parent = $(el.children[0].children[1])
+                                parent[0].children[3].value = "true"
+                                var fat_avg = parent.find('[name="fat_per_hundreds"]')[0].value
+                                var carb_avg = parent.find('[name="carb_per_hundreds"]')[0].value
+                                var protein_avg = parent.find('[name="protein_per_hundreds"]')[0].value
+                                parent.find('[name="fat"]')[0].value = (parseFloat(fat_avg) * parseFloat(grams) / 100).toFixed(1)
+                                parent.find('[name="carb"]')[0].value = (parseFloat(carb_avg) * parseFloat(grams) / 100).toFixed(1)
+                                parent.find('[name="protein"]')[0].value = (parseFloat(protein_avg) * parseFloat(grams) / 100).toFixed(1)
+                                calorie_label.classList.remove("label-light-warning")
+                                calorie_label.classList.add("label-light-success")
+                            }
+                        })
+                    } else if (calorie_label.classList.contains("label-light-success")) {
+                        swal.fire({
+                            customClass: {
+                                input: 'form-control',
+                                cancelButton: 'btn btn-danger',
+                                confirmButton: 'btn btn-success font-weight-bold',
+                            },
+                            title: 'How much did you consume',
+                            input: 'number',
+                            inputAttributes: {
+                                value: calorie_label.innerText,
+                                step: 1,
+                                placeholder: "Unit: gram(Integer)"
+                            },
+                            imageUrl: el.children[0].children[0].children[0].getAttribute("src"),
+                            imageWidth: 300,
+                            imageHeight: 300,
+                            imageAlt: 'Pic',
+                            showCancelButton: true,
+                            buttonsStyling: false,
+                            confirmButtonText: 'Update',
+                            inputValidator: (value) => {
+                                if (!value) {
+                                    return 'Only integer is allowed'
+                                }
+                            },
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                var grams = $(swal.getInput()).val()
+                                calorie_label.innerText = (parseFloat($(swal.getInput()).val()) / 100 * parseInt(el.children[0].children[1].children[2].value)).toFixed(0).toString() + "Kcal/" + grams + "g"
+                                var parent = $(el.children[0].children[1])
+                                parent[0].children[3].value = "true"
+                                var fat_avg = parent.find('[name="fat_per_hundreds"]')[0].value
+                                var carb_avg = parent.find('[name="carb_per_hundreds"]')[0].value
+                                var protein_avg = parent.find('[name="protein_per_hundreds"]')[0].value
+                                parent.find('[name="fat"]')[0].value = (parseFloat(fat_avg) * parseFloat(grams) / 100).toFixed(1)
+                                parent.find('[name="carb"]')[0].value = (parseFloat(carb_avg) * parseFloat(grams) / 100).toFixed(1)
+                                parent.find('[name="protein"]')[0].value = (parseFloat(protein_avg) * parseFloat(grams) / 100).toFixed(1)
+                            }
+                        })
                     }
-                })
-            } else if (calorie_label.classList.contains("label-light-success")) {
-                swal.fire({
-                    customClass: {
-                        input: 'form-control',
-                        cancelButton: 'btn btn-danger',
-                        confirmButton: 'btn btn-success font-weight-bold',
-                    },
-                    title: 'How much did you consume',
-                    input: 'number',
-                    inputAttributes: {
-                        value: calorie_label.innerText,
-                        step: 1,
-                        placeholder: "Unit: gram(Integer)"
-                    },
-                    imageUrl: el.children[0].children[0].children[0].getAttribute("src"),
-                    imageWidth: 300,
-                    imageHeight: 300,
-                    imageAlt: 'Pic',
-                    showCancelButton: true,
-                    buttonsStyling: false,
-                    confirmButtonText: 'Update',
-                    inputValidator: (value) => {
-                        if (!value) {
-                            return 'Only integer is allowed'
-                        }
-                    },
-                }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
-                        var grams = $(swal.getInput()).val()
-                        calorie_label.innerText = (parseFloat($(swal.getInput()).val()) / 100 * parseInt(el.children[0].children[1].children[2].value)).toFixed(0).toString() + "Kcal/" + grams + "g"
-                        var parent = $(el.children[0].children[1])
-                        parent[0].children[3].value = "true"
-                        var fat_avg = parent.find('[name="fat_per_hundreds"]')[0].value
-                        var carb_avg = parent.find('[name="carb_per_hundreds"]')[0].value
-                        var protein_avg = parent.find('[name="protein_per_hundreds"]')[0].value
-                        parent.find('[name="fat"]')[0].value = (parseFloat(fat_avg) * parseFloat(grams) / 100).toFixed(1)
-                        parent.find('[name="carb"]')[0].value = (parseFloat(carb_avg) * parseFloat(grams) / 100).toFixed(1)
-                        parent.find('[name="protein"]')[0].value = (parseFloat(protein_avg) * parseFloat(grams) / 100).toFixed(1)
-                    }
-                })
-            }
-        },
-        context: function (el, event) {
-            swal.fire({
-                title: "Do you want to delete this food?",
-                showCancelButton: true,
-                customClass: {
-                    cancelButton: 'btn btn-danger',
-                    confirmButton: 'btn btn-success font-weight-bold',
                 },
-            }).then(function (result) {
-                if (result.isConfirmed) {
-                    meal_kanban.removeElement(el)
-                }
-            })
+                context: function (el, event) {
+                    swal.fire({
+                        title: "Do you want to delete this food?",
+                        showCancelButton: true,
+                        customClass: {
+                            cancelButton: 'btn btn-danger',
+                            confirmButton: 'btn btn-success font-weight-bold',
+                        },
+                    }).then(function (result) {
+                        if (result.isConfirmed) {
+                            meal_kanban.removeElement(el)
+                        }
+                    })
+                },
+                responsivePercentage: false,
+                gutter: "10px",
+                widthBoard: "300px",
+                boards: [{
+                    'id': '_breakfast',
+                    'title': 'Breakfast',
+                    'class': 'light-success',
+                    'item': breakfast_items
+                },
+                    {
+                        'id': '_lunch',
+                        'title': 'Lunch',
+                        'class': 'light-warning',
+                        'item': lunch_items
+                    },
+                    {
+                        'id': '_dinner',
+                        'title': 'Dinner',
+                        'class': 'light-primary',
+                        'item': dinner_items
+                    }
+                ]
+            });
         },
-        responsivePercentage: false,
-        gutter: "10px",
-        widthBoard: "300px",
-        boards: [{
-            'id': '_breakfast',
-            'title': 'Breakfast',
-            'class': 'light-success',
-            'item': breakfast_items
-        },
-            {
-                'id': '_lunch',
-                'title': 'Lunch',
-                'class': 'light-warning',
-                'item': lunch_items
-            },
-            {
-                'id': '_dinner',
-                'title': 'Dinner',
-                'class': 'light-primary',
-                'item': dinner_items
-            }
-        ]
-    });
+        error:function (e) {
+            console.log(e)
         }
     })
 }
@@ -1222,9 +1227,9 @@ function save_kanban(saveUrl, endpoint) {
                 var food = {
                     fat: fat,
                     carb: carb,
-                    fatPerHundreds:fatPH,
-                    carbPerHundreds:carbPH,
-                    proteinPerHundreds:proteinPH,
+                    fatPerHundreds: fatPH,
+                    carbPerHundreds: carbPH,
+                    proteinPerHundreds: proteinPH,
                     protein: protein,
                     image: image,
                     name: name,

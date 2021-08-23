@@ -293,4 +293,4 @@ def get_today_diet():
 			foods.append(temp)
 		return jsonify(foods)
 	else:
-		return "Empty"
+		return jsonify("Empty")

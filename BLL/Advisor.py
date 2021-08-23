@@ -9,12 +9,15 @@ advisor = Blueprint("advisor", __name__, url_prefix="/advisor")
 
 
 def get_today_consumption():
-	todayProfileId = DietProfile.query.filter(and_(DietProfile.userId == current_user.id), (DietProfile.consumeDay == date.today())).first().id
-	todayFoods = DietKanban.query.filter_by(referenceId=todayProfileId).all()
-	calorie = 0
-	for food in todayFoods:
-		calorie += food.caloriePerHundreds * food.weight / 100
-	return calorie
+	todayProfileId = DietProfile.query.filter(and_(DietProfile.userId == current_user.id), (DietProfile.consumeDay == date.today())).first()
+	if todayProfileId is not None:
+		todayFoods = DietKanban.query.filter_by(referenceId=todayProfileId.id).all()
+		calorie = 0
+		for food in todayFoods:
+			calorie += food.caloriePerHundreds * food.weight / 100
+		return calorie
+	else:
+		return 0
 
 
 def get_today_nutrition():

@@ -8,7 +8,6 @@ from app import render_template, app
 from models import *
 
 url_secret = str(os.getenv('CUSTOMCONNSTR_URL_SECRET'))
-print(url_secret)
 urlSerializer = URLSafeTimedSerializer(url_secret)
 app.config["MAIL_SERVER"] = 'smtp.gmail.com'
 app.config["MAIL_PORT"] = 465

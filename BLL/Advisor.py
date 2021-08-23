@@ -1,11 +1,68 @@
 from flask import Blueprint, render_template, request, jsonify
 from flask_login import login_required, current_user
-from sqlalchemy import and_, func
+from sqlalchemy import and_, func, desc
 
 from app import db
 from models import *
 
 advisor = Blueprint("advisor", __name__, url_prefix="/advisor")
+
+
+def get_today_consumption():
+	todayProfileId = DietProfile.query.filter(and_(DietProfile.userId == current_user.id), (DietProfile.consumeDay == date.today())).first().id
+	todayFoods = DietKanban.query.filter_by(referenceId=todayProfileId).all()
+	calorie = 0
+	for food in todayFoods:
+		calorie += food.caloriePerHundreds * food.weight / 100
+	return calorie
+
+
+def get_today_nutrition():
+	todayProfileId = DietProfile.query.filter(and_(DietProfile.userId == current_user.id), (DietProfile.consumeDay == date.today())).first().id
+	todayFoods = DietKanban.query.filter_by(referenceId=todayProfileId).all()
+	sumFat = 0
+	sumCarb = 0
+	sumProtein = 0
+	for food in todayFoods:
+		sumFat += food.fatPerHundreds * food.weight / 100
+		sumCarb += food.carbPerHundreds * food.weight / 100
+		sumProtein += food.proteinPerHundreds * food.weight / 100
+	return [round(sumFat, 1), round(sumCarb, 1), round(sumProtein, 1)]
+
+
+def get_recent_meal_calorie():
+	records = DietProfile.query.filter_by(userId=current_user.id).order_by(desc(DietProfile.consumeDay)).limit(5).all()
+	if len(records) == 0:
+		return None
+	else:
+		percentage = []
+		for record in records:
+			calorie = 0
+			# load all food on that record day, sum up the calorie
+			foods = DietKanban.query.filter_by(referenceId=record.id).all()
+			for food in foods:
+				calorie += food.weight * food.caloriePerHundreds / 100
+			# return percentage sum calrie/ limit max calorie
+			percentage.append(calorie / record.calorie)
+		return percentage
+
+
+def create_diet_profile(today, user):
+	# check whether there is already a kanban and profile for diet today
+	dietProfileExist = DietProfile.query.filter(and_(DietProfile.consumeDay == today), (DietProfile.userId == user)).all()
+	# if no profile yet, create one
+	if len(dietProfileExist) == 0:
+		dietProfile = DietProfile(userId=user, consumeDay=today, calorie=calorie_intake_calculation()[0] + calorie_intake_calculation()[1])
+		db.session.add(dietProfile)
+		db.session.commit()
+
+
+def clear_today_meal(dietProfileId):
+	# if there is any food in current day list, clear it all
+	food = DietKanban.query.filter_by(referenceId=dietProfileId).all()
+	for i in food:
+		db.session.delete(i)
+	db.session.commit()
 
 
 def calculate_calorie_consumption(weight, base_calorie, rate):
@@ -70,7 +127,8 @@ def calorie_intake_calculation():
 def health_advisor_index(monitor, notify=None):
 	health_profile = HealthProfile.query.filter_by(userId=current_user.id).first()
 	if monitor == "diet":
-		return render_template("Advisor/advisorDiet.html", health_profile=health_profile, notify=notify, calorie_limit=calorie_intake_calculation())
+		return render_template("Advisor/advisorDiet.html", health_profile=health_profile, notify=notify, calorie_limit=calorie_intake_calculation(), recent_meal=get_recent_meal_calorie(), nutrition=get_today_nutrition(),
+		                       today_consumption=get_today_consumption())
 	else:
 		return render_template("Advisor/advisorWeight.html", health_profile=health_profile, notify=notify, calorie_limit=calorie_intake_calculation())
 
@@ -190,21 +248,10 @@ def set_today_diet():
 	foods = request.get_json()
 	user = current_user.id
 	today = date.today()
-	# check whether there is already a kanban and profile for diet today
-	dietProfileExist = DietProfile.query.filter(and_(DietProfile.consumeDay == today), (DietProfile.userId == user)).all()
-	# if no profile yet, create one
-	if len(dietProfileExist) == 0:
-		dietProfile = DietProfile(userId=user, consumeDay=today, calorie=calorie_intake_calculation()[0] + calorie_intake_calculation()[1])
-		db.session.add(dietProfile)
-		db.session.commit()
 	dietProfileId = DietProfile.query.filter(and_(DietProfile.consumeDay == today), (DietProfile.userId == user)).first().id
-
+	create_diet_profile(today, user)
 	# if there is any food in current day list, clear it all
-	foodExist = DietKanban.query.filter_by(referenceId=dietProfileId).all()
-	if len(foodExist) > 0:
-		foodExist.clear()
-		db.session.commit()
-
+	clear_today_meal(dietProfileId)
 	for food in foods:
 		dietKanban = DietKanban(name=str(food["name"]), fatPerHundreds=float(food["fatPerHundreds"]), carbPerHundreds=float(food["carbPerHundreds"]), proteinPerHundreds=float(food["proteinPerHundreds"]), image=str(food["image"]),
 		                        carb=float(food["carb"]), protein=float(food["protein"]), fat=float(food["fat"]), weight=int(food["weight"]), mealType=int(food["mealType"]),

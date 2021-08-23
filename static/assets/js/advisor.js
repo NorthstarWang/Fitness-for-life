@@ -65,6 +65,70 @@ function notify_set() {
     })
 }
 
+function advisorDietOnReady(current_weight,set_target_url,health_advisor_index_url) {
+    $("#weightLossInput").on("input", function () {
+        //targetWeight determine target weight, to REAL weight to loss, calculate by function weightToLoss
+        targetWeight = parseInt($(this).val())
+        var weightNeedToLose = weightToLose(current_weight, targetWeight)
+        document.getElementById("weightToLoseText").innerText = `You need to lose ${weightNeedToLose}KG to achieve your goal.`
+    })
+
+    $("#setTargetSubmit").on("click", function () {
+        if (document.getElementById("weight_loss").checked) {
+            if (document.getElementById("weightLossInput").value !== "") {
+                if (targetWeight >= current_weight) {
+                    $.notify("Your target weight need to be smaller than your current weight!", {
+                        placement: {
+                            from: "top",
+                            align: "right"
+                        },
+                        delay: 1000,
+                        timer: 4000,
+                        animate: {
+                            enter: 'animate__animated animate__bounceInRight',
+                            exit: 'animate__animated animate__bounceOutRight'
+                        },
+                        type: "warning"
+                    })
+                } else if (targetWeight <= 35) {
+                    $.notify("Your target weight is too low!", {
+                        placement: {
+                            from: "top",
+                            align: "right"
+                        },
+                        delay: 1000,
+                        timer: 4000,
+                        animate: {
+                            enter: 'animate__animated animate__bounceInRight',
+                            exit: 'animate__animated animate__bounceOutRight'
+                        },
+                        type: "warning"
+                    })
+                } else {
+                    set_target(set_target_url, targetWeight, health_advisor_index_url)
+                }
+            } else {
+                $.notify("Please key in value!", {
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    delay: 1000,
+                    timer: 4000,
+                    animate: {
+                        enter: 'animate__animated animate__bounceInRight',
+                        exit: 'animate__animated animate__bounceOutRight'
+                    },
+                    type: "danger"
+                })
+            }
+        } else {
+            set_target(set_target_url, 0, health_advisor_index_url)
+        }
+
+    })
+}
+
 function advisorWeightOnReady(current_weight, set_target_url, health_advisor_index_url) {
     $("#weightLossInput").on("input", function () {
         //targetWeight determine target weight, to REAL weight to loss, calculate by function weightToLoss
@@ -641,7 +705,7 @@ function chart(calorie_limit, calorie_taken) {
             type: "radialBar",
         },
 
-        series: [(parseInt(calorie_taken) / parseInt(calorie_limit)).toFixed(1)],
+        series: [(parseInt(calorie_taken)*100 / parseInt(calorie_limit)).toFixed(1)],
         colors: [function ({value, seriesIndex, w}) {
             if (value < 90) {
                 return '#00FF40'
@@ -697,7 +761,6 @@ function kanban(foodsUrl) {
         type:"GET",
         dataType:"JSON",
         success:function (result){
-            console.log(result)
             var breakfast_items = [];
             var lunch_items = [];
             var dinner_items = [];
@@ -1138,7 +1201,7 @@ function clear_kanban() {
     }
 }
 
-function save_kanban(saveUrl) {
+function save_kanban(saveUrl, endpoint) {
     //save foods in kanban to database
     var foods = []
     const boards = ["_breakfast", "_lunch", "_dinner"]
@@ -1181,19 +1244,7 @@ function save_kanban(saveUrl) {
         type: "POST",
         success: function (result) {
             if (result === "success") {
-                $.notify("You have successfully saved the foods", {
-                    placement: {
-                        from: "top",
-                        align: "right"
-                    },
-                    delay: 500,
-                    timer: 1500,
-                    animate: {
-                        enter: 'animate__animated animate__bounceInRight',
-                        exit: 'animate__animated animate__bounceOutRight'
-                    },
-                    type: "success"
-                })
+                window.location.href = endpoint + "?notify=You have successfully saved the foods"
             }
         }
     })

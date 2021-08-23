@@ -249,7 +249,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-danger font-weight-bold" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-light-success font-weight-bold">Save changes</button>
                 </div>
             </div>
         </div>
@@ -353,22 +352,20 @@
                         <!--begin::Body-->
                         <div class="card-body">
                             <!--begin::Chart-->
-                            <div class="progress-vertical h-125px flex-grow-1">
-                                <div class="progress bg-success" data-toggle="tooltip" title="" data-original-title="60%">
-                                    <div class="progress-bar bg-white" role="progressbar" style="height: 60%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <div class="progress bg-success" data-toggle="tooltip" title="" data-original-title="70%">
-                                    <div class="progress-bar bg-white" role="progressbar" style="height: 70%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <div class="progress bg-success" data-toggle="tooltip" title="" data-original-title="80%">
-                                    <div class="progress-bar bg-white" role="progressbar" style="height: 80%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <div class="progress bg-success" data-toggle="tooltip" title="" data-original-title="90%">
-                                    <div class="progress-bar bg-white" role="progressbar" style="height: 90%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <div class="progress bg-success" data-toggle="tooltip" title="" data-original-title="75%">
-                                    <div class="progress-bar bg-white" role="progressbar" style="height: 75%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
+                            <div class="progress-vertical h-125px flex-grow-1" style="justify-content: space-around">
+                                {% if recent_meal != None %}
+                                    {% for meal in recent_meal %}
+                                        <div class="progress" data-toggle="tooltip" title="" data-original-title="{{ (meal*100)|int }}%">
+                                            <div class="progress-bar bg-{% if meal*100 > 100 %}danger{% elif meal*100 >90 %}warning{% else %}success{% endif %}" role="progressbar"
+                                                 style="height: {% if meal*100 > 100 %}100{% else %}{{ (meal*100)|int }}{% endif %}%" aria-valuenow="{% if meal*100 > 100 %}100{% else %}{{ (meal*100)|int }}{% endif %}" aria-valuemin="0"
+                                                 aria-valuemax="100"></div>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="text-centre">
+                                        <p class="text-white font-weight-bold text-center font-size-h3">No previous records yet</p>
+                                    </div>
+                                {% endif %}
                             </div>
                             <!--end::Chart-->
                         </div>
@@ -391,12 +388,14 @@
                                 <!--begin::Status-->
                                 <div class="d-flex justify-content-between pb-3">
                                     <a href="" class="font-weight-bold font-size-h6 text-white">Carbohydrate</a>
-                                    <div class="font-weight-bold text-light-success font-size-h6">62%</div>
+                                    <div class="font-weight-bold text-light-success font-size-h6">{{ ((nutrition[1]/((calorie_limit[0] + calorie_limit[1])*0.4))*100)|round }}%</div>
                                 </div>
                                 <!--begendin::Status-->
                                 <!--begin::Progress-->
                                 <div class="progress progress-xs bg-light-info">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: 62%" aria-valuenow="24" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-{% if ((nutrition[1]/((calorie_limit[0] + calorie_limit[1])*0.4))*100) > 100 %}danger{% else %}info{% endif %}" role="progressbar"
+                                         style="width: {{ ((nutrition[1]/((calorie_limit[0] + calorie_limit[1])*0.4))*100)|round }}%" aria-valuenow="{{ ((nutrition[1]/((calorie_limit[0] + calorie_limit[1])*0.4))*100)|round }}" aria-valuemin="0"
+                                         aria-valuemax="100"></div>
                                 </div>
                                 <!--end::Progress-->
                             </div>
@@ -406,12 +405,14 @@
                                 <!--begin::Status-->
                                 <div class="d-flex justify-content-between pb-3">
                                     <a href="" class="font-weight-bold font-size-h6 text-white">Protein</a>
-                                    <div class="font-weight-bold text-light-success font-size-h6">75%</div>
+                                    <div class="font-weight-bold text-light-success font-size-h6">{{ ((nutrition[2]/((calorie_limit[0] + calorie_limit[1])*0.4))*100)|round }}%</div>
                                 </div>
                                 <!--begendin::Status-->
                                 <!--begin::Progress-->
                                 <div class="progress progress-xs bg-light-primary">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 75%" aria-valuenow="24" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-{% if ((nutrition[2]/((calorie_limit[0] + calorie_limit[1])*0.4))*100) > 100 %}danger{% else %}primary{% endif %}" role="progressbar"
+                                         style="width: {{ ((nutrition[2]/((calorie_limit[0] + calorie_limit[1])*0.4))*100)|round }}%" aria-valuenow="{{ ((nutrition[2]/((calorie_limit[0] + calorie_limit[1])*0.4))*100)|round }}" aria-valuemin="0"
+                                         aria-valuemax="100"></div>
                                 </div>
                                 <!--end::Progress-->
                             </div>
@@ -421,12 +422,14 @@
                                 <!--begin::Status-->
                                 <div class="d-flex justify-content-between pb-3">
                                     <a href="" class="font-weight-bold font-size-h6 text-white">Fat</a>
-                                    <div class="font-weight-bold text-light-success font-size-h6">42%</div>
+                                    <div class="font-weight-bold text-light-success font-size-h6">{{ ((nutrition[0]/((calorie_limit[0] + calorie_limit[1])*0.4))*100)|round }}%</div>
                                 </div>
                                 <!--begendin::Status-->
                                 <!--begin::Progress-->
                                 <div class="progress progress-xs bg-light-warning">
-                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 42%" aria-valuenow="24" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-{% if ((nutrition[0]/((calorie_limit[0] + calorie_limit[1])*0.4))*100) > 100 %}danger{% else %}warning{% endif %}" role="progressbar"
+                                         style="width: {{ ((nutrition[0]/((calorie_limit[0] + calorie_limit[1])*0.4))*100)|round }}%" aria-valuenow="{{ ((nutrition[0]/((calorie_limit[0] + calorie_limit[1])*0.4))*100)|round }}" aria-valuemin="0"
+                                         aria-valuemax="100"></div>
                                 </div>
                                 <!--end::Progress-->
                             </div>
@@ -441,7 +444,8 @@
                         <div class="card-header border-0 pt-7">
                             <h3 class="card-title align-items-start flex-column">
                                 <span class="card-label font-weight-bolder font-size-h4 text-dark-75">Today's Calorie Consumption</span><span
-                                    class="text-muted mt-3 font-weight-bold font-size-lg">Recommend Calorie Intake: Less than {{ ((calorie_limit[0] + calorie_limit[1])*0.9)|round }} Kcal(Below 90% on the monitor).</span>
+                                    class="text-muted mt-3 font-weight-bold font-size-lg">
+                                {% if health_profile.target != 0 %}Recommend Calorie Intake: {% if health_profile.target == 1 %}Less than {{ ((calorie_limit[0] + calorie_limit[1])*0.9)|round }} Kcal(Below 90% on the monitor).{% elif health_profile.target == 2 %}Maintain between {{ (calorie_limit[0] - calorie_limit[1])|round }} Kcal and {{ (calorie_limit[0] + calorie_limit[1])|round }} Kcal{% endif %}{% endif %}</span>
                             </h3>
                         </div>
                         <!--end::Header-->
@@ -468,7 +472,9 @@
                             </div>
                             <div class="card-toolbar">
                                 <button class="btn btn-sm btn-light-primary mr-3" data-toggle="modal" data-target="#add_food"><i class="la la-plus icon-nm"></i> Add food</button>
-                                <button onclick="save_kanban('{{ url_for("advisor.set_today_diet") }}')" class="btn btn-sm btn-light-success mr-3" data-toggle="tooltip" data-placement="top" title="Save" data-original-title="Save all"><i class="la la-save icon-nm"></i> Save all</button>
+                                <button onclick="save_kanban('{{ url_for("advisor.set_today_diet") }}','{{ url_for("advisor.health_advisor_index",monitor="diet") }}')" class="btn btn-sm btn-light-success mr-3" data-toggle="tooltip" data-placement="top" title="Save" data-original-title="Save all"><i
+                                        class="la la-save icon-nm"></i> Save all
+                                </button>
                                 <button onclick="clear_kanban()" class="btn btn-sm btn-light-danger mr-3" data-toggle="tooltip" data-placement="top" title="Clear" data-original-title="Clear all"><i class="la la-trash icon-nm"></i> Clear all</button>
                             </div>
                         </div>
@@ -488,7 +494,7 @@
         $(document).ajaxStop($.unblockUI);
         jQuery(document).ready(function () {
             loadTable()
-            chart('{{ calorie_limit[0] + calorie_limit[1] }}', 11)
+            chart('{{ calorie_limit[0] + calorie_limit[1] }}', {{today_consumption}})
             kanban('{{ url_for("advisor.get_today_diet") }}')
             {% if current_user.exerciseFrequency == None %}
                 //show modal for user to choose their exercise frequency per week
@@ -523,6 +529,7 @@
                 $("#weightLossInput").val(targetWeight)
                 document.getElementById("weightToLoseText").innerText = `You need to lose ${weightToLose({{ current_user.weight }}, targetWeight)}KG to achieve your goal.`
             {% endif %}
+            advisorDietOnReady({{ current_user.weight }}, "{{ url_for("advisor.set_target") }}", '{{ url_for("advisor.health_advisor_index",monitor="diet",notify="set") }}')
         });
     </script>
 {% endblock %}

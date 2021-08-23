@@ -7,13 +7,15 @@ from flask_mail import Mail, Message
 from app import render_template, app
 from models import *
 
-urlSerializer = URLSafeTimedSerializer(os.getenv('URL_SECRET'))
+url_secret = str(os.getenv('CUSTOMCONNSTR_URL_SECRET'))
+print(url_secret)
+urlSerializer = URLSafeTimedSerializer(url_secret)
 app.config["MAIL_SERVER"] = 'smtp.gmail.com'
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
 app.config["MAIL_USE_TLS"] = False
-app.config["MAIL_USERNAME"] = os.getenv('MAIL_USERNAME')
-app.config["MAIL_PASSWORD"] = os.getenv('MAIL_PASSWORD')
+app.config["MAIL_USERNAME"] = os.getenv('CUSTOMCONNSTR_MAIL_USERNAME')
+app.config["MAIL_PASSWORD"] = os.getenv('CUSTOMCONNSTR_MAIL_PASSWORD')
 mailer = Mail(app)
 
 account = Blueprint("account", __name__, url_prefix="/account")

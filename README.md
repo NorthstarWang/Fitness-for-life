@@ -2,7 +2,7 @@
 
 "Fitness for life" is a web app designed to estimate users' health condition and help user to control their daily calorie consumptions by recording down their daily diet and exercises so as to achieve healthier lifestyle.
 
-Fitness for life is built with Python 3.9+Flask+SQLite3+Bootstrap 4
+Fitness for life is built with Python 3.9+Flask+SQLite3+Bootstrap 4+Vanilla Javascript
 
 > **The web app has been deployed on: https://healthier-fitness.azurewebsites.net/**
 
@@ -138,14 +138,15 @@ pip install -U Flask
   <img src="/Pic/18.png" width="800" />
   <img src="/Pic/21.png" width="800" />
 
-## Api:
+## Plugins & Api:
 
 - Sweet alert 2*(https://sweetalert2.github.io/)*
 - Form Validation*(https://formvalidation.io/)*
 - Keen Theme*(https://keenthemes.com/)*
 - Notify.js*(http://notifyjs.jpillora.com/)*
 - Edamam Recipe API*(https://developer.edamam.com/)*
+- ApexChart*(https://apexcharts.com/)*
 
 ## Contact:
 
-If you have any issue or question, feel free to contact me by email:1527638985@qq.com
+If you have any issue, feel free to contact me by email:1527638985@qq.com

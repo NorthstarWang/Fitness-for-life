@@ -23,24 +23,32 @@ pip install -U Flask
 ```
 
 ## Features:
-
+- Home Page
+  - Guest Home Page
 ![Guest Home Page](/Pic/1.png)
+  - User Home Page
+![User Home Page](/Pic/3.png)
+- User Authentication
 ![Login](/Pic/2.png)
 ![Sign Up](/Pic/7.png)
 ![Comfirmation Resend](/Pic/8.png)
 ![Forget Password](/Pic/9.png)
-![User Home Page](/Pic/3.png)
+- Article
 ![Article Index](/Pic/4.png)
 ![Article](/Pic/5.png)
+- Profile
 ![User Profile Page](/Pic/6.png)
 ![User Profile Edit](/Pic/10.png)
+- Health Advisor
 ![Health Advisor Exercise Frequency Check](/Pic/14.png)
 ![Health Advisor BMR notification](/Pic/15.png)
+![Health Target Set](/Pic/13.png)
+  - Weight Advisor
 ![Weight Advisor Stats](/Pic/11.png)
 ![Weight Advisor Recommend Sports](/Pic/12.png)
-![Health Target Set](/Pic/13.png)
 ![User weight update](/Pic/16.png)
 ![Weight Stat Change](/Pic/17.png)
+  - Diet Advisor
 ![Food Kanban](/Pic/20.png)
 ![Add Food Menu](/Pic/19.png)
 ![Food Weight Input](/Pic/18.png)

@@ -24,7 +24,7 @@ pip install -U Flask
 
 ## Features:
 
-![Guest Index](./Pic/\(1\).png)
+![img](./Pic/\(1\).png)
 
 
 ## Api:

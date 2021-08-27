@@ -25,7 +25,7 @@ pip install -U Flask
 ## Features:
 - Home Page
   - Guest Home Page
-![Guest Home Page](/Pic/1.png)
+![Guest Home Page](/Pic/1.png | width=200)
   - User Home Page
 ![User Home Page](/Pic/3.png)
 - User Authentication

@@ -23,11 +23,11 @@ pip install -U Flask
 ```
 
 ## Features:
-- Home Page
-  - Guest Home Page
-    1. Trending Sport
+### Home Page
+  #### Guest Home Page
+    - Trending Sport
       Guest can get random sports that exist in database
-    2. Trending Articles
+    - Trending Articles
       Guest can view articles from either exercise or diet. By clicking the link, they will be redirected to Article section.
       
       <img src="/Pic/1.png" width="600" />
@@ -42,7 +42,7 @@ pip install -U Flask
       
     <img src="/Pic/3.png" width="600" />
     
-- User Authentication(Plugin: SweetAlert2, Notify.js)
+### User Authentication(Plugin: SweetAlert2, Notify.js)
   - Sign In
     User can log in healthier either by TestAccount provided or the self-created account
     <img src="/Pic/2.png" width="600" />
@@ -64,7 +64,7 @@ pip install -U Flask
     
     <img src="/Pic/9.png" width="600" />
     
-- Article
+### Article
   Article section are available for both user and guest.
   - Index
     1. List
@@ -83,7 +83,7 @@ pip install -U Flask
     
   <img src="/Pic/5.png" width="800" />
   
-- Profile
+### Profile
   - Profile Tab
     1. Info tab
       Contains users' up-to-date weight/height/BMI data, and customizable personal information that shown to the public.
@@ -100,7 +100,7 @@ pip install -U Flask
       
   <img src="/Pic/10.png" width="800" />
   
-- Health Advisor
+### Health Advisor
 ![Health Advisor Exercise Frequency Check](/Pic/14.png)
 ![Health Advisor BMR notification](/Pic/15.png)
 ![Health Target Set](/Pic/13.png)

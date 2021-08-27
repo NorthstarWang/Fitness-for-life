@@ -25,9 +25,9 @@ pip install -U Flask
 ## Features:
 - Home Page
   - Guest Home Page
-    1.Trending Sport
+    1. Trending Sport
       Guest can get random sports that exist in database
-    2.Trending Articles
+    2. Trending Articles
       Guest can view articles from either exercise or diet. By clicking the link, they will be redirected to Article section.
       <img src="/Pic/1.png" width="800" />
   - User Home Page

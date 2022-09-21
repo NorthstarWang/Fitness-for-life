@@ -4,8 +4,6 @@
 
 Fitness for life is built with Python 3.9+Flask+SQLite3+Bootstrap 4+Vanilla Javascript
 
-> **The web app has been deployed on: https://fitness-for-life.herokuapp.com/**
-
 ## Index
 
 - [Install](#install)
